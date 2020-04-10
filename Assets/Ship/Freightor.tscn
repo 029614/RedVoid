@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Assets/Ship/Freightor01.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Ship/Freightor.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Ship/Freightor02.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Ship/Freightor03.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Ship/Freightor00.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Vector.png" type="Texture" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 232, 64 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="Freightor" type="KinematicBody2D"]
+scale = Vector2( 0.25, 0.25 )
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 48, 0 )
+shape = SubResource( 1 )
+
+[node name="Flying" type="AnimatedSprite" parent="."]
+visible = false
+rotation = 1.5708
+frames = SubResource( 2 )
+frame = 1
+playing = true
+
+[node name="Sprite" type="Sprite" parent="."]
+rotation = 1.5708
+texture = ExtResource( 5 )
+
+[node name="Velocity" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0, 0.764706, 1, 1 )
+position = Vector2( 0.00012207, 0 )
+scale = Vector2( 14.3858, 2.66234 )
+texture = ExtResource( 6 )
+offset = Vector2( 51.1615, 0 )
+
+[node name="Gravity" type="Sprite" parent="."]
+visible = false
+modulate = Color( 1, 0.682353, 0.0745098, 1 )
+position = Vector2( 0.00012207, 0 )
+scale = Vector2( 14.3858, 2.66234 )
+texture = ExtResource( 6 )
+offset = Vector2( 51.1615, 0 )
+
+[node name="Destination" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.0392157, 0.976471, 0.337255, 1 )
+position = Vector2( 0.00012207, 0 )
+scale = Vector2( 14.3858, 2.66234 )
+texture = ExtResource( 6 )
+offset = Vector2( 51.1615, 0 )
+
+[node name="Path" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.976471, 0.0392157, 0.0392157, 1 )
+position = Vector2( 0.00012207, 0 )
+scale = Vector2( 14.3858, 2.66234 )
+texture = ExtResource( 6 )
+offset = Vector2( 51.1615, 0 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]

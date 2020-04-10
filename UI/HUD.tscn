@@ -1,0 +1,235 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Assets/HUD.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Fonts/standardFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/Map.png" type="Texture" id=3]
+[ext_resource path="res://Assets/FuelGauge2.png" type="Texture" id=4]
+[ext_resource path="res://Assets/FuelGauge.png" type="Texture" id=5]
+[ext_resource path="res://Assets/WarningOff.png" type="Texture" id=6]
+[ext_resource path="res://Assets/warningOn.png" type="Texture" id=7]
+[ext_resource path="res://UI/HUD.gd" type="Script" id=9]
+
+[sub_resource type="Theme" id=1]
+default_font = ExtResource( 2 )
+Label/colors/font_color = Color( 1, 1, 1, 1 )
+Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
+Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+Label/constants/line_spacing = 3
+Label/constants/shadow_as_outline = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/fonts/font = null
+Label/styles/normal = null
+
+[sub_resource type="DynamicFontData" id=2]
+font_path = "res://Assets/Fonts/SourceCodePro-Black.ttf"
+
+[sub_resource type="DynamicFont" id=3]
+size = 20
+font_data = SubResource( 2 )
+
+[sub_resource type="Theme" id=4]
+Label/colors/font_color = Color( 0.235294, 0.427451, 0.568627, 0.823529 )
+Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
+Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+Label/constants/line_spacing = 3
+Label/constants/shadow_as_outline = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/fonts/font = SubResource( 3 )
+Label/styles/normal = null
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="HUD" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource( 1 )
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HudImage" type="TextureRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -192.0
+texture = ExtResource( 1 )
+expand = true
+
+[node name="ReadOut" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -952.0
+margin_top = -272.0
+margin_right = -360.0
+margin_bottom = -144.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ReadOut"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ReadOut/ScrollContainer"]
+margin_right = 348.0
+margin_bottom = 26.0
+theme = SubResource( 4 )
+alignment = 2
+
+[node name="Label" type="Label" parent="ReadOut/ScrollContainer/VBoxContainer"]
+margin_right = 348.0
+margin_bottom = 26.0
+text = "Welcome to Gravity Well Redux"
+
+[node name="PanelLeft" type="Control" parent="."]
+margin_left = 8.0
+margin_top = 944.0
+margin_right = 640.0
+margin_bottom = 1072.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Reset" type="Button" parent="PanelLeft"]
+margin_left = 472.0
+margin_top = 88.0
+margin_right = 592.0
+margin_bottom = 120.0
+text = "Reset"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelRight" type="Control" parent="."]
+margin_left = 1280.0
+margin_top = 944.0
+margin_right = 1696.0
+margin_bottom = 1072.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelRight"]
+margin_left = 56.0
+margin_top = 8.0
+margin_right = 224.0
+margin_bottom = 112.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Missile" type="Button" parent="PanelRight/VBoxContainer"]
+margin_top = 18.0
+margin_right = 168.0
+margin_bottom = 50.0
+text = "Missile Alert"
+
+[node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Missile"]
+position = Vector2( 192, 16 )
+frames = SubResource( 5 )
+playing = true
+
+[node name="Radar" type="Button" parent="PanelRight/VBoxContainer"]
+margin_top = 54.0
+margin_right = 168.0
+margin_bottom = 86.0
+text = "Radar Lock"
+
+[node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Radar"]
+position = Vector2( 192, 16 )
+frames = SubResource( 5 )
+frame = 1
+playing = true
+
+[node name="Vitals" type="Control" parent="."]
+margin_left = 608.0
+margin_top = 944.0
+margin_right = 1312.0
+margin_bottom = 1072.0
+
+[node name="HSlider" type="TextureProgress" parent="Vitals"]
+anchor_right = 1.0
+margin_left = 1056.0
+margin_top = 7.99988
+margin_right = 408.0
+margin_bottom = 226.0
+rect_scale = Vector2( 0.54959, 0.54959 )
+max_value = 1000.0
+value = 573.0
+texture_over = ExtResource( 5 )
+texture_progress = ExtResource( 4 )
+fill_mode = 3
+nine_patch_stretch = true
+stretch_margin_bottom = 34
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Vitals/HSlider"]
+margin_left = 14.5562
+margin_top = 203.788
+margin_right = 62.5562
+margin_bottom = 229.788
+text = "Fuel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WarningIndicator" type="AnimatedSprite" parent="Vitals/HSlider"]
+position = Vector2( 87.3381, 189.232 )
+scale = Vector2( 1.81954, 1.81954 )
+frames = SubResource( 5 )
+frame = 1
+playing = true
+
+[node name="Radar" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RadarImage" type="TextureRect" parent="Radar"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = 1496.0
+margin_right = 1880.0
+margin_bottom = 320.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="Radar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1552.0
+margin_top = 16.0
+margin_right = 1864.0
+margin_bottom = 264.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="Radar/ViewportContainer"]
+size = Vector2( 352, 288 )
+size_override_stretch = true
+transparent_bg = true
+handle_input_locally = false
+disable_3d = true
+usage = 0
+render_target_update_mode = 3
+
+[node name="Camera2D" type="Camera2D" parent="Radar/ViewportContainer/Viewport"]

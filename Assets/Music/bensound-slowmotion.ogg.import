@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/bensound-slowmotion.ogg-ea157d0314bf4ff406d37481699eac4c.oggstr"
+
+[deps]
+
+source_file="res://Assets/Music/bensound-slowmotion.ogg"
+dest_files=[ "res://.import/bensound-slowmotion.ogg-ea157d0314bf4ff406d37481699eac4c.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
