@@ -92,6 +92,7 @@ visible = false
 position = Vector2( -26.7934, 0.669174 )
 rotation = 1.5708
 frames = SubResource( 7 )
+frame = 2
 playing = true
 offset = Vector2( -0.069603, 48.021 )
 

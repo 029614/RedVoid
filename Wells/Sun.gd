@@ -11,11 +11,16 @@ export var _is_active_target = false
 export var _is_destructive = false
 var _is_active_takeoff = false
 export var planet_color = Color(255,255,255,255)
+export var orbit_velocity = .2
 var moon = false
+var ownership = null
+var orbit_assignment
+onready var orbit = {$RotateMe/orbit1: false, $RotateMe/orbit2: false, $RotateMe/orbit3: false, $RotateMe/orbit4: false, $RotateMe/orbit5: false, $RotateMe/orbit6: false, $RotateMe/orbit7: false, $RotateMe/orbit8: false}
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+    Global.connect("capture_planet", self, "capture")
     if randi()%3+1 == 1:
         moon = true
     var normal_scale = Vector2(1/get_scale().x, 1/get_scale().y)
@@ -39,8 +44,8 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#    pass
+func _physics_process(delta: float) -> void:
+    $RotateMe.rotation += orbit_velocity * delta
 
 func readyTakeOff():
     self._is_active_takeoff = true
@@ -60,7 +65,17 @@ func constructionHandler(construction):
         if construction == building.name:
             building.show()
 
+func capture(faction):
+    if ownership != faction:
+        ownership = faction
+        $PlanetSprite.self_modulate = Global.player_color
 
+func assignOrbit():
+    for pos in orbit:
+        if orbit.get(pos) == false:
+            orbit_assignment = pos
+            return
+    
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
     if area.get_parent() == player and area.name != "DamageEngines" and _is_destructive == true:
         Global.emit_signal("player_died")
@@ -69,12 +84,18 @@ func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int,
         print("player landed")
 
 
-func _on_Arrival_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
-    pass # Replace with function body.
-
-
 func _on_Arrival_body_entered(body: Node) -> void:
     if body == player:
-        Global.emit_signal("player_arrival", self)
+        Global._player_in_orbit = true
+        assignOrbit()
+        Global.emit_signal("player_arrival", self, orbit_assignment)
     if body == freighter:
-        Global.emit_signal("freighter_arrival", self)
+        assignOrbit()
+        Global.emit_signal("freighter_arrival", self, orbit_assignment)
+
+
+func _on_Arrival_body_exited(body):
+    if body == player:
+        Global._player_in_orbit = false
+    if body == freighter:
+        pass

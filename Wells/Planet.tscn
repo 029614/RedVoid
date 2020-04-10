@@ -5,7 +5,7 @@
 [ext_resource path="res://Assets/launch/Target.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 248.516
+radius = 240.363
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -16,13 +16,12 @@ animations = [ {
 } ]
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 96.0
+radius = 245.384
 
 [sub_resource type="CircleShape2D" id=4]
-radius = 416.087
+radius = 483.743
 
 [node name="Planet" type="Node2D"]
-modulate = Color( 0.996078, 0.996078, 0.996078, 1 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_vertical_guides_": [ -100.148, 99.7619 ]
@@ -64,5 +63,32 @@ __meta__ = {
 
 [node name="PlanetSprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
+
+[node name="RotateMe" type="Node2D" parent="."]
+
+[node name="orbit1" type="Position2D" parent="RotateMe"]
+position = Vector2( 417.44, 0 )
+
+[node name="orbit2" type="Position2D" parent="RotateMe"]
+position = Vector2( 6.10352e-05, -414.933 )
+
+[node name="orbit3" type="Position2D" parent="RotateMe"]
+position = Vector2( -416.186, 0 )
+
+[node name="orbit4" type="Position2D" parent="RotateMe"]
+position = Vector2( 0.658264, 414.279 )
+
+[node name="orbit5" type="Position2D" parent="RotateMe"]
+position = Vector2( 313.557, -265.339 )
+
+[node name="orbit6" type="Position2D" parent="RotateMe"]
+position = Vector2( -293.467, -291.622 )
+
+[node name="orbit7" type="Position2D" parent="RotateMe"]
+position = Vector2( -326.008, 252.823 )
+
+[node name="orbit8" type="Position2D" parent="RotateMe"]
+position = Vector2( 319.815, 265.339 )
 [connection signal="area_shape_entered" from="Landing" to="." method="_on_Landing_area_shape_entered"]
 [connection signal="body_entered" from="Arrival" to="." method="_on_Arrival_body_entered"]
+[connection signal="body_exited" from="Arrival" to="." method="_on_Arrival_body_exited"]
