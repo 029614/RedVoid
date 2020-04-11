@@ -5,16 +5,23 @@ extends KinematicBody2D
 onready var bodies = get_parent().get_node("Navigation2D/Bodies")
 onready var engine = get_parent()
 onready var last_position = get_position()
+onready var fuel_gauge = $CanvasLayer/HUD/Vitals/FuelGauge
 
 #input and direction
 var velocity = Vector2()
 var rotation_dir = 0
 var orbital_pos
+var orbit = {}
+var planet
+var zoom = Vector2()
 
 #Ship
 onready var thrust = 2000
 var mass = 10
-export var fuel = 250000
+export var fuel = 1000
+var fuel_cap = 1000
+var blink_speed = 5
+var red_alpha = 130
 
 #Ship Components
 var fuel_tank_tier = 1 #1-3
@@ -38,6 +45,15 @@ var max_speed = 99999
 
 #flags
 var _orbiting = false
+var _low_fuel = false
+var _no_fuel = false
+var _no_ammo = true
+var _no_missile = true
+var _no_bomb = true
+var _zoom_enabled = true
+var _map_view = false
+var _local_view = false
+var _player_is_landed = false
 
 
 
@@ -58,7 +74,7 @@ func _ready():
 func get_input(delta):
     
     #Directional Inputs
-    if Global._player_is_landed == false and _orbiting == false:
+    if _player_is_landed == false and _orbiting == false:
         rotation_dir = 0
         if Input.is_action_pressed('ui_right'):
             rotation_dir += 1 
@@ -77,6 +93,7 @@ func get_input(delta):
             velocity += Vector2(1, 0).rotated(rotation).normalized() * acceleration * delta
             velocity = velocity.clamped(max_speed)
             fuel -= 1
+                
         
         
         else:
@@ -91,51 +108,131 @@ func _physics_process(delta):
     rotation += rotation_dir * rotation_speed * delta
     if _orbiting == true:
         position = orbital_pos.get_global_position()
-        rotation = orbital_pos.get_global_rotation() + deg2rad(90)
+        look_at(planet.get_global_position())
     
     #For when you land on a planet
-    if Global._process_player_movement == true and Global._player_is_landed == true:
+    if Global._process_player_movement == true and _player_is_landed == true:
         velocity = Vector2(lerp(velocity.x, 0, friction), lerp(velocity.y, 0, friction))
         velocity = move_and_slide(velocity)
         
     #For flying around normally
-    elif Global._process_player_movement == true and Global._player_is_landed == false:
+    elif Global._process_player_movement == true and _player_is_landed == false:
         velocity = move_and_slide(velocity)
+    
+    #Fuel Gauge
+    if _low_fuel == true:
+        if red_alpha == 50:
+            blink_speed = -5
+        elif red_alpha == 180:
+            blink_speed = 5
+        fuel_gauge.set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
+        fuel_gauge.get_node("Label").set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
+        red_alpha -= blink_speed
+    
+    #Map
+    if _map_view == true and $ChaseCamera.zoom <= Vector2(12,12):
+        if $ChaseCamera.zoom > Vector2(12,12):
+            $ChaseCamera.zoom = Vector2(12,12)
+        $ChaseCamera.zoom += Vector2(.2,.2)
+    elif _local_view == true and $ChaseCamera.zoom > zoom:
+        $ChaseCamera.zoom -= Vector2(.2,.2)
+    elif _local_view == true and $ChaseCamera.zoom == zoom:
+        _local_view = false
+    
+    if $ChaseCamera.zoom < Vector2(10,10):
+        $CanvasLayer/MapIcon.hide()
+    elif $ChaseCamera.zoom >= Vector2(10,10):
+        $CanvasLayer/MapIcon.show()
+    $CanvasLayer/MapIcon.set_global_rotation(get_global_rotation() + deg2rad(90))
+    
+    if _player_is_landed == true:
+        fuel += 10
+        fuel = clamp(fuel, 0, fuel_cap)
+        print("refueling - ", fuel/float(fuel_cap)*100)
+    
+    updateGauge()
         
-        #Parallax background motion
-        var move_overlay = get_position() - last_position
-        last_position = get_position()
-        #engine.overlay.set_position(engine.overlay.get_position() - move_overlay/2)
 
 func _input(event):
     #Orbit
     if Global._player_in_orbit == true and _orbiting == false and Input.is_action_just_pressed("orbit"):
-        _orbiting = true
+        orbit(orbit, planet)
     elif _orbiting == true and Input.is_action_just_pressed("orbit"):
         _orbiting = false
     
     #Lift Off
-    if Global._player_is_landed == true and Input.is_action_just_pressed("weapons"):
+    if _player_is_landed == true and Input.is_action_just_pressed("weapons"):
         print("player launch")
         velocity += Vector2(1, 0).rotated(rotation).normalized()*launch_speed
         velocity = move_and_slide(velocity)
-        Global._player_is_landed = false
+        _player_is_landed = false
     
     #Camera Zoom
-    if Input.is_action_pressed("zoom_in"):
+    if Input.is_action_pressed("zoom_in") and _zoom_enabled == true:
         $ChaseCamera.set_zoom(Vector2($ChaseCamera.get_zoom().x - .1, $ChaseCamera.get_zoom().y - .1))
-    if Input.is_action_pressed("zoom_out"):
+    if Input.is_action_pressed("zoom_out") and _zoom_enabled == true:
         $ChaseCamera.set_zoom(Vector2($ChaseCamera.get_zoom().x + .1, $ChaseCamera.get_zoom().y + .1))
+    
+    #Map
+    if Input.is_action_just_pressed("map") and _map_view == false:
+        zoom = $ChaseCamera.zoom
+        _map_view = true
+    elif Input.is_action_just_pressed("map") and _map_view == true:
+        _map_view = false
+        _local_view = true
+        
 
 func get_gravity(delta):
     for body in bodies.get_children():
         velocity += ( body.mass / (body.position.distance_to(self.position)) * self.position.direction_to(body.position) ) * delta
 
-func land(planet, orbit):
-    Global._player_is_landed = true
-    print("player is landed")
+func land(planet):
+    _player_is_landed = true
+    print("player is landed on: ", planet)
     Global.emit_signal("capture_planet", Global.player_faction)
 
-func setupOrbit(planet, orbit):
-    orbital_pos = orbit
+func setupOrbit(orbit_data, target):
+    planet = target
+    orbit = orbit_data
+    print("Orbital Coordinates Received")
+    
+func orbit(orbit, planet):
+    var p_pos = get_global_position()
+    var obd = {} # Orbit By Distance. Contains a list of orbits. orbit reference:distance from ship
+    for pos in orbit:
+        if orbit.get(pos) == false:
+            obd[pos] = pos.get_global_position().distance_to(p_pos)
+    var s = obd.values()
+    s.sort()
+    for key in obd:
+        if obd[key] == s[0]:
+            orbital_pos = key
+    _orbiting = true
+    print("all code has run")
+    return
+
+func updateGauge():
+    #Fuel Gauge
+    if fuel > 0:
+        fuel_gauge.set_value((fuel/float(fuel_cap))*100)
+        if fuel/float(fuel_cap)*100 <= 25 and fuel/float(fuel_cap)*100 > 0:
+            fuel_gauge.set_self_modulate(Color8(253,50,40,130))
+            fuel_gauge.get_node("Label").set_self_modulate(Color8(253,50,40,130))
+            fuel_gauge.get_node("Label").set_text("Low Fuel!")
+            _low_fuel = true
+        else:
+            fuel_gauge.set_self_modulate(Color8(54,246,0,109))
+            fuel_gauge.get_node("Label").set_self_modulate(Color8(54,246,0,109))
+            fuel_gauge.get_node("Label").set_text("Fuel")
+            _low_fuel = false
+            _no_fuel = false
+    else:
+        _low_fuel = false
+        _no_fuel = true
+        fuel_gauge.set_self_modulate(Color8(253,50,40,0))
+        fuel_gauge.get_node("Label").set_self_modulate(Color8(243,192,19,202))
+        fuel_gauge.get_node("Label").set_text("-No Fuel-")
+
+func playerLog(string):
+    pass
 

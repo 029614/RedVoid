@@ -2,9 +2,8 @@
 
 [ext_resource path="res://Assets/HUD.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Fonts/standardFont.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Assets/Map.png" type="Texture" id=3]
-[ext_resource path="res://Assets/FuelGauge2.png" type="Texture" id=4]
-[ext_resource path="res://Assets/FuelGauge.png" type="Texture" id=5]
+[ext_resource path="res://Assets/fuelLED.png" type="Texture" id=3]
+[ext_resource path="res://Assets/shipDisp.png" type="Texture" id=4]
 [ext_resource path="res://Assets/WarningOff.png" type="Texture" id=6]
 [ext_resource path="res://Assets/warningOn.png" type="Texture" id=7]
 [ext_resource path="res://UI/HUD.gd" type="Script" id=9]
@@ -47,6 +46,9 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.901961, 0.905882, 0.27451, 0.333333 )
+
 [node name="HUD" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -60,7 +62,7 @@ __meta__ = {
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -192.0
+margin_top = -280.0
 texture = ExtResource( 1 )
 expand = true
 
@@ -139,6 +141,7 @@ text = "Missile Alert"
 [node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Missile"]
 position = Vector2( 192, 16 )
 frames = SubResource( 5 )
+frame = 1
 playing = true
 
 [node name="Radar" type="Button" parent="PanelRight/VBoxContainer"]
@@ -150,86 +153,176 @@ text = "Radar Lock"
 [node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Radar"]
 position = Vector2( 192, 16 )
 frames = SubResource( 5 )
-frame = 1
 playing = true
 
 [node name="Vitals" type="Control" parent="."]
-margin_left = 608.0
+margin_left = 611.61
 margin_top = 944.0
-margin_right = 1312.0
+margin_right = 1315.61
 margin_bottom = 1072.0
 
-[node name="HSlider" type="TextureProgress" parent="Vitals"]
-anchor_right = 1.0
-margin_left = 1056.0
-margin_top = 7.99988
-margin_right = 408.0
-margin_bottom = 226.0
-rect_scale = Vector2( 0.54959, 0.54959 )
-max_value = 1000.0
-value = 573.0
-texture_over = ExtResource( 5 )
-texture_progress = ExtResource( 4 )
-fill_mode = 3
-nine_patch_stretch = true
-stretch_margin_bottom = 34
+[node name="FuelGauge" type="TextureProgress" parent="Vitals"]
+self_modulate = Color( 0.211765, 0.964706, 0, 0.427451 )
+margin_left = 1109.64
+margin_top = -42.1082
+margin_right = 1301.64
+margin_bottom = 45.8918
+rect_pivot_offset = Vector2( 88, 72 )
+value = 100.0
+texture_progress = ExtResource( 3 )
+fill_mode = 4
+radial_initial_angle = 271.0
+radial_fill_degrees = 180.0
+radial_center_offset = Vector2( 0, 50 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Vitals/HSlider"]
-margin_left = 14.5562
-margin_top = 203.788
-margin_right = 62.5562
-margin_bottom = 229.788
+[node name="Label" type="Label" parent="Vitals/FuelGauge"]
+self_modulate = Color( 0.211765, 0.964706, 0, 0.494118 )
+margin_top = 48.0
+margin_right = 176.0
+margin_bottom = 104.0
 text = "Fuel"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WarningIndicator" type="AnimatedSprite" parent="Vitals/HSlider"]
-position = Vector2( 87.3381, 189.232 )
-scale = Vector2( 1.81954, 1.81954 )
-frames = SubResource( 5 )
-frame = 1
-playing = true
+[node name="Weapons" type="Control" parent="."]
+margin_left = 648.0
+margin_top = 968.0
+margin_right = 688.0
+margin_bottom = 1008.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Radar" type="Control" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="Weapons"]
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RadarImage" type="TextureRect" parent="Radar"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = 1496.0
-margin_right = 1880.0
-margin_bottom = 320.0
-texture = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Guns" type="Label" parent="Weapons/VBoxContainer"]
+margin_right = 156.0
+margin_bottom = 26.0
+custom_colors/font_color = Color( 0.494118, 1, 0.266667, 0.752941 )
+text = "Cannon: 500"
+align = 2
+valign = 1
 
-[node name="ViewportContainer" type="ViewportContainer" parent="Radar"]
+[node name="Control" type="Panel" parent="Weapons/VBoxContainer/Guns"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1552.0
-margin_top = 16.0
-margin_right = 1864.0
-margin_bottom = 264.0
+margin_right = 28.0
+custom_styles/panel = SubResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="Radar/ViewportContainer"]
-size = Vector2( 352, 288 )
-size_override_stretch = true
-transparent_bg = true
-handle_input_locally = false
-disable_3d = true
-usage = 0
-render_target_update_mode = 3
+[node name="Label" type="Label" parent="Weapons/VBoxContainer/Guns/Control"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -13.0
+margin_bottom = 13.0
+custom_colors/font_color = Color( 0.494118, 1, 0.266667, 0.752941 )
+text = "<"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Camera2D" type="Camera2D" parent="Radar/ViewportContainer/Viewport"]
+[node name="Missiles" type="Label" parent="Weapons/VBoxContainer"]
+margin_top = 30.0
+margin_right = 156.0
+margin_bottom = 56.0
+custom_colors/font_color = Color( 0.494118, 1, 0.266667, 0.752941 )
+text = "Missiles: 004"
+align = 2
+valign = 1
+
+[node name="Control" type="Panel" parent="Weapons/VBoxContainer/Missiles"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 28.0
+custom_styles/panel = SubResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Weapons/VBoxContainer/Missiles/Control"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -13.0
+margin_bottom = 13.0
+custom_colors/font_color = Color( 0.494118, 1, 0.266667, 0.752941 )
+text = "<"
+align = 2
+valign = 1
+
+[node name="Bombs" type="Label" parent="Weapons/VBoxContainer"]
+margin_top = 60.0
+margin_right = 156.0
+margin_bottom = 86.0
+custom_colors/font_color = Color( 0.494118, 1, 0.266667, 0.752941 )
+text = "Bombs: 002"
+align = 2
+valign = 1
+
+[node name="Control" type="Panel" parent="Weapons/VBoxContainer/Bombs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 28.0
+custom_styles/panel = SubResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Weapons/VBoxContainer/Bombs/Control"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -13.0
+margin_bottom = 13.0
+custom_colors/font_color = Color( 0.494118, 1, 0.266667, 0.752941 )
+text = "<"
+align = 2
+valign = 1
+
+[node name="Ship" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Ship"]
+modulate = Color( 0.52549, 1, 0.0901961, 0.545098 )
+position = Vector2( 1184, 1024 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 4 )
+
+[node name="Label" type="Label" parent="Ship"]
+margin_left = 1104.0
+margin_top = 944.0
+margin_right = 1260.0
+margin_bottom = 970.0
+custom_colors/font_color = Color( 0.494118, 1, 0.266667, 0.752941 )
+text = "Shields: 100%"
+__meta__ = {
+"_edit_use_anchors_": false
+}

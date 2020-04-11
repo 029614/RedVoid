@@ -68,30 +68,24 @@ func constructionHandler(construction):
 func capture(faction):
     if ownership != faction:
         ownership = faction
-        $PlanetSprite.self_modulate = Global.player_color
-
-func assignOrbit():
-    for pos in orbit:
-        if orbit.get(pos) == false:
-            orbit_assignment = pos
-            return
+        $PlanetSprite.set_self_modulate(Global.player_color)
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
-    if area.get_parent() == player and area.name != "DamageEngines" and _is_destructive == true:
+    if area.get_parent() == player and _is_destructive == true:
         Global.emit_signal("player_died")
     elif area == player.get_node("LandingGear") and _is_destructive == false:
         Global.emit_signal("player_landed", self)
-        print("player landed")
+        print("player is landing")
 
 
 func _on_Arrival_body_entered(body: Node) -> void:
     if body == player:
         Global._player_in_orbit = true
-        assignOrbit()
-        Global.emit_signal("player_arrival", self, orbit_assignment)
+        print("player arrival")
+        Global.emit_signal("player_arrival", orbit, self)
     if body == freighter:
-        assignOrbit()
-        Global.emit_signal("freighter_arrival", self, orbit_assignment)
+        var p_pos = freighter.get_global_position()
+        Global.emit_signal("freighter_arrival", orbit, self)
 
 
 func _on_Arrival_body_exited(body):
