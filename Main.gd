@@ -4,6 +4,8 @@ onready var bodies = $Navigation2D/Bodies
 var target = preload("res://Target.tscn")
 var new_position = Vector2()
 var _move_camera = false
+var map_origin = Vector2(0,0)
+var map_limit = Vector2(20000,15000)
 
 
 # Called when the node enters the scene tree for the first time.

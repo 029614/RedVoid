@@ -69,7 +69,6 @@ func _ready():
     #Other start up related shit
     acceleration = thrust/mass
     print("acceleration: ", acceleration)
-    #$ParallaxBackground.set_global_position(get_global_position())
 
 func get_input(delta):
     
@@ -108,7 +107,7 @@ func _physics_process(delta):
     get_gravity(delta)
     rotation += rotation_dir * rotation_speed * delta
     if _orbiting == true:
-        position = orbital_pos.get_global_position()
+        global_position = orbital_pos.get_global_position()
         look_at(planet.get_global_position())
     
     #For when you land on a planet
@@ -152,6 +151,16 @@ func _physics_process(delta):
         print("refueling - ", fuel/float(fuel_cap)*100)
     
     updateGauge()
+    
+    #Player Location
+    if global_position.x < engine.map_origin.x:
+        global_position.x += engine.map_limit.x
+    elif global_position.x > engine.map_limit.x:
+        global_position.x -= engine.map_limit.x
+    if global_position.y < engine.map_origin.y:
+        global_position.y += engine.map_limit.y
+    elif global_position.y > engine.map_limit.y:
+        global_position.y -= engine.map_limit.y
         
 
 func _input(event):
@@ -210,7 +219,6 @@ func orbit(orbit, planet):
             orbital_pos = key
     _orbiting = true
     print("all code has run")
-    return
 
 func updateGauge():
     #Fuel Gauge

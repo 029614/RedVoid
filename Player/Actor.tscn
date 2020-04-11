@@ -32,7 +32,7 @@ extents = Vector2( 56.0794, 23.1085 )
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 22.8476, 64 )
 
-[sub_resource type="SpriteFrames" id=9]
+[sub_resource type="SpriteFrames" id=7]
 animations = [ {
 "frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ) ],
 "loop": false,
@@ -99,7 +99,7 @@ visible = false
 position = Vector2( -26.7934, 0.669174 )
 rotation = 1.5708
 scale = Vector2( 0.25, 0.25 )
-frames = SubResource( 9 )
+frames = SubResource( 7 )
 offset = Vector2( -0.069603, 48.021 )
 
 [node name="Highlighter" type="AnimatedSprite" parent="."]
@@ -179,6 +179,6 @@ layer = -101
 offset = Vector2( 960, 540 )
 transform = Transform2D( 1, 0, 0, 1, 960, 540 )
 
-[node name="Nebula" type="Sprite" parent="Canvas"]
+[node name="Canvas" type="Sprite" parent="Canvas"]
 z_index = -100
 texture = ExtResource( 12 )
