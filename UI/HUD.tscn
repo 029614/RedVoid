@@ -62,7 +62,7 @@ __meta__ = {
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -280.0
+margin_top = -392.0
 texture = ExtResource( 1 )
 expand = true
 
@@ -141,7 +141,6 @@ text = "Missile Alert"
 [node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Missile"]
 position = Vector2( 192, 16 )
 frames = SubResource( 5 )
-frame = 1
 playing = true
 
 [node name="Radar" type="Button" parent="PanelRight/VBoxContainer"]
@@ -153,13 +152,17 @@ text = "Radar Lock"
 [node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Radar"]
 position = Vector2( 192, 16 )
 frames = SubResource( 5 )
+frame = 1
 playing = true
 
 [node name="Vitals" type="Control" parent="."]
-margin_left = 611.61
+margin_left = 608.0
 margin_top = 944.0
-margin_right = 1315.61
+margin_right = 1312.0
 margin_bottom = 1072.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="FuelGauge" type="TextureProgress" parent="Vitals"]
 self_modulate = Color( 0.211765, 0.964706, 0, 0.427451 )

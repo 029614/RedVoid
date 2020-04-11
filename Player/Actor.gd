@@ -18,8 +18,8 @@ var zoom = Vector2()
 #Ship
 onready var thrust = 2000
 var mass = 10
-export var fuel = 1000
-var fuel_cap = 1000
+export var fuel = 5000
+var fuel_cap = 5000
 var blink_speed = 5
 var red_alpha = 130
 
@@ -87,6 +87,7 @@ func get_input(delta):
             #Changing the sprite to the one with engine plumes
             $Sprite.hide()
             $Flying.show()
+            $Flying.play()
             
             #Input Movements
             current_speed = velocity.length()
