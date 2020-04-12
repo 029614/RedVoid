@@ -27,6 +27,8 @@ var launch_speed = 100
 #physics
 var acceleration = 0
 var friction = 1
+var rps = .5
+var rads_per_sec = 0
 
 #speed managers
 export (int) var speed = 500
@@ -37,17 +39,19 @@ var max_speed = 99999
 #flags
 var _traveling = false
 
+#navigation
+var desired_rotation = 0
+var desired_velocity = Vector2(0, 0)
+var destination = Vector2(0, 0)
+var target_side = 0 #( <0 is left, >0 is right)
+var target_balance = 0 #( <0 is behind, >0 is in front)
 
-"""Freightor Agent"""
 
-# Declare member variables here. Examples:
-# var a: int = 2
-# var b: String = "text"
-
-
-# Called when the node enters the scene tree for the first time.
+"""Freighter Agent"""
 func _ready() -> void:
     acceleration = thrust/mass
+    rads_per_sec = 6.283185*rps
+
 
 func get_gravity(delta):
     var g = Vector2(0,0)
@@ -58,8 +62,27 @@ func get_gravity(delta):
         else:
             g += ( body.mass / (body.global_position.distance_to(self.global_position)) * self.global_position.direction_to(body.global_position) )
     return [g, t]
+
+
+func time_of_flight(velocity,distance,accel): #all values are floats
+    return (sqrt(velocity*velocity+2*acceleration*distance) - velocity) / acceleration
     
-func get_input(delta):
+func time_to_rotate(rps, current_rotation, desired_rotation):
+    print("current_rotation: ", current_rotation, " desired_rotation: ", desired_rotation, 
+        " time_to_rotate: ", abs(desired_rotation - current_rotation) / rads_per_sec)
+    return abs((desired_rotation - current_rotation) / rads_per_sec)
+
+func turn():
+    pass
+    
+func accelerate():
+    pass
+    
+func decelerate():
+    pass
+
+
+func update_movement(delta):
     #Directional Inputs
     if self.position.distance_to(target) < travel_distance / 2:
         pass
@@ -101,27 +124,35 @@ func _physics_process(delta: float) -> void:
     var tgrav = gt[1] #gravity of target
     var d = self.global_position.direction_to(target) #direction to target
     var angto = (target).angle_to_point(self.global_position)
+    
+    
+    var rot = Vector2(1, 0).rotated(rotation).normalized()
+    target_balance = rot.dot((target-self.global_position).normalized()) 
+    target_side = rot.rotated(deg2rad(90)).dot((target-self.global_position).normalized()) 
+    
+    
 
-    var tang = d.tangent()
-    var Rv = (g+tgrav + velocity).normalized() #direction of velocity plus gravity
-    
-    var RvF = (Rv*-1).reflect(tang)
-    
+    var Rv = (g+tgrav + velocity) #direction of velocity plus gravity PURPLE
+    var RvF = 2 * (d.dot(Rv)) * d - Rv #Rv mirrored across the line that is between the target and the ship
+
     var td = self.global_position.distance_to(target)
-    var r2v = Vector2(cos(self.rotation), sin(self.rotation))
+    
+    var velocity_balance = Rv.normalized().dot((target-self.global_position).normalized()) 
     var lookat = self.global_position+((RvF)*td)
-    #if td < 200:
-    #    lookat = mp+target
+    if velocity_balance <= 0:
+        lookat = target
+        
+    var lookat_balance = rot.dot((lookat-self.global_position).normalized()) 
+    var lookat_side = rot.rotated(deg2rad(90)).dot((lookat-self.global_position).normalized()) 
     
-    draw_arrow(get_node("/root/Main/ship_lookat"), lookat, mp)
-    draw_arrow(get_node("/root/Main/ship_gravity"), self.global_position+((g+tgrav)*100), mp)
-    
+    if lookat_balance < .999: #target is not directly in front of ship
+        if lookat_side < 0: #target is on left
+            rotate(rads_per_sec*delta*-1)
+        elif lookat_side > 0: #target is on right
+            rotate(rads_per_sec*delta)
 
-    print("td: ",td, "d: ",d, "Rv: ",Rv, "RvF: ",RvF, "lookat: ",lookat, "velocity: ",velocity, "g: ",g, "angleto: ",angto, ", ",self.rotation, "r2v: ", r2v)
-
-    self.look_at(lookat)
     velocity += (g+tgrav) * delta
-    get_input(delta)
+    update_movement(delta)
     velocity = move_and_slide(velocity)
 
 

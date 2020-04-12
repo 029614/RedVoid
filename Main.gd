@@ -15,6 +15,8 @@ func _ready() -> void:
     Global.emit_signal("main_ready")
     Global._play = true
     print("Main is ready")
+    
+    $Freighter.goTo(bodies.get_node("Planet5"))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

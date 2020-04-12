@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Player/Actor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://Wells/Planet.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Music/bensound-slowmotion.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Ship/Freighter.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Ship/Fighter.tscn" type="PackedScene" id=6]
 
 [node name="NewMain" type="Node2D"]
 position = Vector2( 8822.1, 4486.84 )
@@ -37,3 +39,9 @@ position = Vector2( -432, -256 )
 stream = ExtResource( 4 )
 volume_db = -21.204
 autoplay = true
+
+[node name="Fighter" parent="." instance=ExtResource( 6 )]
+position = Vector2( 300, 300 )
+
+[node name="Freighter" parent="." instance=ExtResource( 5 )]
+position = Vector2( 600, 600 )
