@@ -32,7 +32,7 @@ func _ready() -> void:
     print(self.name, " Mass: ", mass, " Radius: ", planet_radius)
     if _is_active_target == true:
         $Target.show()
-    $PlanetSprite.self_modulate = planet_color
+    #$PlanetSprite.self_modulate = planet_color
     
     var lp = self.position
     var gp = self.global_position
