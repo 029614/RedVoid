@@ -159,4 +159,4 @@ position = Vector2( 162.828, 0 )
 [node name="HeatShield" type="Position2D" parent="."]
 
 [node name="HeatShield2" parent="HeatShield" instance=ExtResource( 1 )]
-position = Vector2( 139.86, 0 )
+position = Vector2( 104.527, 0 )

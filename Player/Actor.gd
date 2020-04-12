@@ -47,6 +47,7 @@ export (int) var speed = 500
 export (float) var rotation_speed = 2
 var current_speed = 0
 var max_speed = 99999
+var speed_modifier = 1
 
 #flags
 var _orbiting = false
@@ -60,6 +61,7 @@ var _map_view = false
 var _local_view = false
 var _player_is_landed = false
 var _heat_shield = false
+var _after_burner = false
 
 
 
@@ -89,6 +91,15 @@ func get_input(delta):
         if Input.is_action_pressed('ui_down'):
             pass
         if Input.is_action_pressed('ui_up') and fuel >= 0:
+            #After Burner
+            if _after_burner == true:
+                speed_modifier = 10
+                $Sprite/AB1.set_emitting(true)
+                $Sprite/AB2.set_emitting(true)
+            elif _after_burner == false:
+                speed_modifier = 1
+                $Sprite/AB1.set_emitting(false)
+                $Sprite/AB2.set_emitting(false)
         
             #Changing the sprite to the one with engine plumes
             if $Sprite/Particles2D.is_emitting() == false:
@@ -97,9 +108,9 @@ func get_input(delta):
             
             #Input Movements
             current_speed = velocity.length()
-            velocity += Vector2(1, 0).rotated(rotation).normalized() * acceleration * delta
+            velocity += Vector2(1, 0).rotated(rotation).normalized() * (acceleration * speed_modifier) * delta
             velocity = velocity.clamped(max_speed)
-            fuel -= 1
+            fuel -= 1 * (speed_modifier * 2)
                 
         
         
@@ -107,6 +118,9 @@ func get_input(delta):
             
             #Changing the sprite back to the one without engine plumes
             $Sprite/Particles2D.set_emitting(false)
+            $Sprite/AB1.set_emitting(false)
+            $Sprite/AB2.set_emitting(false)
+            _after_burner = false
 
 func _physics_process(delta):
     if Global._play == true:
@@ -161,10 +175,10 @@ func _physics_process(delta):
         
         #Heat shield
         if planet:
-            if global_position.distance_to(planet.global_position) < 400 and current_speed > 150 and _heat_shield == false:
+            if global_position.distance_to(planet.global_position) < 400 and current_speed > 125 and _heat_shield == false:
                 _heat_shield = true
                 $HeatShield/HeatShield2/Particles2D.set_emitting(true)
-            elif global_position.distance_to(planet.global_position) > 400 and _heat_shield == true or current_speed < 150 and _heat_shield == true:
+            elif global_position.distance_to(planet.global_position) > 400 and _heat_shield == true or current_speed < 125 and _heat_shield == true:
                 _heat_shield = false
                 $HeatShield/HeatShield2/Particles2D.set_emitting(false)
             else:
@@ -218,6 +232,12 @@ func _input(event):
         elif Input.is_action_just_pressed("map") and _map_view == true:
             _map_view = false
             _local_view = true
+        
+        #After Burner
+        if Input.is_action_pressed("AfterBurner"):
+            _after_burner = true
+        elif Input.is_action_just_released("AfterBurner"):
+            _after_burner = false
         
 
 func get_gravity(delta):

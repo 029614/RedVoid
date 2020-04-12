@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Assets/Particles/EngineExhaust.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Particles/circle.png" type="Texture" id=1]
 
 [sub_resource type="Gradient" id=4]
 offsets = PoolRealArray( 0, 0.481481, 0.888889 )
@@ -12,7 +12,7 @@ width = 4096
 
 [sub_resource type="Curve" id=5]
 max_value = 5.0
-_data = [ Vector2( 0, 0.6 ), 0.0, 0.0, 0, 0, Vector2( 0.234177, 2.36364 ), 3.91736, 3.91736, 0, 0, Vector2( 0.778481, 4.81818 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.863636 ), 0.0, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 0.6 ), 0.0, 0.0, 0, 0, Vector2( 0.0822785, 1.86364 ), -2.78006, -2.78006, 0, 0, Vector2( 1, 0.090909 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=6]
 curve = SubResource( 5 )
@@ -23,7 +23,6 @@ spread = 0.0
 gravity = Vector3( 0, 0, 0 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-scale_random = 0.24
 scale_curve = SubResource( 6 )
 color_ramp = SubResource( 2 )
 
@@ -33,7 +32,7 @@ color_ramp = SubResource( 2 )
 modulate = Color( 1, 1, 1, 0.0823529 )
 emitting = false
 amount = 600
-lifetime = 0.3
+lifetime = 0.4
 local_coords = false
 process_material = SubResource( 3 )
 texture = ExtResource( 1 )
