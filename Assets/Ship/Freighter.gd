@@ -89,8 +89,11 @@ func update_movement(delta):
     if _traveling == true and fuel >= 0:
         
         #Changing the sprite to the one with engine plumes
-        $Sprite.hide()
-        $Flying.show()
+        if $Engines/Particles2D.is_emitting() == false:
+            $Engines/Particles2D.restart()
+            $Engines/Particles2D.set_emitting(true)
+            $Engines/Particles2D2.restart()
+            $Engines/Particles2D2.set_emitting(true)
         
         #Input Movements
         current_speed = velocity.length()
@@ -102,8 +105,8 @@ func update_movement(delta):
     else:
         
         #Changing the sprite back to the one without engine plumes
-        $Sprite.show()
-        $Flying.hide()
+            $Engines/Particles2D.set_emitting(false)
+            $Engines/Particles2D2.set_emitting(false)
 
 func draw_arrow(arrow, t, mp):
     var d = self.global_position.distance_to(t)

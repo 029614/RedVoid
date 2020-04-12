@@ -1,41 +1,54 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://Assets/Ship/Freightor01.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Particles/EngineExhaust.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Ship/Freighter.gd" type="Script" id=2]
-[ext_resource path="res://Assets/Ship/Freightor02.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Ship/Freightor03.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Ship/Freightor00.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Ship/FreighterSprite.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Vector.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 232, 64 )
+extents = Vector2( 232, 118.269 )
 
-[sub_resource type="SpriteFrames" id=2]
-animations = [ {
-"frames": [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0.00740741, 0.140741, 0.57037 )
+colors = PoolColorArray( 0, 1, 0.960784, 0.45098, 0.772549, 0.772549, 0.772549, 0.564706, 0.498039, 0.498039, 0.498039, 0.14902 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+width = 5000
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.816456, 0.6 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.0090909 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+emission_shape = 2
+emission_box_extents = Vector3( 75, 75, 75 )
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 3500.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = -100.0
+angle = 45.0
+angle_random = 1.0
+scale = 0.6
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
 
 [node name="Freighter" type="KinematicBody2D"]
 scale = Vector2( 0.25, 0.25 )
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 48, 0 )
+position = Vector2( -23.6973, 0 )
 shape = SubResource( 1 )
 
-[node name="Flying" type="AnimatedSprite" parent="."]
-visible = false
-rotation = 1.5708
-frames = SubResource( 2 )
-frame = 2
-playing = true
-
-[node name="Sprite" type="Sprite" parent="."]
-rotation = 1.5708
-texture = ExtResource( 5 )
+[node name="Sprite" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, -2.86786 )
+scale = Vector2( 1.36049, 1.36049 )
 
 [node name="Velocity" type="Sprite" parent="."]
 visible = false
@@ -70,3 +83,25 @@ texture = ExtResource( 6 )
 offset = Vector2( 51.1615, 0 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Engines" type="Node2D" parent="."]
+
+[node name="Particles2D" type="Particles2D" parent="Engines"]
+show_behind_parent = true
+position = Vector2( -785.453, -50.5255 )
+rotation = 3.14159
+scale = Vector2( 0.0625, 0.0625 )
+amount = 100
+local_coords = false
+process_material = SubResource( 6 )
+texture = ExtResource( 1 )
+
+[node name="Particles2D2" type="Particles2D" parent="Engines"]
+show_behind_parent = true
+position = Vector2( -785.453, 62.0371 )
+rotation = 3.14159
+scale = Vector2( 0.0625, 0.0625 )
+amount = 100
+local_coords = false
+process_material = SubResource( 6 )
+texture = ExtResource( 1 )
