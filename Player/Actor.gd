@@ -6,6 +6,7 @@ onready var bodies = get_parent().get_node("Navigation2D/Bodies")
 onready var engine = get_parent()
 onready var last_position = get_position()
 onready var fuel_gauge = $CanvasLayer/HUD/Vitals/FuelGauge
+onready var enemy = engine.get_node("Enemy")
 
 var explosion = preload("res://Assets/Particles/Explosion.tscn")
 var projectile = preload("res://Assets/Particles/Projectile.tscn")
@@ -130,6 +131,7 @@ func _physics_process(delta):
         if _orbiting == true:
             global_position = orbital_pos.get_global_position()
             look_at(planet.get_global_position())
+            rotation += deg2rad(-90)
         
         #For when you land on a planet
         if Global._process_player_movement == true and _player_is_landed == true:
@@ -153,20 +155,26 @@ func _physics_process(delta):
             red_alpha -= blink_speed
         
         #Map
-        if _map_view == true and $ChaseCamera.zoom <= Vector2(12,12):
-            if $ChaseCamera.zoom > Vector2(12,12):
-                $ChaseCamera.zoom = Vector2(12,12)
+        if _map_view == true and $ChaseCamera.zoom <= Vector2(11.9,11.9):
             $ChaseCamera.zoom += Vector2(.2,.2)
-        elif _local_view == true and $ChaseCamera.zoom > zoom:
+        elif _map_view == true and $ChaseCamera.zoom > Vector2(12,12):
+            $ChaseCamera.zoom = Vector2(12,12)
+        elif _local_view == true and $ChaseCamera.zoom > Vector2(1.5,1.5):
             $ChaseCamera.zoom -= Vector2(.2,.2)
-        elif _local_view == true and $ChaseCamera.zoom == zoom:
+        elif _local_view == true and $ChaseCamera.zoom == Vector2(1.5,1.5):
             _local_view = false
         
         if $ChaseCamera.zoom < Vector2(10,10):
             $CanvasLayer/MapIcon.hide()
+            $CanvasLayer/MapIconEnemy.hide()
         elif $ChaseCamera.zoom >= Vector2(10,10):
             $CanvasLayer/MapIcon.show()
+            $CanvasLayer/MapIconEnemy.show()
         $CanvasLayer/MapIcon.set_global_rotation(get_global_rotation() + deg2rad(90))
+        $CanvasLayer/MapIconEnemy.set_rotation(enemy.get_rotation() + deg2rad(90))
+        $CanvasLayer/MapIconEnemy.set_position(Vector2(0,0))
+        $CanvasLayer/MapIconEnemy.set_global_position(enemy.global_position)
+        print("Enemy Icon Position: ", $CanvasLayer/MapIconEnemy.get_global_position(), " Enemy Position: ", enemy.global_position)
         
         if _player_is_landed == true:
             fuel += 10
@@ -229,6 +237,7 @@ func _input(event):
         if Input.is_action_just_pressed("map") and _map_view == false:
             zoom = $ChaseCamera.zoom
             _map_view = true
+            _local_view = false
         elif Input.is_action_just_pressed("map") and _map_view == true:
             _map_view = false
             _local_view = true

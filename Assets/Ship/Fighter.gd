@@ -33,6 +33,7 @@ var rads_per_sec = 0
 #speed managers
 export (int) var speed = 500
 export (float) var rotation_speed = 2
+export (Color) var enemy_color = Color(1,1,1,1)
 var current_speed = 0
 var max_speed = 99999
 
@@ -57,6 +58,7 @@ var state = "patrol"
 func _ready() -> void:
     acceleration = thrust/mass
     rads_per_sec = 6.283185*rps
+    $Sprite/ShipAccent.modulate = enemy_color
     
 
 func get_gravity(delta):
@@ -95,8 +97,9 @@ func update_movement(delta):
     if fuel >= 0:
         
         #Changing the sprite to the one with engine plumes
-        $Sprite.hide()
-        $Flying.show()
+        if $Sprite/Particles2D.is_emitting() == false:
+            $Sprite/Particles2D.restart()
+            $Sprite/Particles2D.set_emitting(true)
         
         #Input Movements
         current_speed = velocity.length()
@@ -108,8 +111,9 @@ func update_movement(delta):
     else:
         
         #Changing the sprite back to the one without engine plumes
-        $Sprite.show()
-        $Flying.hide()
+            $Sprite/Particles2D.set_emitting(false)
+            $Sprite/AB1.set_emitting(false)
+            $Sprite/AB2.set_emitting(false)
 
 func draw_arrow(arrow, t, mp):
     var d = self.global_position.distance_to(t)

@@ -19,7 +19,7 @@ extents = Vector2( 50.2752, 20.8533 )
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 75.1661, 37.1417 )
 
-[sub_resource type="ConvexPolygonShape2D" id=9]
+[sub_resource type="ConvexPolygonShape2D" id=4]
 points = PoolVector2Array( -30, -30, -56, 30, 56, 30, 30, -30, 0, -50 )
 
 [sub_resource type="RectangleShape2D" id=5]
@@ -28,7 +28,7 @@ extents = Vector2( 56.0794, 23.1085 )
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 20.8575, 50.5637 )
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 79.7457, 95.166 )
 
 [node name="Actor" type="KinematicBody2D"]
@@ -42,9 +42,11 @@ shape = SubResource( 1 )
 [node name="ChaseCamera" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 1.5, 1.5 )
+limit_smoothed = true
 smoothing_speed = 10.0
 
 [node name="Sprite" parent="." instance=ExtResource( 14 )]
+position = Vector2( -17.48, -19.6673 )
 
 [node name="DamageEngines" type="CollisionShape2D" parent="."]
 position = Vector2( -86.1864, 0.393127 )
@@ -59,7 +61,7 @@ shape = SubResource( 3 )
 [node name="DamageNose" type="CollisionShape2D" parent="."]
 position = Vector2( 69.616, 0 )
 rotation = 1.5708
-shape = SubResource( 9 )
+shape = SubResource( 4 )
 
 [node name="DamageWeapons" type="CollisionShape2D" parent="."]
 position = Vector2( 18.7523, 0 )
@@ -67,6 +69,7 @@ rotation = 1.5708
 shape = SubResource( 5 )
 
 [node name="LandingGear" type="Area2D" parent="."]
+position = Vector2( -35.5891, 0.418701 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LandingGear"]
 position = Vector2( -87.2675, 0 )
@@ -77,7 +80,7 @@ shape = SubResource( 6 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShipArea"]
 position = Vector2( 23.298, -2.51286 )
 rotation = 1.5708
-shape = SubResource( 10 )
+shape = SubResource( 7 )
 
 [node name="Background" type="ParallaxBackground" parent="."]
 layer = -99
@@ -114,6 +117,14 @@ texture = ExtResource( 8 )
 [node name="MapIcon" type="Sprite" parent="CanvasLayer"]
 visible = false
 modulate = Color( 0.0313726, 1, 0.0235294, 1 )
+position = Vector2( 959.66, 539.977 )
+rotation = 1.5708
+scale = Vector2( 0.359688, 0.359688 )
+texture = ExtResource( 10 )
+
+[node name="MapIconEnemy" type="Sprite" parent="CanvasLayer"]
+visible = false
+modulate = Color( 0.831373, 0, 0, 1 )
 position = Vector2( 959.66, 539.977 )
 rotation = 1.5708
 scale = Vector2( 0.359688, 0.359688 )

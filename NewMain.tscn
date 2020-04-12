@@ -17,6 +17,8 @@ script = ExtResource( 2 )
 [node name="Bodies" type="Node2D" parent="Navigation2D"]
 
 [node name="Sun" parent="Navigation2D/Bodies" instance=ExtResource( 7 )]
+mass_multiplyer = 1.5
+_is_destructive = true
 
 [node name="Planet2" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
 position = Vector2( 5368, -2008 )
@@ -38,7 +40,7 @@ stream = ExtResource( 4 )
 volume_db = -21.204
 autoplay = true
 
-[node name="Fighter" parent="." instance=ExtResource( 6 )]
+[node name="Enemy" parent="." instance=ExtResource( 6 )]
 position = Vector2( 300, 300 )
 
 [node name="Freighter" parent="." instance=ExtResource( 5 )]
