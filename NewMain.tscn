@@ -42,6 +42,16 @@ autoplay = true
 
 [node name="Enemy" parent="." instance=ExtResource( 6 )]
 position = Vector2( 300, 300 )
+enemy_color = Color( 1, 0.027451, 0.027451, 1 )
 
 [node name="Freighter" parent="." instance=ExtResource( 5 )]
 position = Vector2( 600, 600 )
+ship_color = Color( 1, 0.027451, 0.027451, 1 )
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( -342.508, -243 )
+energy = 21.87
+range_height = 660.6
+range_item_cull_mask = 524288
+shadow_enabled = true
+shadow_item_cull_mask = 524288

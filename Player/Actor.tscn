@@ -32,6 +32,7 @@ extents = Vector2( 20.8575, 50.5637 )
 extents = Vector2( 79.7457, 95.166 )
 
 [node name="Actor" type="KinematicBody2D"]
+light_mask = 524288
 scale = Vector2( 0.25, 0.25 )
 script = ExtResource( 6 )
 speed = 1000
@@ -49,26 +50,31 @@ smoothing_speed = 10.0
 position = Vector2( -17.48, -19.6673 )
 
 [node name="DamageEngines" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -86.1864, 0.393127 )
 rotation = 1.5708
 shape = SubResource( 2 )
 
 [node name="DamageCargo" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -27.7472, 0.393127 )
 rotation = 1.5708
 shape = SubResource( 3 )
 
 [node name="DamageNose" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 69.616, 0 )
 rotation = 1.5708
 shape = SubResource( 4 )
 
 [node name="DamageWeapons" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 18.7523, 0 )
 rotation = 1.5708
 shape = SubResource( 5 )
 
 [node name="LandingGear" type="Area2D" parent="."]
+visible = false
 position = Vector2( -35.5891, 0.418701 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LandingGear"]
@@ -76,6 +82,7 @@ position = Vector2( -87.2675, 0 )
 shape = SubResource( 6 )
 
 [node name="ShipArea" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShipArea"]
 position = Vector2( 23.298, -2.51286 )

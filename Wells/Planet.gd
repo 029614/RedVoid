@@ -42,6 +42,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
     $RotateMe.rotation += orbit_velocity * delta
+    look_at(get_parent().get_node("Sun").get_global_position())
 
 func readyTakeOff():
     self._is_active_takeoff = true

@@ -8,6 +8,8 @@ onready var last_position = get_position()
 onready var fuel_gauge = $CanvasLayer/HUD/Vitals/FuelGauge
 onready var enemy = engine.get_node("Enemy")
 
+onready var sun = engine.get_node("Navigation2D/Bodies/Sun")
+
 var explosion = preload("res://Assets/Particles/Explosion.tscn")
 var projectile = preload("res://Assets/Particles/Projectile.tscn")
 
@@ -180,6 +182,7 @@ func _physics_process(delta):
             fuel += 10
             fuel = clamp(fuel, 0, fuel_cap)
             print("refueling - ", fuel/float(fuel_cap)*100)
+        
         
         #Heat shield
         if planet:

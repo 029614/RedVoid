@@ -46,11 +46,16 @@ var destination = Vector2(0, 0)
 var target_side = 0 #( <0 is left, >0 is right)
 var target_balance = 0 #( <0 is behind, >0 is in front)
 
+#properties
+var faction = null
+export (Color) var ship_color = Color(1,1,1,1)
+
 
 """Freighter Agent"""
 func _ready() -> void:
     acceleration = thrust/mass
     rads_per_sec = 6.283185*rps
+    $Sprite/Sprite.modulate = ship_color
 
 
 func get_gravity(delta):
