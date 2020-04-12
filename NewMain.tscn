@@ -15,6 +15,7 @@ script = ExtResource( 2 )
 
 [node name="Sun" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
 position = Vector2( 304, -712 )
+_is_destructive = true
 planet_color = Color( 1, 0.815686, 0.184314, 1 )
 
 [node name="Planet2" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]

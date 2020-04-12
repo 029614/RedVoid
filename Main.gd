@@ -4,15 +4,16 @@ onready var bodies = $Navigation2D/Bodies
 var target = preload("res://Target.tscn")
 var new_position = Vector2()
 var _move_camera = false
-var map_origin = Vector2(0,0)
-var map_limit = Vector2(20000,15000)
+var torpedo = preload("res://Assets/Particles/Projectile.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     #Global.connect("player_landed", self, "onPlanet")
+    Global.connect("torpedo_request", self, "issueTorpedo")
     Global.connect("request_planets", self, "sendPlanetPositions")
     Global.emit_signal("main_ready")
+    Global._play = true
     print("Main is ready")
 
 
@@ -37,3 +38,10 @@ func sendPlanetPositions():
     for body in bodies.get_children():
         pos.append(body.get_position())
     Global.emit_signal("send_planets", pos)
+
+func issueTorpedo(party):
+    var e = torpedo.instance()
+    add_child(e)
+    e.setVector(player.rotation, player.current_speed)
+    e.set_global_position(player.gun_coords.get_global_position())
+    #e.projectile_speed += current_speed

@@ -7,6 +7,9 @@ onready var engine = get_parent()
 onready var last_position = get_position()
 onready var fuel_gauge = $CanvasLayer/HUD/Vitals/FuelGauge
 
+var explosion = preload("res://Assets/Particles/Explosion.tscn")
+var projectile = preload("res://Assets/Particles/Projectile.tscn")
+
 #input and direction
 var velocity = Vector2()
 var rotation_dir = 0
@@ -22,6 +25,7 @@ export var fuel = 5000
 var fuel_cap = 5000
 var blink_speed = 5
 var red_alpha = 130
+onready var gun_coords = $GunCoords
 
 #Ship Components
 var fuel_tank_tier = 1 #1-3
@@ -64,6 +68,7 @@ func _ready():
     #Connecting signals and presetting flags
     Global.connect("player_landed", self, "land")
     Global.connect("player_arrival", self, "setupOrbit")
+    Global.connect("player_died", self, "destruct")
     Global._process_player_movement = true
     
     #Other start up related shit
@@ -71,7 +76,7 @@ func _ready():
     print("acceleration: ", acceleration)
 
 func get_input(delta):
-    
+        
     #Directional Inputs
     if _player_is_landed == false and _orbiting == false:
         rotation_dir = 0
@@ -84,9 +89,9 @@ func get_input(delta):
         if Input.is_action_pressed('ui_up') and fuel >= 0:
         
             #Changing the sprite to the one with engine plumes
-            $Sprite.hide()
-            $Flying.show()
-            $Flying.play()
+            if $Sprite/Particles2D.is_emitting() == false:
+                $Sprite/Particles2D.restart()
+                $Sprite/Particles2D.set_emitting(true)
             
             #Input Movements
             current_speed = velocity.length()
@@ -99,97 +104,105 @@ func get_input(delta):
         else:
             
             #Changing the sprite back to the one without engine plumes
-            $Sprite.show()
-            $Flying.hide()
+            $Sprite/Particles2D.set_emitting(false)
 
 func _physics_process(delta):
-    get_input(delta)
-    get_gravity(delta)
-    rotation += rotation_dir * rotation_speed * delta
-    if _orbiting == true:
-        global_position = orbital_pos.get_global_position()
-        look_at(planet.get_global_position())
-    
-    #For when you land on a planet
-    if Global._process_player_movement == true and _player_is_landed == true:
-        velocity = Vector2(lerp(velocity.x, 0, friction), lerp(velocity.y, 0, friction))
-        velocity = move_and_slide(velocity)
+    if Global._play == true:
+        get_input(delta)
+        get_gravity(delta)
+        rotation += rotation_dir * rotation_speed * delta
+        if _orbiting == true:
+            global_position = orbital_pos.get_global_position()
+            look_at(planet.get_global_position())
         
-    #For flying around normally
-    elif Global._process_player_movement == true and _player_is_landed == false:
-        velocity = move_and_slide(velocity)
-    
-    #Fuel Gauge
-    if _low_fuel == true:
-        if red_alpha == 50:
-            blink_speed = -5
-        elif red_alpha == 180:
-            blink_speed = 5
-        fuel_gauge.set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
-        fuel_gauge.get_node("Label").set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
-        red_alpha -= blink_speed
-    
-    #Map
-    if _map_view == true and $ChaseCamera.zoom <= Vector2(12,12):
-        if $ChaseCamera.zoom > Vector2(12,12):
-            $ChaseCamera.zoom = Vector2(12,12)
-        $ChaseCamera.zoom += Vector2(.2,.2)
-    elif _local_view == true and $ChaseCamera.zoom > zoom:
-        $ChaseCamera.zoom -= Vector2(.2,.2)
-    elif _local_view == true and $ChaseCamera.zoom == zoom:
-        _local_view = false
-    
-    if $ChaseCamera.zoom < Vector2(10,10):
-        $CanvasLayer/MapIcon.hide()
-    elif $ChaseCamera.zoom >= Vector2(10,10):
-        $CanvasLayer/MapIcon.show()
-    $CanvasLayer/MapIcon.set_global_rotation(get_global_rotation() + deg2rad(90))
-    
-    if _player_is_landed == true:
-        fuel += 10
-        fuel = clamp(fuel, 0, fuel_cap)
-        print("refueling - ", fuel/float(fuel_cap)*100)
-    
-    updateGauge()
-    
-    #Player Location
-    if global_position.x < engine.map_origin.x:
-        global_position.x += engine.map_limit.x
-    elif global_position.x > engine.map_limit.x:
-        global_position.x -= engine.map_limit.x
-    if global_position.y < engine.map_origin.y:
-        global_position.y += engine.map_limit.y
-    elif global_position.y > engine.map_limit.y:
-        global_position.y -= engine.map_limit.y
+        #For when you land on a planet
+        if Global._process_player_movement == true and _player_is_landed == true:
+            velocity = Vector2(lerp(velocity.x, 0, friction), lerp(velocity.y, 0, friction))
+            velocity = move_and_slide(velocity)
+            look_at(planet.global_position)
+            rotation += 3.14
+            
+        #For flying around normally
+        elif Global._process_player_movement == true and _player_is_landed == false:
+            velocity = move_and_slide(velocity)
+        
+        #Fuel Gauge
+        if _low_fuel == true:
+            if red_alpha == 50:
+                blink_speed = -5
+            elif red_alpha == 180:
+                blink_speed = 5
+            fuel_gauge.set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
+            fuel_gauge.get_node("Label").set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
+            red_alpha -= blink_speed
+        
+        #Map
+        if _map_view == true and $ChaseCamera.zoom <= Vector2(12,12):
+            if $ChaseCamera.zoom > Vector2(12,12):
+                $ChaseCamera.zoom = Vector2(12,12)
+            $ChaseCamera.zoom += Vector2(.2,.2)
+        elif _local_view == true and $ChaseCamera.zoom > zoom:
+            $ChaseCamera.zoom -= Vector2(.2,.2)
+        elif _local_view == true and $ChaseCamera.zoom == zoom:
+            _local_view = false
+        
+        if $ChaseCamera.zoom < Vector2(10,10):
+            $CanvasLayer/MapIcon.hide()
+        elif $ChaseCamera.zoom >= Vector2(10,10):
+            $CanvasLayer/MapIcon.show()
+        $CanvasLayer/MapIcon.set_global_rotation(get_global_rotation() + deg2rad(90))
+        
+        if _player_is_landed == true:
+            fuel += 10
+            fuel = clamp(fuel, 0, fuel_cap)
+            print("refueling - ", fuel/float(fuel_cap)*100)
+        
+        updateGauge()
+        
+        #Player Location
+        if global_position.x < Global.map_origin.x:
+            global_position.x += Global.map_limit.x
+        elif global_position.x > Global.map_limit.x:
+            global_position.x -= Global.map_limit.x
+        if global_position.y < Global.map_origin.y:
+            global_position.y += Global.map_limit.y
+        elif global_position.y > Global.map_limit.y:
+            global_position.y -= Global.map_limit.y
         
 
 func _input(event):
-    #Orbit
-    if Global._player_in_orbit == true and _orbiting == false and Input.is_action_just_pressed("orbit"):
-        orbit(orbit, planet)
-    elif _orbiting == true and Input.is_action_just_pressed("orbit"):
-        _orbiting = false
+    if Global._play == true:
+        
+        #Weapons
+        if _player_is_landed == false and Input.is_action_just_pressed("weapons"):
+            Global.emit_signal("torpedo_request", self)
     
-    #Lift Off
-    if _player_is_landed == true and Input.is_action_just_pressed("weapons"):
-        print("player launch")
-        velocity += Vector2(1, 0).rotated(rotation).normalized()*launch_speed
-        velocity = move_and_slide(velocity)
-        _player_is_landed = false
-    
-    #Camera Zoom
-    if Input.is_action_pressed("zoom_in") and _zoom_enabled == true:
-        $ChaseCamera.set_zoom(Vector2($ChaseCamera.get_zoom().x - .1, $ChaseCamera.get_zoom().y - .1))
-    if Input.is_action_pressed("zoom_out") and _zoom_enabled == true:
-        $ChaseCamera.set_zoom(Vector2($ChaseCamera.get_zoom().x + .1, $ChaseCamera.get_zoom().y + .1))
-    
-    #Map
-    if Input.is_action_just_pressed("map") and _map_view == false:
-        zoom = $ChaseCamera.zoom
-        _map_view = true
-    elif Input.is_action_just_pressed("map") and _map_view == true:
-        _map_view = false
-        _local_view = true
+        #Orbit
+        if Global._player_in_orbit == true and _orbiting == false and Input.is_action_just_pressed("orbit"):
+            orbit(orbit, planet)
+        elif _orbiting == true and Input.is_action_just_pressed("orbit"):
+            _orbiting = false
+        
+        #Lift Off
+        if _player_is_landed == true and Input.is_action_just_pressed("weapons"):
+            print("player launch")
+            velocity += Vector2(1, 0).rotated(rotation).normalized()*launch_speed
+            velocity = move_and_slide(velocity)
+            _player_is_landed = false
+        
+        #Camera Zoom
+        if Input.is_action_pressed("zoom_in") and _zoom_enabled == true:
+            $ChaseCamera.set_zoom(Vector2($ChaseCamera.get_zoom().x - .1, $ChaseCamera.get_zoom().y - .1))
+        if Input.is_action_pressed("zoom_out") and _zoom_enabled == true:
+            $ChaseCamera.set_zoom(Vector2($ChaseCamera.get_zoom().x + .1, $ChaseCamera.get_zoom().y + .1))
+        
+        #Map
+        if Input.is_action_just_pressed("map") and _map_view == false:
+            zoom = $ChaseCamera.zoom
+            _map_view = true
+        elif Input.is_action_just_pressed("map") and _map_view == true:
+            _map_view = false
+            _local_view = true
         
 
 func get_gravity(delta):
@@ -244,4 +257,13 @@ func updateGauge():
 
 func playerLog(string):
     pass
+
+func destruct():
+    $Sprite.hide()
+    var e = explosion.instance()
+    add_child(e)
+    e.get_node("Particles2D").set_emitting(true)
+
+
+    
 
