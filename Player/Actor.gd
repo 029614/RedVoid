@@ -40,6 +40,7 @@ var launch_speed = 100
 #physics
 var acceleration = 0
 var friction = 1
+var v_dir = Vector2()
 
 #speed managers
 export (int) var speed = 500
@@ -58,6 +59,7 @@ var _zoom_enabled = true
 var _map_view = false
 var _local_view = false
 var _player_is_landed = false
+var _heat_shield = false
 
 
 
@@ -156,6 +158,19 @@ func _physics_process(delta):
             fuel += 10
             fuel = clamp(fuel, 0, fuel_cap)
             print("refueling - ", fuel/float(fuel_cap)*100)
+        
+        #Heat shield
+        if planet:
+            if global_position.distance_to(planet.global_position) < 400 and current_speed > 150 and _heat_shield == false:
+                _heat_shield = true
+                $HeatShield/HeatShield2/Particles2D.set_emitting(true)
+            elif global_position.distance_to(planet.global_position) > 400 and _heat_shield == true or current_speed < 150 and _heat_shield == true:
+                _heat_shield = false
+                $HeatShield/HeatShield2/Particles2D.set_emitting(false)
+            else:
+                pass
+        if _heat_shield == true:
+            $HeatShield.look_at(velocity/delta) 
         
         updateGauge()
         
