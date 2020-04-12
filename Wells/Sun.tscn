@@ -1,29 +1,45 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Planets/PlanetSprite.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Wells/Sun.gd" type="Script" id=2]
-[ext_resource path="res://Assets/ring.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Planets/Planet1.png" type="Texture" id=4]
+[ext_resource path="res://Assets/launch/Target.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Planets/Sun.png" type="Texture" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 240.363
+radius = 357.373
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 3 ), null ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 245.384
+radius = 396.113
 
 [sub_resource type="CircleShape2D" id=4]
-radius = 483.743
+radius = 589.055
 
-[node name="Planet" type="Node2D"]
+[node name="Sun" type="Node2D"]
+position = Vector2( 304, -712 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_vertical_guides_": [ -100.148, 99.7619 ]
 }
+_is_destructive = true
 
 [node name="KinematicBody2D" type="KinematicBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
 shape = SubResource( 1 )
+
+[node name="Target" type="AnimatedSprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+frames = SubResource( 2 )
+frame = 1
+playing = true
 
 [node name="Landing" type="Area2D" parent="."]
 
@@ -55,33 +71,30 @@ texture = ExtResource( 4 )
 [node name="RotateMe" type="Node2D" parent="."]
 
 [node name="orbit1" type="Position2D" parent="RotateMe"]
-position = Vector2( 417.44, 0 )
+position = Vector2( 540.132, 9.08826 )
 
 [node name="orbit2" type="Position2D" parent="RotateMe"]
-position = Vector2( 6.10352e-05, -414.933 )
+position = Vector2( 2.27216, -558.074 )
 
 [node name="orbit3" type="Position2D" parent="RotateMe"]
-position = Vector2( -416.186, 0 )
+position = Vector2( -557.055, -4.54419 )
 
 [node name="orbit4" type="Position2D" parent="RotateMe"]
-position = Vector2( 0.658264, 414.279 )
+position = Vector2( 5.20245, 559.692 )
 
 [node name="orbit5" type="Position2D" parent="RotateMe"]
-position = Vector2( 313.557, -265.339 )
+position = Vector2( 404.44, -378.943 )
 
 [node name="orbit6" type="Position2D" parent="RotateMe"]
-position = Vector2( -293.467, -291.622 )
+position = Vector2( -391.166, -400.682 )
 
 [node name="orbit7" type="Position2D" parent="RotateMe"]
-position = Vector2( -326.008, 252.823 )
+position = Vector2( -414.619, 384.603 )
 
 [node name="orbit8" type="Position2D" parent="RotateMe"]
-position = Vector2( 319.815, 265.339 )
+position = Vector2( 451.595, 335.773 )
 
-[node name="FactionIndicator" type="Sprite" parent="."]
-modulate = Color( 1, 1, 1, 0.392157 )
-scale = Vector2( 1.20226, 1.20226 )
-texture = ExtResource( 3 )
+[node name="FactionIndicator" type="Node2D" parent="."]
 [connection signal="area_shape_entered" from="Landing" to="." method="_on_Landing_area_shape_entered"]
 [connection signal="body_entered" from="Arrival" to="." method="_on_Arrival_body_entered"]
 [connection signal="body_exited" from="Arrival" to="." method="_on_Arrival_body_exited"]

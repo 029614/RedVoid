@@ -247,7 +247,7 @@ func get_gravity(delta):
 func land(planet):
     _player_is_landed = true
     print("player is landed on: ", planet)
-    Global.emit_signal("capture_planet", Global.player_faction)
+    Global.emit_signal("capture_planet", Global.player_faction, planet)
 
 func setupOrbit(orbit_data, target):
     planet = target

@@ -23,7 +23,7 @@ var _play = false
 
 #Player info
 var player_faction = "69 69 Fuck yeah Awesome"
-var player_color = Color8(59,183,45,255)
+var player_color = Color8(59,183,45,125)
 
 #Faction info
 #Faction dictionary. Faction id:{Color:Faction Color, Name: Faction Name, _is_npc: Bool}

@@ -10,7 +10,6 @@ export var mass_multiplyer = .75
 export var _is_active_target = false
 export var _is_destructive = false
 var _is_active_takeoff = false
-export var planet_color = Color(255,255,255,255)
 export var orbit_velocity = .2
 var moon = false
 var ownership = null
@@ -30,9 +29,6 @@ func _ready() -> void:
     mass = pow((mass * self.get_scale().x), 2) * mass_multiplyer
     planet_radius = planet_radius * self.get_scale().x
     print(self.name, " Mass: ", mass, " Radius: ", planet_radius)
-    if _is_active_target == true:
-        $Target.show()
-    #$PlanetSprite.self_modulate = planet_color
     
     var lp = self.position
     var gp = self.global_position
@@ -65,10 +61,10 @@ func constructionHandler(construction):
         if construction == building.name:
             building.show()
 
-func capture(faction):
-    if ownership != faction:
+func capture(faction, planet):
+    if ownership != faction and planet == self:
         ownership = faction
-        $PlanetSprite.set_self_modulate(Global.player_color)
+        $FactionIndicator.set_modulate(Global.player_color)
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
     if area.get_parent() == player and _is_destructive == true:
