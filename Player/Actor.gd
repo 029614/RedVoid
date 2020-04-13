@@ -12,6 +12,7 @@ onready var sun = engine.get_node("Navigation2D/Bodies/Sun")
 
 var explosion = preload("res://Assets/Particles/Explosion.tscn")
 var projectile = preload("res://Assets/Particles/Projectile.tscn")
+var missile = preload("res://Assets/Ship/Weapons/Missile.tscn")
 
 #input and direction
 var velocity = Vector2()
@@ -65,6 +66,7 @@ var _local_view = false
 var _player_is_landed = false
 var _heat_shield = false
 var _after_burner = false
+var _weapon_select = "cannon" #Can be cannon, missile or bomb
 
 
 
@@ -81,6 +83,7 @@ func _ready():
     #Other start up related shit
     acceleration = thrust/mass
     print("acceleration: ", acceleration)
+    $Sprite/ShipAccent.modulate = Global.player_color
 
 func get_input(delta):
         
@@ -99,15 +102,18 @@ func get_input(delta):
                 speed_modifier = 10
                 $Sprite/AB1.set_emitting(true)
                 $Sprite/AB2.set_emitting(true)
+                $EngineSound.set_volume_db(6)
             elif _after_burner == false:
                 speed_modifier = 1
                 $Sprite/AB1.set_emitting(false)
                 $Sprite/AB2.set_emitting(false)
+                $EngineSound.set_volume_db(1)
         
             #Changing the sprite to the one with engine plumes
             if $Sprite/Particles2D.is_emitting() == false:
                 $Sprite/Particles2D.restart()
                 $Sprite/Particles2D.set_emitting(true)
+                $EngineSound.play()
             
             #Input Movements
             current_speed = velocity.length()
@@ -123,6 +129,7 @@ func get_input(delta):
             $Sprite/Particles2D.set_emitting(false)
             $Sprite/AB1.set_emitting(false)
             $Sprite/AB2.set_emitting(false)
+            $EngineSound.stop()
             _after_burner = false
 
 func _physics_process(delta):
@@ -161,9 +168,9 @@ func _physics_process(delta):
             $ChaseCamera.zoom += Vector2(.2,.2)
         elif _map_view == true and $ChaseCamera.zoom > Vector2(12,12):
             $ChaseCamera.zoom = Vector2(12,12)
-        elif _local_view == true and $ChaseCamera.zoom > Vector2(1.5,1.5):
+        elif _local_view == true and $ChaseCamera.zoom > Vector2(2,2):
             $ChaseCamera.zoom -= Vector2(.2,.2)
-        elif _local_view == true and $ChaseCamera.zoom == Vector2(1.5,1.5):
+        elif _local_view == true and $ChaseCamera.zoom == Vector2(2,2):
             _local_view = false
         
         if $ChaseCamera.zoom < Vector2(10,10):
@@ -215,7 +222,8 @@ func _input(event):
         
         #Weapons
         if _player_is_landed == false and Input.is_action_just_pressed("weapons"):
-            Global.emit_signal("torpedo_request", self)
+            #Global.emit_signal("torpedo_request", self)
+            fireControl()
     
         #Orbit
         if Global._player_in_orbit == true and _orbiting == false and Input.is_action_just_pressed("orbit"):
@@ -251,6 +259,13 @@ func _input(event):
         elif Input.is_action_just_released("AfterBurner"):
             _after_burner = false
         
+        #Weapon Select
+        if Input.is_action_just_pressed("cannon"):
+            weaponSelect(1)
+        if Input.is_action_just_pressed("missile"):
+            weaponSelect(2)
+        if Input.is_action_just_pressed("bomb"):
+            weaponSelect(3)
 
 func get_gravity(delta):
     for body in bodies.get_children():
@@ -310,6 +325,30 @@ func destruct():
     var e = explosion.instance()
     add_child(e)
     e.get_node("Particles2D").set_emitting(true)
+
+func fireControl():
+    if _weapon_select == "missile":
+        var m = missile.instance()
+        m.velocity = velocity
+        m.rotation = rotation
+        engine.add_child(m)
+
+func weaponSelect(select):
+    if select == 1:
+        _weapon_select = "cannon"
+        $CanvasLayer/HUD/Weapons/VBoxContainer/Missiles/Control.hide()
+        $CanvasLayer/HUD/Weapons/VBoxContainer/Bombs/Control.hide()
+        $CanvasLayer/HUD/Weapons/VBoxContainer/Guns/Control.show()
+    elif select == 2:
+        _weapon_select = "missile"
+        $CanvasLayer/HUD/Weapons/VBoxContainer/Missiles/Control.show()
+        $CanvasLayer/HUD/Weapons/VBoxContainer/Bombs/Control.hide()
+        $CanvasLayer/HUD/Weapons/VBoxContainer/Guns/Control.hide()
+    elif select == 3:
+        _weapon_select = "bomb"
+        $CanvasLayer/HUD/Weapons/VBoxContainer/Missiles/Control.hide()
+        $CanvasLayer/HUD/Weapons/VBoxContainer/Bombs/Control.show()
+        $CanvasLayer/HUD/Weapons/VBoxContainer/Guns/Control.hide()
 
 
     

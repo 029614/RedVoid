@@ -10,7 +10,7 @@ var origin = Vector2()
 var travel_distance = 0
 
 #Ship
-onready var thrust = 2000
+onready var thrust = 20000
 var mass = 10
 export var fuel = 250000
 
@@ -32,7 +32,7 @@ var rads_per_sec = 0
 
 #speed managers
 export (int) var speed = 500
-export (float) var rotation_speed = 2
+export (float) var rotation_speed = 1
 export (Color) var enemy_color = Color(1,1,1,1)
 var current_speed = 0
 var max_speed = 99999
@@ -58,7 +58,8 @@ var state = "patrol"
 func _ready() -> void:
     acceleration = thrust/mass
     rads_per_sec = 6.283185*rps
-    $Sprite/ShipAccent.modulate = enemy_color
+    #$Sprite/ShipAccent.modulate = enemy_color
+    #velocity = get_parent().velocity
     
 
 func get_gravity(delta):
@@ -97,10 +98,9 @@ func update_movement(delta):
     if fuel >= 0:
         
         #Changing the sprite to the one with engine plumes
-        if $Sprite/Particles2D.is_emitting() == false:
-            $Sprite/Particles2D.restart()
-            $Sprite/Particles2D.set_emitting(true)
-            $EngineSound.play()
+        if $Particles2D.is_emitting() == false:
+            $Particles2D.restart()
+            $Particles2D.set_emitting(true)
         
         #Input Movements
         current_speed = velocity.length()
@@ -112,10 +112,7 @@ func update_movement(delta):
     else:
         
         #Changing the sprite back to the one without engine plumes
-            $Sprite/Particles2D.set_emitting(false)
-            $Sprite/AB1.set_emitting(false)
-            $Sprite/AB2.set_emitting(false)
-            $EngineSound.stop()
+            $Particles2D.set_emitting(false)
 
 func draw_arrow(arrow, t, mp):
     var d = self.global_position.distance_to(t)
