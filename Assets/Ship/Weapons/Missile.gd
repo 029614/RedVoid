@@ -12,7 +12,7 @@ var travel_distance = 0
 #Ship
 onready var thrust = 20000
 var mass = 10
-export var fuel = 250000
+export var fuel = 200
 
 #Ship Components
 var fuel_tank_tier = 1 #1-3
@@ -27,12 +27,12 @@ var launch_speed = 100
 #physics
 var acceleration = 0
 var friction = 1
-var rps = 1
+var rps = .25
 var rads_per_sec = 0
 
 #speed managers
 export (int) var speed = 500
-export (float) var rotation_speed = 1
+export (float) var rotation_speed = .25
 export (Color) var enemy_color = Color(1,1,1,1)
 var current_speed = 0
 var max_speed = 99999
@@ -113,6 +113,7 @@ func update_movement(delta):
         
         #Changing the sprite back to the one without engine plumes
             $Particles2D.set_emitting(false)
+            self.queue_free()
 
 func draw_arrow(arrow, t, mp):
     var d = self.global_position.distance_to(t)

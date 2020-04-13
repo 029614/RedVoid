@@ -42,6 +42,7 @@ texture = ExtResource( 1 )
 offset = Vector2( 0.224365, 73.599 )
 
 [node name="Particles2D" parent="." instance=ExtResource( 4 )]
+emitting = false
 
 [node name="AB1" type="Particles2D" parent="."]
 show_behind_parent = true

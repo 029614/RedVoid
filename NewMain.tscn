@@ -4,7 +4,7 @@
 [ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://Wells/Planet.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Music/bensound-slowmotion.ogg" type="AudioStream" id=4]
-[ext_resource path="res://Assets/Ship/Freighter.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Faction/Faction.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Ship/Fighter.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Wells/Sun.tscn" type="PackedScene" id=7]
 
@@ -32,23 +32,19 @@ position = Vector2( -5320, 2736 )
 [node name="Planet5" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
 position = Vector2( -5128, -2880 )
 
-[node name="Actor" parent="." instance=ExtResource( 1 )]
-position = Vector2( -432, -256 )
+[node name="Faction" parent="." instance=ExtResource( 5 )]
+faction_color = Color( 0.00784314, 0.0901961, 0.984314, 1 )
+faction_name = "Player Faction"
 
-[node name="Enemy" parent="." instance=ExtResource( 6 )]
-position = Vector2( 300, 300 )
+[node name="Actor" parent="Faction" instance=ExtResource( 1 )]
+position = Vector2( 8390.1, 4230.84 )
 
-[node name="Freighter" parent="." instance=ExtResource( 5 )]
-position = Vector2( 600, 600 )
-ship_color = Color( 1, 0.027451, 0.027451, 1 )
+[node name="Faction2" parent="." instance=ExtResource( 5 )]
+faction_color = Color( 0.768627, 0, 0, 1 )
+faction_name = "Enemy Faction"
 
-[node name="Light2D" type="Light2D" parent="."]
-position = Vector2( -342.508, -243 )
-energy = 21.87
-range_height = 660.6
-range_item_cull_mask = 524288
-shadow_enabled = true
-shadow_item_cull_mask = 524288
+[node name="Enemy" parent="Faction2" instance=ExtResource( 6 )]
+position = Vector2( 9122.1, 4786.84 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )

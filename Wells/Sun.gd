@@ -1,7 +1,7 @@
 extends Node2D
 
-onready var player = get_parent().get_parent().get_parent().get_node("Actor")
-onready var freighter = get_parent().get_parent().get_parent().get_node("Freightor")
+onready var player = get_parent().get_parent().get_parent().get_node("Faction/Actor")
+onready var freighter = null #get_parent().get_parent().get_parent().get_node("Freightor")
 
 onready var mass =  planet_radius
 var planet_radius = randi()%150+50

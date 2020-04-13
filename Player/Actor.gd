@@ -2,11 +2,12 @@ extends KinematicBody2D
 
 
 """ -------- DECLARATION -------- """
-onready var bodies = get_parent().get_node("Navigation2D/Bodies")
-onready var engine = get_parent()
+onready var bodies = get_parent().get_parent().get_node("Navigation2D/Bodies")
+onready var engine = get_parent().get_parent()
+onready var faction = get_parent()
 onready var last_position = get_position()
 onready var fuel_gauge = $CanvasLayer/HUD/Vitals/FuelGauge
-onready var enemy = engine.get_node("Enemy")
+onready var enemy = engine.get_node("Faction2/Enemy")
 
 onready var sun = engine.get_node("Navigation2D/Bodies/Sun")
 
@@ -83,7 +84,7 @@ func _ready():
     #Other start up related shit
     acceleration = thrust/mass
     print("acceleration: ", acceleration)
-    $Sprite/ShipAccent.modulate = Global.player_color
+    $Sprite/ShipAccent.modulate = faction.faction_color
 
 func get_input(delta):
         
@@ -274,7 +275,7 @@ func get_gravity(delta):
 func land(planet):
     _player_is_landed = true
     print("player is landed on: ", planet)
-    Global.emit_signal("capture_planet", Global.player_faction, planet)
+    Global.emit_signal("capture_planet", faction, planet)
 
 func setupOrbit(orbit_data, target):
     planet = target

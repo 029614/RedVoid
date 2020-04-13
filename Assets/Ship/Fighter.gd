@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-onready var bodies = get_parent().get_node("Navigation2D/Bodies")
+onready var bodies = get_parent().get_parent().get_node("Navigation2D/Bodies")
 
 #input and direction
 var velocity = Vector2()
@@ -13,13 +13,6 @@ var travel_distance = 0
 onready var thrust = 2000
 var mass = 10
 export var fuel = 250000
-
-#Ship Components
-var fuel_tank_tier = 1 #1-3
-var engine_tier = 1 #1-3
-var shields_tier = 1 #0-3
-var cargo_tier = 0 #1-3
-var weapons_tier = 1 #0-3
 
 #launcher
 var launch_speed = 100
@@ -51,6 +44,16 @@ var target_balance = 0 #( <0 is behind, >0 is in front)
 #states
 var states = ["travel", "landing", "launching", "combat", "patrol", "docked"]
 var state = "patrol"
+var faction = null
+
+var state_dictionary = {
+    "entity": {
+        "is_fuel_low":false,
+        "is_ammo_low":false,
+        "is_missiles_low":false,
+        "is_bombs_low":false,
+       }
+   }
 
 
 
@@ -101,6 +104,7 @@ func update_movement(delta):
             $Sprite/Particles2D.restart()
             $Sprite/Particles2D.set_emitting(true)
             $EngineSound.play()
+            print($EngineSound.is_playing())
         
         #Input Movements
         current_speed = velocity.length()
@@ -130,8 +134,8 @@ func draw_arrow(arrow, t, mp):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-    target = get_node("/root/NewMain/Actor").global_position
-    var mp = get_parent().position #position of Main
+    target = get_parent().get_parent().get_node("Faction/Actor").global_position
+    var mp = get_parent().get_parent().position #position of Main
     var gt = get_gravity(delta)
     var g = gt[0] #gravity of all planets except target
     var tgrav = gt[1] #gravity of target

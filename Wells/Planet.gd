@@ -1,6 +1,6 @@
 extends Node2D
 
-onready var player = get_parent().get_parent().get_parent().get_node("Actor")
+onready var player = get_parent().get_parent().get_parent().get_node("Faction/Actor")
 onready var freighter = get_parent().get_parent().get_parent().get_node("Freightor")
 
 onready var mass =  planet_radius
@@ -65,7 +65,7 @@ func constructionHandler(construction):
 func capture(faction, planet):
     if ownership != faction and planet == self:
         ownership = faction
-        $FactionIndicator.set_modulate(Global.player_color)
+        $FactionIndicator.set_modulate(faction.faction_color)
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
     if area.get_parent() == player and _is_destructive == true:
