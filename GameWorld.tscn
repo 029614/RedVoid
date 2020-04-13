@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Faction/Faction.tscn" type="PackedScene" id=1]
+[ext_resource path="res://GameWorld.gd" type="Script" id=2]
+
+[node name="GameWorld" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Navigation2D" type="Navigation2D" parent="."]
+
+[node name="Bodies" type="Node" parent="Navigation2D"]
+
+[node name="Factions" type="Node" parent="Navigation2D"]
+
+[node name="Faction" parent="Navigation2D/Factions" instance=ExtResource( 1 )]

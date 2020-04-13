@@ -136,7 +136,7 @@ func get_input(delta):
 func _physics_process(delta):
     if Global._play == true:
         get_input(delta)
-        get_gravity(delta)
+        apply_gravity(delta)
         rotation += rotation_dir * rotation_speed * delta
         if _orbiting == true:
             global_position = orbital_pos.get_global_position()
@@ -268,7 +268,7 @@ func _input(event):
         if Input.is_action_just_pressed("bomb"):
             weaponSelect(3)
 
-func get_gravity(delta):
+func apply_gravity(delta):
     for body in bodies.get_children():
         velocity += ( body.mass / (body.position.distance_to(self.position)) * self.position.direction_to(body.position) ) * delta
 
@@ -350,6 +350,114 @@ func weaponSelect(select):
         $CanvasLayer/HUD/Weapons/VBoxContainer/Missiles/Control.hide()
         $CanvasLayer/HUD/Weapons/VBoxContainer/Bombs/Control.show()
         $CanvasLayer/HUD/Weapons/VBoxContainer/Guns/Control.hide()
+
+
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Getters and Setters @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+# movement ------------------------------------------
+func set_max_speed(new_max_speed: int):
+    pass
+
+func get_max_speed():
+    pass
+
+func get_current_speed():
+    pass
+
+func get_acceleration():
+    pass
+
+func set_thrust(new_thrust: float):
+    pass
+
+func get_thrust():
+    pass
+
+func set_mass(new_mass: int):
+    pass
+
+func get_mass():
+    pass
+
+func get_gravity():
+    pass
+
+func get_velocity():
+    pass
+
+
+
+#Consumables ------------------------------------------------
+func set_cannon_ammo(ammo: int):
+    pass
+
+func get_cannon_ammo():
+    pass
+
+func set_cannon_ammo_max(max_ammo: int):
+    pass
+
+func get_cannon_ammo_max():
+    pass
+
+
+
+func set_missile_count(count: int):
+    pass
+
+func get_missile_count():
+    pass
+
+func set_missile_count_max(max_count: int):
+    pass
+
+func get_missile_count_max():
+    pass
+
+
+
+func set_bomb_count(count: int):
+    pass
+
+func get_bomb_count():
+    pass
+
+func set_bomb_count_max(max_count: int):
+    pass
+
+func get_bomb_count_max():
+    pass
+
+
+
+#Vitals ------------------------------------------------
+func set_shields(shields: int):
+    pass
+
+func get_shields():
+    pass
+
+func set_max_shields(max_shields: int):
+    pass
+
+func get_max_shields():
+    pass
+
+
+
+func set_fuel(fuel: int):
+    pass
+
+func get_fuel():
+    pass
+
+func set_max_fuel(max_fuel: int):
+    pass
+
+func get_max_fuel():
+    pass
 
 
     

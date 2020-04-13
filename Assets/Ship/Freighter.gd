@@ -58,7 +58,7 @@ func _ready() -> void:
     $Sprite/Sprite.modulate = ship_color
 
 
-func get_gravity(delta):
+func apply_gravity(delta):
     var g = Vector2(0,0)
     var t = Vector2(0,0)
     for body in bodies.get_children():
@@ -127,7 +127,7 @@ func draw_arrow(arrow, t, mp):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
     var mp = get_parent().position #position of Main
-    var gt = get_gravity(delta)
+    var gt = apply_gravity(delta)
     var g = gt[0] #gravity of all planets except target
     var tgrav = gt[1] #gravity of target
     var d = self.global_position.direction_to(target) #direction to target
@@ -180,4 +180,111 @@ func runFrom(body):
 
 # Pathfinding
 func calculatePath(origin, target):
+    pass
+
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Getters and Setters @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+# movement ------------------------------------------
+func set_max_speed(new_max_speed: int):
+    pass
+
+func get_max_speed():
+    pass
+
+func get_current_speed():
+    pass
+
+func get_acceleration():
+    pass
+
+func set_thrust(new_thrust: float):
+    pass
+
+func get_thrust():
+    pass
+
+func set_mass(new_mass: int):
+    pass
+
+func get_mass():
+    pass
+
+func get_gravity():
+    pass
+
+func get_velocity():
+    pass
+
+
+
+#Consumables ------------------------------------------------
+func set_cannon_ammo(ammo: int):
+    pass
+
+func get_cannon_ammo():
+    pass
+
+func set_cannon_ammo_max(max_ammo: int):
+    pass
+
+func get_cannon_ammo_max():
+    pass
+
+
+
+func set_missile_count(count: int):
+    pass
+
+func get_missile_count():
+    pass
+
+func set_missile_count_max(max_count: int):
+    pass
+
+func get_missile_count_max():
+    pass
+
+
+
+func set_bomb_count(count: int):
+    pass
+
+func get_bomb_count():
+    pass
+
+func set_bomb_count_max(max_count: int):
+    pass
+
+func get_bomb_count_max():
+    pass
+
+
+
+#Vitals ------------------------------------------------
+func set_shields(shields: int):
+    pass
+
+func get_shields():
+    pass
+
+func set_max_shields(max_shields: int):
+    pass
+
+func get_max_shields():
+    pass
+
+
+
+func set_fuel(fuel: int):
+    pass
+
+func get_fuel():
+    pass
+
+func set_max_fuel(max_fuel: int):
+    pass
+
+func get_max_fuel():
     pass

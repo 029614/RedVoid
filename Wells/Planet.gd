@@ -25,7 +25,6 @@ func _ready() -> void:
     var normal_scale = Vector2(1/get_scale().x, 1/get_scale().y)
     $Planet.set_scale(normal_scale)
     $Planet.set_position($Planet.get_position()*normal_scale)
-    reName(name)
     mass = pow((mass * self.get_scale().x), 2) * mass_multiplyer
     planet_radius = planet_radius * self.get_scale().x
     print(self.name, " Mass: ", mass, " Radius: ", planet_radius)
@@ -53,14 +52,6 @@ func readyTakeOff():
 func takeOff():
     $KinematicBody2D.show()
     $Area2D/CollisionShape2D.set_disabled(false)
-
-func reName(new_name):
-    $Planet.set_text(new_name)
-
-func constructionHandler(construction):
-    for building in $Constructions.get_children():
-        if construction == building.name:
-            building.show()
 
 func capture(faction, planet):
     if ownership != faction and planet == self:
@@ -90,4 +81,38 @@ func _on_Arrival_body_exited(body):
         Global._player_in_orbit = false
     if body == freighter:
         pass
+
+
+
+# Getters and Setters
+
+func set_planet_name(new_name):
+    pass
+
+func get_planet_name():
+    pass
+
+
+
+func set_planet_faction(new_faction):
+    pass
+
+func get_planet_faction():
+    pass
+
+
+
+func set_destructible(value):
+    pass
+
+func get_destructible():
+    pass
+
+
+
+func set_planet_color(color):
+    pass
+
+func get_planet_color():
+    pass
 

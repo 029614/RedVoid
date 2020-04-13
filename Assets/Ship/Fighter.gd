@@ -8,11 +8,13 @@ var rotation_dir = 0
 var target = null
 var origin = Vector2()
 var travel_distance = 0
+var static_velocity
 
 #Ship
 onready var thrust = 2000
 var mass = 10
 export var fuel = 250000
+export var max_fuel = 250000
 
 #launcher
 var launch_speed = 100
@@ -64,7 +66,7 @@ func _ready() -> void:
     $Sprite/ShipAccent.modulate = enemy_color
     
 
-func get_gravity(delta):
+func apply_gravity(delta):
     var g = Vector2(0,0)
     var t = Vector2(0,0)
     for body in bodies.get_children():
@@ -136,7 +138,7 @@ func draw_arrow(arrow, t, mp):
 func _physics_process(delta: float) -> void:
     target = get_parent().get_parent().get_node("Faction/Actor").global_position
     var mp = get_parent().get_parent().position #position of Main
-    var gt = get_gravity(delta)
+    var gt = apply_gravity(delta)
     var g = gt[0] #gravity of all planets except target
     var tgrav = gt[1] #gravity of target
     var d = self.global_position.direction_to(target) #direction to target
@@ -178,6 +180,7 @@ func _physics_process(delta: float) -> void:
     #self.look_at(lookat)
     velocity += (g+tgrav) * delta
     update_movement(delta)
+    static_velocity = velocity/delta
     velocity = move_and_slide(velocity)
 
 
@@ -198,3 +201,114 @@ func runFrom(body):
 # Pathfinding
 func calculatePath(origin, target):
     pass
+
+
+
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Getters and Setters @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+# movement ------------------------------------------
+func set_max_speed(new_max_speed: int):
+    max_speed = new_max_speed
+
+func get_max_speed():
+    return max_speed
+
+func get_current_speed():
+    return current_speed
+
+func get_acceleration():
+    return acceleration
+
+func set_thrust(new_thrust: float):
+    thrust = new_thrust
+    acceleration = thrust/mass
+
+func get_thrust():
+    return thrust
+
+func set_mass(new_mass: int):
+    mass = new_mass
+    acceleration = thrust/mass
+
+func get_mass():
+    return mass
+
+func get_gravity():
+    pass
+
+func get_velocity():
+    return static_velocity
+
+
+
+#Consumables ------------------------------------------------
+func set_cannon_ammo(ammo: int):
+    pass
+
+func get_cannon_ammo():
+    pass
+
+func set_cannon_ammo_max(max_ammo: int):
+    pass
+
+func get_cannon_ammo_max():
+    pass
+
+
+
+func set_missile_count(count: int):
+    pass
+
+func get_missile_count():
+    pass
+
+func set_missile_count_max(max_count: int):
+    pass
+
+func get_missile_count_max():
+    pass
+
+
+
+func set_bomb_count(count: int):
+    pass
+
+func get_bomb_count():
+    pass
+
+func set_bomb_count_max(max_count: int):
+    pass
+
+func get_bomb_count_max():
+    pass
+
+
+
+#Vitals ------------------------------------------------
+func set_shields(shields: int):
+    pass
+
+func get_shields():
+    pass
+
+func set_max_shields(max_shields: int):
+    pass
+
+func get_max_shields():
+    pass
+
+
+
+func set_fuel(new_fuel: int):
+    fuel = new_fuel
+
+func get_fuel():
+    return fuel
+
+func set_max_fuel(new_max_fuel: int):
+    max_fuel = new_max_fuel
+
+func get_max_fuel():
+    return max_fuel

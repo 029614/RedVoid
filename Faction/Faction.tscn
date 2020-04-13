@@ -4,3 +4,7 @@
 
 [node name="Faction" type="Node"]
 script = ExtResource( 1 )
+
+[node name="Fighters" type="Node" parent="."]
+
+[node name="Freighters" type="Node" parent="."]

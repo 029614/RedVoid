@@ -42,6 +42,11 @@ var number_of_planets = 0
 var number_of_factions = 0
 
 
+#Global References
+var HUD = null
+var world = null
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
