@@ -80,4 +80,4 @@ position = Vector2( 104.527, 0 )
 
 [node name="EngineSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 2 )
-volume_db = 2.019
+volume_db = -5.9

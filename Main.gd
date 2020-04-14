@@ -1,5 +1,5 @@
 extends Node2D
-onready var player = $Actor
+onready var player = $Faction/Actor
 onready var bodies = $Navigation2D/Bodies
 var target = preload("res://Target.tscn")
 var new_position = Vector2()
@@ -15,6 +15,8 @@ func _ready() -> void:
     Global.emit_signal("main_ready")
     Global._play = true
     print("Main is ready")
+    Global.world = self
+    print(Global.world)
     
     #$Freighter.goTo(bodies.get_node("Planet5"))
 
@@ -27,6 +29,12 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
     if Input.is_action_just_pressed("Quit"):
         get_tree().quit()
+    if Input.is_action_just_pressed("compose_message"):
+        if $Faction/Actor/CanvasLayer/HUD.get_focus_owner() == $Faction/Actor/CanvasLayer/HUD/ReadOut/LineInput:
+            pass
+        else:
+            $Faction/Actor/CanvasLayer/HUD/ReadOut/LineInput.grab_focus()
+            $Faction/Actor/CanvasLayer/HUD/ReadOut/LineInput.set_text("")
 
 func placeTarg(loc, title):
     var t = target.instance()
@@ -47,3 +55,10 @@ func issueTorpedo(party):
     e.setVector(player.rotation, player.current_speed)
     e.set_global_position(player.gun_coords.get_global_position())
     #e.projectile_speed += current_speed
+    
+func command(command):
+    if command == "/restart":
+        get_tree().reload_current_scene()
+        return
+    if command == "/refuel":
+        player.fuel = player.fuel_cap

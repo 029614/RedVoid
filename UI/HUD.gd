@@ -84,7 +84,11 @@ func get_shields():
 
 #adds a message to the message panel
 func set_message(message):
-    pass
+    var l = Label.new()
+    l.set_text(message)
+    l.set_custom_minimum_size(Vector2(530, 0))
+    l.set_autowrap(true)
+    $ReadOut/ScrollContainer/VBoxContainer.add_child(l)
 
 #returns a list of all messages
 func get_messages():
@@ -101,3 +105,17 @@ func get_warnings():
 
 
 
+
+
+func _on_LineInput_text_entered(new_text: String) -> void:
+    if new_text.begins_with("/"):
+        Global.world.command(new_text)
+        $ReadOut/LineInput.clear()
+        $ReadOut/LineInput.set_focus_mode(0)
+        $ReadOut/LineInput.set_focus_mode(1)
+    else:
+        var t = "Player: " + new_text
+        set_message(t)
+        $ReadOut/LineInput.clear()
+        $ReadOut/LineInput.set_focus_mode(0)
+        $ReadOut/LineInput.set_focus_mode(1)

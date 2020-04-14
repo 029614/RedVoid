@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Assets/HUD.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Fonts/standardFont.tres" type="DynamicFont" id=2]
@@ -20,6 +20,9 @@ Label/constants/shadow_offset_y = 1
 Label/fonts/font = null
 Label/styles/normal = null
 
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.258824, 0.556863, 0.160784, 0.298039 )
+
 [sub_resource type="DynamicFontData" id=2]
 font_path = "res://Assets/Fonts/SourceCodePro-Black.ttf"
 
@@ -38,7 +41,10 @@ Label/constants/shadow_offset_y = 1
 Label/fonts/font = SubResource( 3 )
 Label/styles/normal = null
 
-[sub_resource type="SpriteFrames" id=5]
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.258824, 0.556863, 0.160784, 0.298039 )
+
+[sub_resource type="SpriteFrames" id=6]
 animations = [ {
 "frames": [ ExtResource( 6 ), ExtResource( 7 ) ],
 "loop": true,
@@ -46,7 +52,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.901961, 0.905882, 0.27451, 0.333333 )
 
 [node name="HUD" type="Control"]
@@ -65,6 +71,9 @@ anchor_bottom = 1.0
 margin_top = -392.0
 texture = ExtResource( 1 )
 expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ReadOut" type="Control" parent="."]
 anchor_left = 0.5
@@ -79,37 +88,32 @@ margin_bottom = -144.0
 [node name="ScrollContainer" type="ScrollContainer" parent="ReadOut"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = -67.0
+margin_bottom = 80.0
+custom_styles/bg = SubResource( 8 )
 scroll_horizontal_enabled = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ReadOut/ScrollContainer"]
-margin_right = 348.0
+margin_right = 520.0
 margin_bottom = 26.0
 theme = SubResource( 4 )
 alignment = 2
 
 [node name="Label" type="Label" parent="ReadOut/ScrollContainer/VBoxContainer"]
-margin_right = 348.0
+margin_right = 520.0
 margin_bottom = 26.0
+rect_min_size = Vector2( 520, 0 )
 text = "Welcome to Gravity Well Redux"
+autowrap = true
 
-[node name="PanelLeft" type="Control" parent="."]
-margin_left = 8.0
-margin_top = 944.0
-margin_right = 640.0
-margin_bottom = 1072.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Reset" type="Button" parent="PanelLeft"]
-margin_left = 472.0
-margin_top = 88.0
+[node name="LineInput" type="LineEdit" parent="ReadOut"]
+margin_top = 216.0
 margin_right = 592.0
-margin_bottom = 120.0
-text = "Reset"
+margin_bottom = 260.0
+custom_styles/normal = SubResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -141,8 +145,7 @@ text = "Missile Alert"
 
 [node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Missile"]
 position = Vector2( 192, 16 )
-frames = SubResource( 5 )
-frame = 1
+frames = SubResource( 6 )
 playing = true
 
 [node name="Radar" type="Button" parent="PanelRight/VBoxContainer"]
@@ -153,7 +156,8 @@ text = "Radar Lock"
 
 [node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Radar"]
 position = Vector2( 192, 16 )
-frames = SubResource( 5 )
+frames = SubResource( 6 )
+frame = 1
 playing = true
 
 [node name="Vitals" type="Control" parent="."]
@@ -222,7 +226,7 @@ valign = 1
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 28.0
-custom_styles/panel = SubResource( 6 )
+custom_styles/panel = SubResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -257,7 +261,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 28.0
-custom_styles/panel = SubResource( 6 )
+custom_styles/panel = SubResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -289,7 +293,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 28.0
-custom_styles/panel = SubResource( 6 )
+custom_styles/panel = SubResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -331,3 +335,22 @@ text = "Shields: 100%"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Warning" type="Control" parent="."]
+margin_left = 848.0
+margin_top = 944.0
+margin_right = 1088.0
+margin_bottom = 1064.0
+
+[node name="CenterContainer" type="CenterContainer" parent="Warning"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="Warning/CenterContainer"]
+margin_left = 12.0
+margin_top = 47.0
+margin_right = 228.0
+margin_bottom = 73.0
+custom_colors/font_color = Color( 0.494118, 1, 0.266667, 0.752941 )
+text = "All Systems Normal"
+[connection signal="text_entered" from="ReadOut/LineInput" to="." method="_on_LineInput_text_entered"]
