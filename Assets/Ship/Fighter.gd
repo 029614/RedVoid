@@ -8,11 +8,15 @@ var rotation_dir = 0
 var target = null
 var origin = Vector2()
 var travel_distance = 0
-var static_velocity
+
+var static_velocity # velocity/delta
+var current_gravity 
 
 #Ship
+
 onready var thrust = 2000
 var mass = 10
+
 export var fuel = 250000
 export var max_fuel = 250000
 
@@ -26,8 +30,8 @@ var rps = 1
 var rads_per_sec = 0
 
 #speed managers
-export (int) var speed = 500
-export (float) var rotation_speed = 2
+#export (int) var speed = 500
+#export (float) var rotation_speed = 2
 export (Color) var enemy_color = Color(1,1,1,1)
 var current_speed = 0
 var max_speed = 99999
@@ -48,15 +52,6 @@ var states = ["travel", "landing", "launching", "combat", "patrol", "docked"]
 var state = "patrol"
 var faction = null
 
-var state_dictionary = {
-    "entity": {
-        "is_fuel_low":false,
-        "is_ammo_low":false,
-        "is_missiles_low":false,
-        "is_bombs_low":false,
-       }
-   }
-
 
 
 """Fighter Agent"""
@@ -74,6 +69,7 @@ func apply_gravity(delta):
             t = ( body.mass / (body.global_position.distance_to(self.global_position)) * self.global_position.direction_to(body.global_position) )
         else:
             g += ( body.mass / (body.global_position.distance_to(self.global_position)) * self.global_position.direction_to(body.global_position) )
+    current_gravity = g
     return [g, t]
 
 
@@ -104,7 +100,6 @@ func update_movement(delta):
         #Changing the sprite to the one with engine plumes
         if $AlienFighterSprite/Particles2D.is_emitting() == false:
             $AlienFighterSprite/Particles2D.restart()
-            $AlienFighterSprite/Particles2D.set_emitting(true)
             $EngineSound.play()
             print($EngineSound.is_playing())
         
@@ -179,8 +174,8 @@ func _physics_process(delta: float) -> void:
     
     #self.look_at(lookat)
     velocity += (g+tgrav) * delta
-    update_movement(delta)
     static_velocity = velocity/delta
+    update_movement(delta)
     velocity = move_and_slide(velocity)
 
 
@@ -206,109 +201,5 @@ func calculatePath(origin, target):
 
 
 
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Getters and Setters @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-# movement ------------------------------------------
-func set_max_speed(new_max_speed: int):
-    max_speed = new_max_speed
-
-func get_max_speed():
-    return max_speed
-
-func get_current_speed():
-    return current_speed
-
-func get_acceleration():
-    return acceleration
-
-func set_thrust(new_thrust: float):
-    thrust = new_thrust
-    acceleration = thrust/mass
-
-func get_thrust():
-    return thrust
-
-func set_mass(new_mass: int):
-    mass = new_mass
-    acceleration = thrust/mass
-
-func get_mass():
-    return mass
-
-func get_gravity():
-    pass
-
-func get_velocity():
-    return static_velocity
 
 
-
-#Consumables ------------------------------------------------
-func set_cannon_ammo(ammo: int):
-    pass
-
-func get_cannon_ammo():
-    pass
-
-func set_cannon_ammo_max(max_ammo: int):
-    pass
-
-func get_cannon_ammo_max():
-    pass
-
-
-
-func set_missile_count(count: int):
-    pass
-
-func get_missile_count():
-    pass
-
-func set_missile_count_max(max_count: int):
-    pass
-
-func get_missile_count_max():
-    pass
-
-
-
-func set_bomb_count(count: int):
-    pass
-
-func get_bomb_count():
-    pass
-
-func set_bomb_count_max(max_count: int):
-    pass
-
-func get_bomb_count_max():
-    pass
-
-
-
-#Vitals ------------------------------------------------
-func set_shields(shields: int):
-    pass
-
-func get_shields():
-    pass
-
-func set_max_shields(max_shields: int):
-    pass
-
-func get_max_shields():
-    pass
-
-
-
-func set_fuel(new_fuel: int):
-    fuel = new_fuel
-
-func get_fuel():
-    return fuel
-
-func set_max_fuel(new_max_fuel: int):
-    max_fuel = new_max_fuel
-
-func get_max_fuel():
-    return max_fuel
