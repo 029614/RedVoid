@@ -63,7 +63,7 @@ var state_dictionary = {
 func _ready() -> void:
     acceleration = thrust/mass
     rads_per_sec = 6.283185*rps
-    $Sprite/ShipAccent.modulate = enemy_color
+    $AlienFighterSprite/ShipAccent.modulate = enemy_color
     
 
 func apply_gravity(delta):
@@ -102,9 +102,9 @@ func update_movement(delta):
     if fuel >= 0:
         
         #Changing the sprite to the one with engine plumes
-        if $Sprite/Particles2D.is_emitting() == false:
-            $Sprite/Particles2D.restart()
-            $Sprite/Particles2D.set_emitting(true)
+        if $AlienFighterSprite/Particles2D.is_emitting() == false:
+            $AlienFighterSprite/Particles2D.restart()
+            $AlienFighterSprite/Particles2D.set_emitting(true)
             $EngineSound.play()
             print($EngineSound.is_playing())
         

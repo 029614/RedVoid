@@ -146,6 +146,7 @@ text = "Missile Alert"
 [node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Missile"]
 position = Vector2( 192, 16 )
 frames = SubResource( 6 )
+frame = 1
 playing = true
 
 [node name="Radar" type="Button" parent="PanelRight/VBoxContainer"]
@@ -157,7 +158,6 @@ text = "Radar Lock"
 [node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Radar"]
 position = Vector2( 192, 16 )
 frames = SubResource( 6 )
-frame = 1
 playing = true
 
 [node name="Vitals" type="Control" parent="."]
