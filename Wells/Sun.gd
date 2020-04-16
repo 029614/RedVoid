@@ -15,6 +15,7 @@ export var orbit_velocity = .2
 var moon = false
 var ownership = null
 var orbit_assignment
+var velocity = Vector2(0,0)
 onready var orbit = {$RotateMe/orbit1: false, $RotateMe/orbit2: false, $RotateMe/orbit3: false, $RotateMe/orbit4: false, $RotateMe/orbit5: false, $RotateMe/orbit6: false, $RotateMe/orbit7: false, $RotateMe/orbit8: false}
 
 

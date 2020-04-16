@@ -171,7 +171,7 @@ func _physics_process(delta):
         if _player_is_landed == true:
             fuel += 10
             fuel = clamp(fuel, 0, fuel_cap)
-            print("refueling - ", fuel/float(fuel_cap)*100)
+            #print("refueling - ", fuel/float(fuel_cap)*100)
         
         #Heat shield
         if planet:

@@ -16,7 +16,7 @@ script = ExtResource( 2 )
 [node name="Bodies" type="Node2D" parent="Navigation2D"]
 
 [node name="Sun" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
-position = Vector2( 304, -712 )
+position = Vector2( -3098.45, -1206.9 )
 _is_destructive = true
 planet_color = Color( 1, 0.815686, 0.184314, 1 )
 
@@ -30,10 +30,10 @@ position = Vector2( 5152, 2960 )
 position = Vector2( -5320, 2736 )
 
 [node name="Planet5" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
-position = Vector2( -5128, -2880 )
+position = Vector2( -5643.52, 233.753 )
 
 [node name="Actor" parent="." instance=ExtResource( 1 )]
-position = Vector2( -432, -256 )
+position = Vector2( -803.174, 1063.74 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
@@ -41,7 +41,7 @@ volume_db = -21.204
 autoplay = true
 
 [node name="Fighter" parent="." instance=ExtResource( 6 )]
-position = Vector2( 300, 300 )
+position = Vector2( -854.77, 650.555 )
 
 [node name="Freighter" parent="." instance=ExtResource( 5 )]
-position = Vector2( 600, 600 )
+position = Vector2( -1173.4, 764.968 )

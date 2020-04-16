@@ -43,6 +43,20 @@ var number_of_factions = 0
 
 
 
+func time_of_flight(velocity,distance,acceleration): #all values are floats
+    return (sqrt(velocity*velocity+2*acceleration*distance) - velocity) / acceleration
+
+func time_to_decelerate(velocity,acceleration): #all values are floats
+    return velocity/float(acceleration)
+
+
+func average(a):
+    var s = 0.0
+    for i in a:
+        s+=i
+    s=s/a.size()
+    return s
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     pass

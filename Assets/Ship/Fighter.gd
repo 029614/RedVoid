@@ -48,8 +48,22 @@ var target_side = 0 #( <0 is left, >0 is right)
 var target_balance = 0 #( <0 is behind, >0 is in front)
 
 #states
-var states = ["travel", "landing", "launching", "combat", "patrol", "docked"]
+var states = ["travel", "landing", "launching", "combat", "patrol", "docked", "decelerating", "accelerating"]
 var state = "patrol"
+
+
+#pid
+var past_error = [0,0,0,0,0]
+var integral_step = 0.1
+var integral_timer = null
+var process_variable = Vector2(1,0)
+var kI = 0
+var I = .02 
+var maxI = .5 
+var P = 2.75 
+var D = 1.75 
+var do_pid=1
+var lookat = Vector2(1, 0)
 
 
 
@@ -57,6 +71,13 @@ var state = "patrol"
 func _ready() -> void:
     acceleration = thrust/mass
     rads_per_sec = 6.283185*rps
+    
+    integral_timer = Timer.new()
+    add_child(integral_timer)
+    integral_timer.connect("timeout",self,"_integral_timer_timeout")
+    integral_timer.set_timer_process_mode(0)
+    integral_timer.set_one_shot(false)
+    integral_timer.start(integral_step)
     
 
 func get_gravity(delta):
@@ -111,6 +132,88 @@ func update_movement(delta):
         $Sprite.show()
         $Flying.hide()
 
+
+func pid_proportion(K, error=0):
+    return (error*K)
+
+func pid_integral(K, error):
+    
+    return (K*error) 
+
+func pid_derivative(delta, error):
+    pass
+
+func average(a):
+    var s = 0.0
+    for i in a:
+        s+=i
+    s=s/a.size()
+    return s
+        
+
+
+func _integral_timer_timeout():
+    do_pid=1
+
+func pid(delta):
+    
+    var sp = (target).angle_to_point(self.global_position) #setpoint (desired normalized velocity vector, or angle)
+    #var pv = process_variable.angle() #process variable angle
+    var v = velocity.normalized()
+    var td = self.global_position.distance_to(target)
+    var pv = (global_position+v*td).angle_to_point(self.global_position)
+    
+    var d = self.global_position.direction_to(target) #direction to target
+    
+    
+    var error = wrapf(sp-pv, -3.14159265, 3.14159265)
+    
+    var pD=P*error
+    kI = kI+error
+    var kI2 = clamp(kI*I, -maxI, maxI)
+    var kD = D * (past_error[0] - error)
+    #var kD = D * 0
+    past_error.pop_back()
+    past_error.push_front(error)
+    
+    var total = clamp(pD+kI2+kD, -3.12, 3.12)
+    var r = v.rotated(total)
+    var rot = Vector2(1, 0).rotated(rotation).normalized()
+    #target_balance = rot.dot((target-self.global_position).normalized()) 
+    #target_side = rot.rotated(deg2rad(90)).dot((target-self.global_position).normalized()) 
+    
+    
+    #var RvF = 2 * (d.dot(process_variable)) * d - process_variable #process_variable mirrored across the line that is between the target and the ship
+
+    
+    #var current_trajectory = global_position.angle_to_point(global_position+velocity.normalized()*td)
+    
+    var velocity_balance = process_variable.normalized().dot((target-self.global_position).normalized()) 
+    lookat = self.global_position + r*td
+    if velocity_balance <= 0.0:
+        lookat = target
+        kI = 0
+        kD = 0
+        
+    var lookat_balance = rot.dot((lookat-self.global_position).normalized()) 
+    var lookat_side = rot.rotated(deg2rad(90)).dot((lookat-self.global_position).normalized()) 
+    
+    if lookat_balance < .999: #target is not directly in front of ship
+        if lookat_side < 0: #target is on left
+            var ramt = rads_per_sec*delta*-1
+            print("Rotate left: ", ramt)
+            #rotate(clamp(rads_per_sec*delta*-1, -1*abs(r), abs(r)))
+            rotate(ramt)
+        elif lookat_side > 0: #target is on right
+            var ramt = rads_per_sec*delta
+            #rotate(clamp(rads_per_sec*delta, -1*abs(r), abs(r)))
+            print("Rotate right: ", ramt)
+            rotate(rads_per_sec*delta)
+            #rotate(rads_per_sec*delta)
+    
+    print( " sp: ",sp, " pv: ",pv, " error: ", error, " pD: ",pD," kI: ",kI, " kI2: ",kI2, " kD: ",kD, " total: ",total, " r: ",r," rot: ",rotation, " look: ",lookat, " target: ",target)
+
+
 func draw_arrow(arrow, t, mp):
     var d = self.global_position.distance_to(t)
     var v = self.global_position.direction_to(t)
@@ -129,43 +232,13 @@ func _physics_process(delta: float) -> void:
     var gt = get_gravity(delta)
     var g = gt[0] #gravity of all planets except target
     var tgrav = gt[1] #gravity of target
-    var d = self.global_position.direction_to(target) #direction to target
     var angto = (target).angle_to_point(self.global_position)
+    process_variable = (g+tgrav + velocity) #direction of velocity plus gravity PURPLE
     
-    
-    var rot = Vector2(1, 0).rotated(rotation).normalized()
-    target_balance = rot.dot((target-self.global_position).normalized()) 
-    target_side = rot.rotated(deg2rad(90)).dot((target-self.global_position).normalized()) 
-    
-    
-
-    var Rv = (g+tgrav + velocity) #direction of velocity plus gravity PURPLE
-    var RvF = 2 * (d.dot(Rv)) * d - Rv #Rv mirrored across the line that is between the target and the ship
-
-    var td = self.global_position.distance_to(target)
-    
-    var velocity_balance = Rv.normalized().dot((target-self.global_position).normalized()) 
-    var lookat = self.global_position+((RvF)*td)
-    if velocity_balance <= 0:
-        lookat = target
+    if do_pid:
+        pid(delta)
+        do_pid = 0
         
-    var lookat_balance = rot.dot((lookat-self.global_position).normalized()) 
-    var lookat_side = rot.rotated(deg2rad(90)).dot((lookat-self.global_position).normalized()) 
-    
-    if lookat_balance < .999: #target is not directly in front of ship
-        if lookat_side < 0: #target is on left
-            rotate(rads_per_sec*delta*-1)
-        elif lookat_side > 0: #target is on right
-            rotate(rads_per_sec*delta)
-    
-
-    #print("td: ",td, "d: ",d, "Rv: ",Rv, "RvF: ",RvF, "lookat: ",lookat, "velocity: ",velocity, "g: ",g, "angleto: ",angto, ", ",self.rotation, "r2v: ", r2v)
-
-    #var dot1 = (target-self.global_position).normalized().dot(target.normalized())
-    #var dotlabel = get_node("/root/Main/CanvasLayer/UI/dot1/Label")
-    #dotlabel.set_text(String(dot1))
-    
-    #self.look_at(lookat)
     velocity += (g+tgrav) * delta
     update_movement(delta)
     velocity = move_and_slide(velocity)
