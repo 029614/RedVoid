@@ -6,6 +6,7 @@ onready var bodies = get_parent().get_node("Navigation2D/Bodies")
 var velocity = Vector2()
 var rotation_dir = 0
 var target = Vector2()
+var target_radius = 1
 var origin = Vector2()
 var travel_distance = 0
 
@@ -82,7 +83,7 @@ func _ready() -> void:
     integral_timer.start(integral_step)
 
 func navigate():
-    var td = global_position.distance_to(target)
+    var td = global_position.distance_to(target)-target_radius
     var tof = Global.time_of_flight( travel_distance - td,
         self.global_position.distance_to(target), acceleration)
     travel_distance = td
@@ -142,16 +143,12 @@ func pid():
     var velocity_balance = process_variable.normalized().dot(((target)-self.global_position).normalized()) 
     if velocity_balance <= 0.0:
         if speed_direction == 1:
-            print("SP=1")
             lookat = target
-            print("SP=2")
         else: 
-            print("SP=3")
             lookat = self.global_position + ((self.global_position-target))
         kI = 0
         kD = 0
     else:
-        print("SP=4")
         lookat = self.global_position + ((r * td))
         
     var rot = Vector2(1, 0).rotated(rotation).normalized()
@@ -168,7 +165,7 @@ func pid():
     
     #print( " sp: ",sp, " pv: ",pv, " error: ", error, " pD: ",pD," kI: ",kI, " kI2: ",kI2, " kD: ",kD, " total: ",total, " r: ",r," rot: ",rotation, " look: ",lookat, " target: ",target, " sd: ",speed_direction)
     
-    print( " error: ", error, " total: ",total, " r: ",r," rot: ",rotation, " look: ",lookat, " target: ",target, " sd: ",speed_direction)
+    #print( " error: ", error, " total: ",total, " r: ",r," rot: ",rotation, " look: ",lookat, " target: ",target, " sd: ",speed_direction)
     
     
 func update_movement(delta):
@@ -229,6 +226,8 @@ func calculatePath(origin, target):
 # Behaviors
 func goTo(body):
     target = body.global_position
+    target_radius = body.planet_radius
+    print("target, targetradius: ", target,", ",target_radius)
     origin = self.position
     travel_distance = self.position.distance_to(target)
     _traveling = true
