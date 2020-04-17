@@ -27,7 +27,7 @@ var launch_speed = 100
 #physics
 var acceleration = 0
 var friction = 1
-var rps = .5
+var rps = .15
 var rads_per_sec = 0
 
 #speed managers
@@ -35,6 +35,7 @@ export (int) var speed = 500
 export (float) var rotation_speed = 2
 var current_speed = 0
 var max_speed = 99999
+var docking_speed = 1
 
 #flags
 var _traveling = false
@@ -49,6 +50,8 @@ var target_balance = 0 #( <0 is behind, >0 is in front)
 #states
 var states = ["traveling", "landing", "launching", "combat", "patrol", "docked", "decelerating", "accelerating"]
 var state = "traveling"
+var objectives = ["intercept", "engage", "defend", "travel", "escort"]
+var objective = "travel"
 
 #pid
 var past_error = [0,0,0,0,0]
@@ -57,17 +60,19 @@ var integral_timer = null
 var process_variable = Vector2(1,0)
 var kI = 0
 var I = .01
-var maxI = .5
-var P = 2.75
-var D = 1.5
+var maxI = 1
+var P = 2.7
+var D = 4.0
 var do_pid=1
 var lookat = Vector2(1, 0)
+var speed_direction = 1
 
 
 """Freighter Agent"""
 func _ready() -> void:
     acceleration = thrust/mass
     rads_per_sec = 6.283185*rps
+    print("rads_per_sec: ", rads_per_sec)
     
     integral_timer = Timer.new()
     add_child(integral_timer)
@@ -77,15 +82,32 @@ func _ready() -> void:
     integral_timer.start(integral_step)
 
 func navigate():
-    var tof = Global.time_of_flight(velocity.length(),self.global_position.distance_to(target),acceleration)
+    var td = global_position.distance_to(target)
+    var tof = Global.time_of_flight( travel_distance - td,
+        self.global_position.distance_to(target), acceleration)
+    travel_distance = td
     var ttd = Global.time_to_decelerate(velocity.length(), acceleration)
     var ttr = (1.0/rps)*.5
-    if tof < (ttd + ttr * 1.1):
-        decelerate()
+    if tof < (ttd + ttr * 1.05):
+        if velocity.length() > docking_speed:
+            decelerate()
+        elif velocity.length() < docking_speed:
+            accelerate()
+    else:
+        accelerate()
         
         
 func decelerate():
-    pass
+    state = "decelerating"
+    speed_direction = -1
+    #kI = 0
+    #past_error = [0,0,0,0,0]
+    
+func accelerate():
+    state = "accelerating"
+    speed_direction = 1
+    #kI = 0
+    #past_error = [0,0,0,0,0]
 
     
 func time_to_rotate(rps, current_rotation, desired_rotation):
@@ -94,9 +116,10 @@ func time_to_rotate(rps, current_rotation, desired_rotation):
     return abs((desired_rotation - current_rotation) / rads_per_sec)
     
 func _integral_timer_timeout():
+    navigate()
     do_pid=1
     
-func pid(delta):
+func pid():
     var sp = (target).angle_to_point(self.global_position) #setpoint (desired normalized velocity vector, or angle)
     var v = velocity.normalized()
     var td = self.global_position.distance_to(target)
@@ -114,15 +137,22 @@ func pid(delta):
     
     var total = clamp(pD+kI2+kD, -3.12, 3.12)
     
-    var r = v.rotated(total)
+    var r = (v).rotated(total*speed_direction)
 
-    var velocity_balance = process_variable.normalized().dot((target-self.global_position).normalized()) 
+    var velocity_balance = process_variable.normalized().dot(((target)-self.global_position).normalized()) 
     if velocity_balance <= 0.0:
-        lookat = target
+        if speed_direction == 1:
+            print("SP=1")
+            lookat = target
+            print("SP=2")
+        else: 
+            print("SP=3")
+            lookat = self.global_position + ((self.global_position-target))
         kI = 0
         kD = 0
     else:
-        lookat = self.global_position + r * td
+        print("SP=4")
+        lookat = self.global_position + ((r * td))
         
     var rot = Vector2(1, 0).rotated(rotation).normalized()
     var lookat_balance = rot.dot((lookat-self.global_position).normalized()) 
@@ -130,11 +160,15 @@ func pid(delta):
     
     if lookat_balance < .999: #target is not directly in front of ship
         if lookat_side < 0: #target is on left
-            rotate(rads_per_sec*delta*-1)
+            rotate(rads_per_sec*integral_step*-1*speed_direction)
+            print("rotate left: ", rads_per_sec*integral_step*-1, ", ", lookat_side)
         elif lookat_side > 0: #target is on right
-            rotate(rads_per_sec*delta)
+            rotate(rads_per_sec*integral_step*speed_direction)
+            print("rotate right: ", rads_per_sec*integral_step, ", ", lookat_side)
     
-    #print( " sp: ",sp, " pv: ",pv, " error: ", error, " pD: ",pD," kI: ",kI, " kI2: ",kI2, " kD: ",kD, " total: ",total, " r: ",r," rot: ",rotation, " look: ",lookat, " target: ",target)
+    #print( " sp: ",sp, " pv: ",pv, " error: ", error, " pD: ",pD," kI: ",kI, " kI2: ",kI2, " kD: ",kD, " total: ",total, " r: ",r," rot: ",rotation, " look: ",lookat, " target: ",target, " sd: ",speed_direction)
+    
+    print( " error: ", error, " total: ",total, " r: ",r," rot: ",rotation, " look: ",lookat, " target: ",target, " sd: ",speed_direction)
     
     
 func update_movement(delta):
@@ -180,7 +214,7 @@ func _physics_process(delta: float) -> void:
     process_variable = (g+tgrav + velocity) #direction of velocity plus gravity PURPLE
     
     if do_pid:
-        pid(delta)
+        pid()
         do_pid = 0
     
     velocity += (g+tgrav) * delta
@@ -198,6 +232,7 @@ func goTo(body):
     origin = self.position
     travel_distance = self.position.distance_to(target)
     _traveling = true
+    self.accelerate()
 
 func orbit(body):
     pass

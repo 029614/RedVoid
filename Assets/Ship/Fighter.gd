@@ -63,6 +63,7 @@ var maxI = .5
 var P = 2.75 
 var D = 1.75 
 var do_pid=1
+var last_pid_time = 0
 var lookat = Vector2(1, 0)
 
 
@@ -155,7 +156,7 @@ func average(a):
 func _integral_timer_timeout():
     do_pid=1
 
-func pid(delta):
+func pid():
     
     var sp = (target).angle_to_point(self.global_position) #setpoint (desired normalized velocity vector, or angle)
     #var pv = process_variable.angle() #process variable angle
@@ -200,18 +201,18 @@ func pid(delta):
     
     if lookat_balance < .999: #target is not directly in front of ship
         if lookat_side < 0: #target is on left
-            var ramt = rads_per_sec*delta*-1
-            print("Rotate left: ", ramt)
+            var ramt = rads_per_sec*integral_step*-1
+            #print("Rotate left: ", ramt)
             #rotate(clamp(rads_per_sec*delta*-1, -1*abs(r), abs(r)))
             rotate(ramt)
         elif lookat_side > 0: #target is on right
-            var ramt = rads_per_sec*delta
+            var ramt = rads_per_sec*integral_step
             #rotate(clamp(rads_per_sec*delta, -1*abs(r), abs(r)))
-            print("Rotate right: ", ramt)
-            rotate(rads_per_sec*delta)
+            #print("Rotate right: ", ramt)
+            rotate(rads_per_sec*integral_step)
             #rotate(rads_per_sec*delta)
     
-    print( " sp: ",sp, " pv: ",pv, " error: ", error, " pD: ",pD," kI: ",kI, " kI2: ",kI2, " kD: ",kD, " total: ",total, " r: ",r," rot: ",rotation, " look: ",lookat, " target: ",target)
+    #print( " sp: ",sp, " pv: ",pv, " error: ", error, " pD: ",pD," kI: ",kI, " kI2: ",kI2, " kD: ",kD, " total: ",total, " r: ",r," rot: ",rotation, " look: ",lookat, " target: ",target)
 
 
 func draw_arrow(arrow, t, mp):
@@ -236,7 +237,7 @@ func _physics_process(delta: float) -> void:
     process_variable = (g+tgrav + velocity) #direction of velocity plus gravity PURPLE
     
     if do_pid:
-        pid(delta)
+        pid()
         do_pid = 0
         
     velocity += (g+tgrav) * delta

@@ -44,7 +44,9 @@ var number_of_factions = 0
 
 
 func time_of_flight(velocity,distance,acceleration): #all values are floats
-    return (sqrt(velocity*velocity+2*acceleration*distance) - velocity) / acceleration
+    var total = (sqrt(velocity*velocity+2*acceleration*distance) - velocity) / acceleration
+    print("time of flight, v, d, a, total: ",velocity,", ",distance,", ",acceleration,", ",total)
+    return total
 
 func time_to_decelerate(velocity,acceleration): #all values are floats
     return velocity/float(acceleration)
