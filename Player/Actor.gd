@@ -120,7 +120,7 @@ func get_input(delta):
             #Changing the sprite to the one with engine plumes
             if $Sprite/Particles2D.is_emitting() == false:
                 $Sprite/Particles2D.restart()
-                $Sprite/Particles2D.set_emitting(true)
+                #$Sprite/Particles2D.set_emitting(true)
                 $EngineSound.play()
             
             #Input Movements
