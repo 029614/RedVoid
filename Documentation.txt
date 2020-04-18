@@ -1,0 +1,50 @@
+redVoid
+Gameplay Summary:
+	The point of the game is to capture all the planets in a solar system. A solar system will be comprised of a center containing a start or other focal point surrounded by an appropriate number of planets. Planets will be categorized into two groups, habitable and uninhabitable. Habital worlds can produce ships and serve to restock larger warships. Uninhabitable worlds will build orbital stations which serve as static weapons platforms and refuel small and medium sized warships. Uninhabitable worlds have to be supported by habitable worlds. 
+
+
+Progression:
+	The player will take command of the smallest and weakest spacecraft and will be given the lowest command rank. Players can progress upwards through the ranks by pursuing the appropriate objectives.
+
+
+Objectives:
+	objectives will be different for different classes of ships. 
+	Scouts will create landing zones on unclaimed or neutral planets by landing on them for a short period of time. Scouts also have a larger then normal detection range and serve to provide intel on enemy movements at the front. Scout ships are armed with cannons but are not encouraged to engage enemy combatants and actively seek to disengage with any attackers. Scouts carry 20mm cannons
+
+	Interceptors are fast attack ships. Their speed allows them to quickly respond to freighters and scouts under attack. They also will seek to engage targets of opportunity such as enemy freighters and scouts, and harrass larger warships with missiles from a safe distance. interceptors carry missiles and 20mm cannon
+
+	Bombers are long range, high speed, planetary strike vessels. They are excellent at destroying anything they can land a hit on. While their payload is devastating, they are very lightly shielded and relatively easy to destroy even with 20mm cannons. Bombers carry bombs or missiles and 20mm cannons.
+
+	Destroyers are medium sized warships with light shields and heavy armament. While they are no match for a battleship 1 on 1, their superior speed and maneuverability gives them a range of mission capabilities including reinforcing planets under siege, patrolling the front lines, and accompanying battleships in siege operations. Destroyers carry Missiles, 20mm cannon, and 218mm railgun.
+
+	Battleships are the largest ship in the fleet. They are heavily shielded, and pack the biggest guns. Their great size takes a long time to accelerate making them slow and cumbersome. They function as heavily armed siege engines whos primary duty is the destruction of planetary defences. Battleships carry 20mm cannons, 218mm railguns and the collosal 406mm rail gun.
+
+	Freighters, while smaller then battleships are still goliaths in their own right. They function to supply and redistribute supplies accross friendly planets. They are lightly shielded and unarmed.
+
+	Colony ships follow up scout ships and set up new colonies on habitable worlds which have been scouted. They are lightly shielded and unarmed.
+
+
+Resources:
+	Planets can have many different resources. There are several considerations when selecting a planet to colonize. Resources and position are the two most important. If a planet is very rich, but is inside enemy territory, it would not be a viable candidate. If a planet is inside friendly territory and has no resources, it may also not be a very viable candidate.
+	Iron: required for manufacturing.
+	Carbon: required for advanced manufacturing.
+	Hydrogen: required for fuel production.
+	Population: required for colonies and research
+	Exotic Matierials: required for research and advanced materials.
+
+
+Weapons:
+	Bombs: Unguided explosive munitions. Effective against everything it touches. When a planet is hit, the population is reduced dramatically.
+	Missiles: Guided explosive munitions. Effective against smaller targets and orbital facilities.
+	Rotary Cannon 20mm: Small kinetic projectile. Effective against small and unshielded targets. Point defence weapon.
+	Rail Gun 218mm: Large kinetic projectile. Effective against all targets.
+	Rail Gun 406mm: Huge kinetic projectile. Devastating against all targets. Only found on Battleships. Primarily used in capital ship showdowns and planetary bombardments.
+
+
+Ranks:
+	Lieutenant: Qualified for freighters and colony ships.
+	Commander: Qualified for Scout ships or Interceptors. Max Quantity: 24
+	Captain: Qualified for Bombers. Max Quantity: 24
+	Rear Admiral: Qualified for Destroyers. Max Quantity: 12
+	Admiral: Qualified for battleships. Max Quantity: 4
+	Fleet Admiral: Qualified for overall command. Max Quantity: 1

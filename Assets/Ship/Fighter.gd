@@ -15,6 +15,7 @@ onready var thrust = 2000
 var mass = 10
 export var fuel = 250000
 export var max_fuel = 250000
+var shields = 100
 
 #launcher
 var launch_speed = 100
@@ -64,6 +65,7 @@ func _ready() -> void:
     acceleration = thrust/mass
     rads_per_sec = 6.283185*rps
     $AlienFighterSprite/ShipAccent.modulate = enemy_color
+    Global.player_registry.append(self)
     
 
 func apply_gravity(delta):
@@ -182,6 +184,9 @@ func _physics_process(delta: float) -> void:
     update_movement(delta)
     static_velocity = velocity/delta
     velocity = move_and_slide(velocity)
+    
+    if shields <= 0:
+        self.queue_free()
 
 
 # Behaviors

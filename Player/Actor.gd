@@ -12,7 +12,7 @@ onready var enemy = engine.get_node("Faction2/Enemy")
 onready var sun = engine.get_node("Navigation2D/Bodies/Sun")
 
 var explosion = preload("res://Assets/Particles/Explosion.tscn")
-var projectile = preload("res://Assets/Particles/Projectile.tscn")
+var shot = preload("res://Assets/Ship/Weapons/Shot.tscn")
 var missile = preload("res://Assets/Ship/Weapons/Missile.tscn")
 
 #input and direction
@@ -31,6 +31,7 @@ var fuel_cap = 5000
 var blink_speed = 5
 var red_alpha = 130
 onready var gun_coords = $GunCoords
+var shields = 100
 
 #Ship Components
 var fuel_tank_tier = 1 #1-3
@@ -69,6 +70,11 @@ var _heat_shield = false
 var _after_burner = false
 var _weapon_select = "cannon" #Can be cannon, missile or bomb
 
+var weapon_states = ["missiles", "bombs", "cannon"]
+var current_weapon = "cannon"
+var firing_cannon = false
+var cannon_speed = 1
+
 
 
 """ -------- FUNCTIONS -------- """
@@ -80,6 +86,7 @@ func _ready():
     Global.connect("player_arrival", self, "setupOrbit")
     Global.connect("player_died", self, "destruct")
     Global._process_player_movement = true
+    Global.player_registry.append(self)
     
     #Other start up related shit
     acceleration = thrust/mass
@@ -217,14 +224,25 @@ func _physics_process(delta):
         elif global_position.y > Global.map_limit.y:
             global_position.y -= Global.map_limit.y
         
+        if shields <= 0:
+            self.queue_free()
+        
+    #cannon
+    if firing_cannon == true:
+        fireControl("cannon")
+        
 
 func _input(event):
     if Global._play == true:
         
         #Weapons
-        if _player_is_landed == false and Input.is_action_just_pressed("weapons"):
+        if _player_is_landed == false and current_weapon == "missile" and Input.is_action_just_pressed("weapons"):
             #Global.emit_signal("torpedo_request", self)
-            fireControl()
+            fireControl("missile")
+        if _player_is_landed == false and current_weapon == "cannon" and Input.is_action_pressed("weapons"):
+            firing_cannon = true
+        elif _player_is_landed == false and current_weapon == "cannon" and Input.is_action_just_released("weapons"):
+            firing_cannon = false
     
         #Orbit
         if Global._player_in_orbit == true and _orbiting == false and Input.is_action_just_pressed("orbit"):
@@ -327,12 +345,19 @@ func destruct():
     add_child(e)
     e.get_node("Particles2D").set_emitting(true)
 
-func fireControl():
-    if _weapon_select == "missile":
+func fireControl(weapon):
+    if weapon == "missile":
         var m = missile.instance()
         m.velocity = velocity
         m.rotation = rotation
         engine.add_child(m)
+    elif weapon == "cannon":
+        var m = shot.instance()
+        m.gun_speed = current_speed
+        m.rotation = global_rotation
+        m.shooter = self
+        engine.add_child(m)
+        m.global_position = gun_coords.get_global_position()
 
 func weaponSelect(select):
     if select == 1:

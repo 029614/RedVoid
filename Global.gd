@@ -45,6 +45,7 @@ var number_of_factions = 0
 #Global References
 var HUD = null
 var world = null
+var player_registry = []
 
 
 
