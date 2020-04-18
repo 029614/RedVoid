@@ -9,12 +9,13 @@ radius = 57.492
 height = 815.754
 
 [node name="Missile" type="KinematicBody2D"]
-scale = Vector2( 0.0486508, 0.0486508 )
+scale = Vector2( 0.02, 0.02 )
 script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
 shape = SubResource( 1 )
+disabled = true
 
 [node name="MissileSprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )

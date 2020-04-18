@@ -74,6 +74,7 @@ var weapon_states = ["missiles", "bombs", "cannon"]
 var current_weapon = "cannon"
 var firing_cannon = false
 var cannon_speed = 1
+var cannon_ready = true
 
 
 
@@ -183,15 +184,9 @@ func _physics_process(delta):
         
         if $ChaseCamera.zoom < Vector2(10,10):
             $CanvasLayer/MapIcon.hide()
-            $CanvasLayer/MapIconEnemy.hide()
         elif $ChaseCamera.zoom >= Vector2(10,10):
             $CanvasLayer/MapIcon.show()
-            $CanvasLayer/MapIconEnemy.show()
         $CanvasLayer/MapIcon.set_global_rotation(get_global_rotation() + deg2rad(90))
-        $CanvasLayer/MapIconEnemy.set_rotation(enemy.get_rotation() + deg2rad(90))
-        $CanvasLayer/MapIconEnemy.set_position(Vector2(0,0))
-        $CanvasLayer/MapIconEnemy.set_global_position(enemy.global_position)
-        print("Enemy Icon Position: ", $CanvasLayer/MapIconEnemy.get_global_position(), " Enemy Position: ", enemy.global_position)
         
         if _player_is_landed == true:
             fuel += 10
@@ -351,139 +346,36 @@ func fireControl(weapon):
         m.velocity = velocity
         m.rotation = rotation
         engine.add_child(m)
-    elif weapon == "cannon":
-        var m = shot.instance()
-        m.gun_speed = current_speed
-        m.rotation = global_rotation
-        m.shooter = self
-        engine.add_child(m)
         m.global_position = gun_coords.get_global_position()
+    elif weapon == "cannon":
+        if cannon_ready == true:
+            var m = shot.instance()
+            m.gun_speed = current_speed
+            m.rotation = global_rotation
+            m.shooter = self
+            engine.add_child(m)
+            m.global_position = gun_coords.get_global_position()
+            cannon_ready = false
+            $CannonCoolDown.start()
 
 func weaponSelect(select):
     if select == 1:
-        _weapon_select = "cannon"
+        current_weapon = "cannon"
         $CanvasLayer/HUD/Weapons/VBoxContainer/Missiles/Control.hide()
         $CanvasLayer/HUD/Weapons/VBoxContainer/Bombs/Control.hide()
         $CanvasLayer/HUD/Weapons/VBoxContainer/Guns/Control.show()
     elif select == 2:
-        _weapon_select = "missile"
+        current_weapon = "missile"
         $CanvasLayer/HUD/Weapons/VBoxContainer/Missiles/Control.show()
         $CanvasLayer/HUD/Weapons/VBoxContainer/Bombs/Control.hide()
         $CanvasLayer/HUD/Weapons/VBoxContainer/Guns/Control.hide()
     elif select == 3:
-        _weapon_select = "bomb"
+        current_weapon = "bomb"
         $CanvasLayer/HUD/Weapons/VBoxContainer/Missiles/Control.hide()
         $CanvasLayer/HUD/Weapons/VBoxContainer/Bombs/Control.show()
         $CanvasLayer/HUD/Weapons/VBoxContainer/Guns/Control.hide()
 
 
-
-
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Getters and Setters @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-# movement ------------------------------------------
-func set_max_speed(new_max_speed: int):
-    pass
-
-func get_max_speed():
-    pass
-
-func get_current_speed():
-    pass
-
-func get_acceleration():
-    pass
-
-func set_thrust(new_thrust: float):
-    pass
-
-func get_thrust():
-    pass
-
-func set_mass(new_mass: int):
-    pass
-
-func get_mass():
-    pass
-
-func get_gravity():
-    pass
-
-func get_velocity():
-    pass
-
-
-
-#Consumables ------------------------------------------------
-func set_cannon_ammo(ammo: int):
-    pass
-
-func get_cannon_ammo():
-    pass
-
-func set_cannon_ammo_max(max_ammo: int):
-    pass
-
-func get_cannon_ammo_max():
-    pass
-
-
-
-func set_missile_count(count: int):
-    pass
-
-func get_missile_count():
-    pass
-
-func set_missile_count_max(max_count: int):
-    pass
-
-func get_missile_count_max():
-    pass
-
-
-
-func set_bomb_count(count: int):
-    pass
-
-func get_bomb_count():
-    pass
-
-func set_bomb_count_max(max_count: int):
-    pass
-
-func get_bomb_count_max():
-    pass
-
-
-
-#Vitals ------------------------------------------------
-func set_shields(shields: int):
-    pass
-
-func get_shields():
-    pass
-
-func set_max_shields(max_shields: int):
-    pass
-
-func get_max_shields():
-    pass
-
-
-
-func set_fuel(fuel: int):
-    pass
-
-func get_fuel():
-    pass
-
-func set_max_fuel(max_fuel: int):
-    pass
-
-func get_max_fuel():
-    pass
-
-
-    
-
+func _on_CannonCoolDown_timeout() -> void:
+    $CannonCoolDown.stop()
+    cannon_ready = true

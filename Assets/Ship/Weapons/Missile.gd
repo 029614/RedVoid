@@ -128,7 +128,7 @@ func draw_arrow(arrow, t, mp):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-    target = get_node("/root/NewMain/Faction/Actor").global_position
+    target = get_node("/root/NewMain/Faction2/Enemy").global_position
     var mp = get_parent().position #position of Main
     var gt = get_gravity(delta)
     var g = gt[0] #gravity of all planets except target

@@ -13,7 +13,7 @@ func _ready() -> void:
     t.set_wait_time(lifetime)
     t.connect("timeout", self, "bulletExpire")
     t.start()
-    apply_impulse(Vector2(), Vector2(projectile_speed, 0).rotated(rotation))
+    apply_impulse(Vector2(), Vector2(projectile_speed, 0).rotated((rotation - deg2rad(9)) + deg2rad(randi()%10)))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -27,4 +27,8 @@ func _on_Area2D_body_entered(body: Node) -> void:
         self.queue_free()
 
 func bulletExpire():
+    self.queue_free()
+
+
+func _on_Timer_timeout() -> void:
     self.queue_free()

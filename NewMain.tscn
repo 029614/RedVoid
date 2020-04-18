@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Player/Actor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://Faction/Faction.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Ship/Fighter.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Wells/Sun.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Ship/Blender/ScoutShip/ScoutShip.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Assets/Ship/Blender/Battleship/Battleship.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/Ship/Blender/Destroyer/Destroyer.tscn" type="PackedScene" id=10]
 
 [node name="NewMain" type="Node2D"]
 position = Vector2( 8822.1, 4486.84 )
@@ -50,3 +53,12 @@ position = Vector2( 9122.1, 4786.84 )
 stream = ExtResource( 4 )
 volume_db = -15.146
 autoplay = true
+
+[node name="ScoutShip" parent="." instance=ExtResource( 8 )]
+position = Vector2( 183.748, 922.732 )
+
+[node name="Battleship" parent="." instance=ExtResource( 9 )]
+position = Vector2( -1669.71, 379.479 )
+
+[node name="Destroyer" parent="." instance=ExtResource( 10 )]
+position = Vector2( -1653.73, -523.281 )
