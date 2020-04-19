@@ -1,8 +1,5 @@
 extends Node2D
 
-onready var player = get_parent().get_parent().get_parent().get_node("Faction/Actor")
-onready var freighter = null #get_parent().get_parent().get_parent().get_node("Freightor")
-
 onready var mass =  planet_radius
 var planet_radius = randi()%150+50
 var moon_radius = planet_radius/4
@@ -67,25 +64,16 @@ func capture(faction, planet):
         $FactionIndicator.set_modulate(Global.player_color)
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
-    if area.get_parent() == player and _is_destructive == true:
+    if Global.player_registry.has(area.get_parent()) and _is_destructive == true:
         Global.emit_signal("player_died")
-    elif area == player.get_node("LandingGear") and _is_destructive == false:
+    elif area.name == "LandingGear" and _is_destructive == false:
         Global.emit_signal("player_landed", self)
         print("player is landing")
 
 
 func _on_Arrival_body_entered(body: Node) -> void:
-    if body == player:
-        Global._player_in_orbit = true
-        print("player arrival")
-        Global.emit_signal("player_arrival", orbit, self)
-    if body == freighter:
-        var p_pos = freighter.get_global_position()
-        Global.emit_signal("freighter_arrival", orbit, self)
+    pass
 
 
 func _on_Arrival_body_exited(body):
-    if body == player:
-        Global._player_in_orbit = false
-    if body == freighter:
-        pass
+    pass

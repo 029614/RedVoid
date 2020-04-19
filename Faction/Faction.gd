@@ -4,6 +4,7 @@ extends Node
 export (Color) var faction_color = Color(1,1,1,1)
 export var faction_name = "No Name"
 var planets = []
+var ships = []
 
 
 # Called when the node enters the scene tree for the first time.

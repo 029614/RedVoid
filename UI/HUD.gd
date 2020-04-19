@@ -1,18 +1,55 @@
 extends Control
 
+onready var player = get_parent().get_parent()
+var enemy_icon = preload("res://Assets/Ship/MapIconEnemy.tscn")
 
+var blink_speed = 5
+var red_alpha = 130
+
+var icons_active = false
+
+var icons = []
+var tracking = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#    pass
+func _process(delta: float) -> void:
+    if player.camera_state and player.camera_state == "zoomed_out" and icons_active == false:
+        activateIcons()
+        print(player.camera_state, icons_active)
+    elif player.camera_state != "zoomed_out" and icons_active == true:
+        deactivateIcons()
+        print(player.camera_state, icons_active)
+    
+    if icons_active == true:
+        var count = 0
+        for icon in icons:
+            icon.global_position = tracking[count].global_position
+            count += 1
+
+func _input(event: InputEvent) -> void:
+    
+    if Input.is_action_just_pressed("compose_message"):
+        if get_focus_owner() == $ReadOut/LineInput:
+            pass
+        else:
+            $ReadOut/LineInput.grab_focus()
+            $ReadOut/LineInput.clear()
 
 
 
-
+func fuelWarning():
+    if red_alpha == 50:
+        blink_speed = -5
+    elif red_alpha == 180:
+        blink_speed = 5
+    $Vitals/FuelGauge.set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
+    $Vitals/FuelGauge.get_node("Label").set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
+    red_alpha -= blink_speed
+        
 
 # These only change characters on the HUD - No real game impact
 
@@ -119,3 +156,23 @@ func _on_LineInput_text_entered(new_text: String) -> void:
         $ReadOut/LineInput.clear()
         $ReadOut/LineInput.set_focus_mode(0)
         $ReadOut/LineInput.set_focus_mode(1)
+
+
+func activateIcons():
+    for ship in get_tree().get_nodes_in_group("ship"):
+        if ship != player.ship:
+            var t = enemy_icon.instance()
+            t.name = ship.name
+            $Ships.add_child(t)
+            t.global_position = ship.global_position
+            t.global_scale = Vector2(3,3)
+            icons_active = true
+            icons.append(t)
+            tracking.append(ship)
+            print("icons activated")
+            print("currently active indicators: ", $Ships.get_children())
+
+func deactivateIcons():
+    for child in $Ships.get_children():
+        child.queue_free()
+    icons_active = false

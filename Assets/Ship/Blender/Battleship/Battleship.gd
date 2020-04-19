@@ -34,24 +34,27 @@ var fire_after_burner = false
 var fire_engines = false
 
 #Ship Performance
-var thrust = 5000
-var mass = 10
+var thrust = 75000
+var mass = 1000
 onready var acceleration = thrust/mass
 var current_speed
-var max_speed = 1500
-export (float) var rotation_speed = 2
+var max_speed = 1000
+export (float) var rotation_speed = .5
 
 var thrust_modifier = 1
 var velocity = Vector2()
 
 #Ship Specifics
-onready var gun_coords = $GunCoords
+#onready var gun_coords = $GunCoords
 export var fuel = 5000
 var fuel_cap = 5000
 var shields = 100
+onready var turrets = $Turrets.get_children()
+var ship_size = 1.5
 
 #Controls
 var rotation_dir
+var mouse_pos
 
 
 
@@ -67,25 +70,30 @@ func _physics_process(delta: float) -> void:
     #After Burner
     if animate_after_burner == true:
         thrust_modifier = 10
-        $Sprite/AB1.set_emitting(true)
-        $Sprite/AB2.set_emitting(true)
-        $EngineSound.set_volume_db(6)
+        #$Sprite/AB1.set_emitting(true)
+        #$Sprite/AB2.set_emitting(true)
+        #$EngineSound.set_volume_db(6)
     elif animate_after_burner == false:
         thrust_modifier = 1
-        $Sprite/AB1.set_emitting(false)
-        $Sprite/AB2.set_emitting(false)
-        $EngineSound.set_volume_db(1)
+        #$Sprite/AB1.set_emitting(false)
+        #$Sprite/AB2.set_emitting(false)
+        #$EngineSound.set_volume_db(1)
 
     #Changing the sprite to the one with engine plumes
     if animate_engines == true:
-        if $Sprite/Particles2D.is_emitting() == false:
-            $Sprite/Particles2D.restart()
+        pass
+        #if $Sprite/Particles2D.is_emitting() == false:
+            #$Sprite/Particles2D.restart()
             #$Sprite/Particles2D.set_emitting(true)
-            $EngineSound.play()
+            #$EngineSound.play()
     else:
-        $Sprite/Particles2D.set_emitting(false)
+        pass
+        #$Sprite/Particles2D.set_emitting(false)
         #$Sprite/Particles2D.set_emitting(true)
-        $EngineSound.stop()
+        #$EngineSound.stop()
+    
+    for turret in turrets:
+        turret.look_at(get_global_mouse_position())
 
 
 func someFunc():
@@ -113,14 +121,14 @@ func fireControl(weapon):
         m.velocity = velocity
         m.rotation = rotation
         Global.world.add_child(m)
-        m.global_position = gun_coords.get_global_position()
+        #m.global_position = gun_coords.get_global_position()
     elif weapon == "cannon":
         var m = shot.instance()
         m.gun_speed = current_speed
         m.rotation = global_rotation
         m.shooter = self
         Global.world.add_child(m)
-        m.global_position = gun_coords.get_global_position()
+       #m.global_position = gun_coords.get_global_position()
         $CannonCoolDown.start()
 
 

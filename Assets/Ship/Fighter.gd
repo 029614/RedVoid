@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
-onready var bodies = get_parent().get_parent().get_node("Navigation2D/Bodies")
+var scene
+var player
 
 #input and direction
 var velocity = Vector2()
@@ -66,7 +67,7 @@ func _ready() -> void:
 func apply_gravity(delta):
     var g = Vector2(0,0)
     var t = Vector2(0,0)
-    for body in bodies.get_children():
+    for body in Global.bodies:
         if body.position == target:
             t = ( body.mass / (body.global_position.distance_to(self.global_position)) * self.global_position.direction_to(body.global_position) )
         else:
@@ -133,8 +134,8 @@ func draw_arrow(arrow, t, mp):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-    target = get_parent().get_parent().get_node("Faction/Actor").global_position
-    var mp = get_parent().get_parent().position #position of Main
+    target = get_parent().get_parent().get_node("Faction/Destroyer").global_position
+    var mp = Global.world.position #position of Main
     var gt = apply_gravity(delta)
     var g = gt[0] #gravity of all planets except target
     var tgrav = gt[1] #gravity of target

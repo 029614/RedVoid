@@ -1,6 +1,5 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Player/Actor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://Wells/Planet.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Music/bensound-slowmotion.ogg" type="AudioStream" id=4]
@@ -20,34 +19,25 @@ script = ExtResource( 2 )
 [node name="Bodies" type="Node2D" parent="Navigation2D"]
 
 [node name="Sun" parent="Navigation2D/Bodies" instance=ExtResource( 7 )]
+scale = Vector2( 2, 2 )
 mass_multiplyer = 1.5
 _is_destructive = true
 
 [node name="Planet2" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
-position = Vector2( 5368, -2008 )
+position = Vector2( 12647.2, -7080.74 )
+scale = Vector2( 2, 2 )
 
 [node name="Planet3" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
-position = Vector2( 5152, 2960 )
+position = Vector2( 15874.9, 13456 )
+scale = Vector2( 2, 2 )
 
 [node name="Planet4" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
-position = Vector2( -5320, 2736 )
+position = Vector2( -10557.7, 6344.66 )
+scale = Vector2( 2, 2 )
 
 [node name="Planet5" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
-position = Vector2( -5128, -2880 )
-
-[node name="Faction" parent="." instance=ExtResource( 5 )]
-faction_color = Color( 0.00784314, 0.0901961, 0.984314, 1 )
-faction_name = "Player Faction"
-
-[node name="Actor" parent="Faction" instance=ExtResource( 1 )]
-position = Vector2( 8390.1, 4230.84 )
-
-[node name="Faction2" parent="." instance=ExtResource( 5 )]
-faction_color = Color( 0.768627, 0, 0, 1 )
-faction_name = "Enemy Faction"
-
-[node name="Enemy" parent="Faction2" instance=ExtResource( 6 )]
-position = Vector2( 9122.1, 4786.84 )
+position = Vector2( -10365.7, -7148.53 )
+scale = Vector2( 2, 2 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
@@ -55,10 +45,23 @@ volume_db = -15.146
 autoplay = true
 
 [node name="ScoutShip" parent="." instance=ExtResource( 8 )]
-position = Vector2( 183.748, 922.732 )
+position = Vector2( -432.172, 1807.86 )
 
 [node name="Battleship" parent="." instance=ExtResource( 9 )]
-position = Vector2( -1669.71, 379.479 )
+position = Vector2( -2285.63, 1264.61 )
 
-[node name="Destroyer" parent="." instance=ExtResource( 10 )]
-position = Vector2( -1653.73, -523.281 )
+[node name="Factions" type="Node" parent="."]
+
+[node name="Faction" parent="Factions" instance=ExtResource( 5 )]
+faction_color = Color( 0.00784314, 0.0901961, 0.984314, 1 )
+faction_name = "Player Faction"
+
+[node name="Destroyer" parent="Factions/Faction" instance=ExtResource( 10 )]
+position = Vector2( 6552.45, 4848.69 )
+
+[node name="Faction2" parent="Factions" instance=ExtResource( 5 )]
+faction_color = Color( 0.768627, 0, 0, 1 )
+faction_name = "Enemy Faction"
+
+[node name="Enemy" parent="Factions/Faction2" instance=ExtResource( 6 )]
+position = Vector2( 8358.37, 5451.25 )

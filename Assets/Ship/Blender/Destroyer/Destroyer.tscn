@@ -1,14 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Ship/Blender/Destroyer/DestroyerAccent.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Ship/Blender/Destroyer/Destroyer.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Ship/Weapons/Turret203.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Ship/Blender/Destroyer/Destroyer.gd" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 511.283, 69.8547 )
 
 [node name="Destroyer" type="KinematicBody2D"]
 scale = Vector2( 0.3, 0.3 )
+script = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -28,3 +30,5 @@ scale = Vector2( 0.25, 0.25 )
 [node name="Turret204" parent="." instance=ExtResource( 3 )]
 position = Vector2( -303.009, -5.39224 )
 scale = Vector2( 0.25, 0.25 )
+
+[node name="Pilot" type="Node2D" parent="."]

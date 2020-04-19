@@ -25,7 +25,9 @@ extents = Vector2( 20.8575, 50.5637 )
 [sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 79.7457, 95.166 )
 
-[node name="Fighter" type="KinematicBody2D"]
+[node name="Fighter" type="KinematicBody2D" groups=[
+"ship",
+]]
 scale = Vector2( 0.25, 0.25 )
 collision_layer = 2
 collision_mask = 29

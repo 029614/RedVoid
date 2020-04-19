@@ -10,7 +10,7 @@ export var mass_multiplyer = .75
 export var _is_active_target = false
 export var _is_destructive = false
 var _is_active_takeoff = false
-export var orbit_velocity = .2
+export var orbit_velocity = .1
 var moon = false
 var ownership = null
 var orbit_assignment
@@ -59,28 +59,24 @@ func capture(faction, planet):
         $FactionIndicator.set_modulate(faction.faction_color)
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
-    if area.get_parent() == player and _is_destructive == true:
+    if Global.player_registry.has(area.get_parent()) and _is_destructive == true:
         Global.emit_signal("player_died")
-    elif area == player.get_node("LandingGear") and _is_destructive == false:
+    elif area.name == "LandingGear" and _is_destructive == false:
         Global.emit_signal("player_landed", self)
         print("player is landing")
 
 
 func _on_Arrival_body_entered(body: Node) -> void:
-    if body == player:
-        Global._player_in_orbit = true
-        print("player arrival")
-        Global.emit_signal("player_arrival", orbit, self)
-    if body == freighter:
-        var p_pos = freighter.get_global_position()
-        Global.emit_signal("freighter_arrival", orbit, self)
+    print(body)
+    if body.get("pilot"):
+        body.pilot.planet = self
+        body.pilot.orbit = orbit
 
 
 func _on_Arrival_body_exited(body):
-    if body == player:
-        Global._player_in_orbit = false
-    if body == freighter:
-        pass
+    if body.get("pilot"):
+        body.pilot.planet = null
+        body.pilot.orbit = null
 
 
 

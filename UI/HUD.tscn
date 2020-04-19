@@ -146,6 +146,7 @@ text = "Missile Alert"
 [node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Missile"]
 position = Vector2( 192, 16 )
 frames = SubResource( 7 )
+frame = 1
 playing = true
 
 [node name="Radar" type="Button" parent="PanelRight/VBoxContainer"]
@@ -157,7 +158,6 @@ text = "Radar Lock"
 [node name="WarningIndicator" type="AnimatedSprite" parent="PanelRight/VBoxContainer/Radar"]
 position = Vector2( 192, 16 )
 frames = SubResource( 7 )
-frame = 1
 playing = true
 
 [node name="Vitals" type="Control" parent="."]
@@ -353,4 +353,7 @@ margin_right = 228.0
 margin_bottom = 73.0
 custom_colors/font_color = Color( 0.494118, 1, 0.266667, 0.752941 )
 text = "All Systems Normal"
+
+[node name="Ships" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
 [connection signal="text_entered" from="ReadOut/LineInput" to="." method="_on_LineInput_text_entered"]
