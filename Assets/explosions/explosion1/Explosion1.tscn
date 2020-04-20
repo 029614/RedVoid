@@ -15,7 +15,7 @@ animations = [ {
 "frames": [ ExtResource( 2 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), null ],
 "loop": false,
 "name": "default",
-"speed": 20.0
+"speed": 25.0
 } ]
 
 [node name="Explosion1" type="AnimatedSprite"]
