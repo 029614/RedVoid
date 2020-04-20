@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Start/BG.gd" type="Script" id=1]
 [ext_resource path="res://Assets/canvas.png" type="Texture" id=2]
@@ -6,6 +6,9 @@
 [ext_resource path="res://starsBack.png" type="Texture" id=4]
 [ext_resource path="res://starsPar.png" type="Texture" id=5]
 [ext_resource path="res://Start/StartScreen.gd" type="Script" id=6]
+[ext_resource path="res://Assets/Images/Title.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Sounds/Beep.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Sounds/Button.ogg" type="AudioStream" id=9]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.117647, 0.67451, 0, 0.266667 )
@@ -103,6 +106,16 @@ motion_mirroring = Vector2( 1920, 1080 )
 
 [node name="Sprite" type="Sprite" parent="BG/Layer3/ParallaxLayer"]
 texture = ExtResource( 5 )
+
+[node name="Layer4" type="ParallaxBackground" parent="BG"]
+offset = Vector2( 960, 540 )
+transform = Transform2D( 1, 0, 0, 1, 960, 540 )
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="BG/Layer4"]
+
+[node name="Sprite" type="Sprite" parent="BG/Layer4/ParallaxLayer"]
+position = Vector2( 365.044, -266.859 )
+texture = ExtResource( 7 )
 
 [node name="MainMenu" type="Control" parent="."]
 anchor_right = 1.0
@@ -224,6 +237,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="MainMenu"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -654.0
+margin_bottom = 440.0
+texture = ExtResource( 7 )
+
 [node name="NewGame" type="Popup" parent="."]
 visible = true
 margin_right = 968.0
@@ -342,9 +363,39 @@ text = "Start"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Beep" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = -10.0
+
+[node name="BeepTimer" type="Timer" parent="Beep"]
+wait_time = 0.092
+one_shot = true
+
+[node name="Click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -10.0
+pitch_scale = 1.2
+
+[node name="ClickTimer" type="Timer" parent="Click"]
+wait_time = 0.08
+one_shot = true
+[connection signal="mouse_entered" from="MainMenu/Panel/VBoxContainer/New" to="." method="_on_New_mouse_entered"]
 [connection signal="pressed" from="MainMenu/Panel/VBoxContainer/New" to="." method="_on_New_pressed"]
+[connection signal="mouse_entered" from="MainMenu/Panel/VBoxContainer/Load" to="." method="_on_Load_mouse_entered"]
+[connection signal="pressed" from="MainMenu/Panel/VBoxContainer/Load" to="." method="_on_Load_pressed"]
+[connection signal="mouse_entered" from="MainMenu/Panel/VBoxContainer/Host" to="." method="_on_Host_mouse_entered"]
 [connection signal="pressed" from="MainMenu/Panel/VBoxContainer/Host" to="." method="_on_Host_pressed"]
+[connection signal="mouse_entered" from="MainMenu/Panel/VBoxContainer/Join" to="." method="_on_Join_mouse_entered"]
 [connection signal="pressed" from="MainMenu/Panel/VBoxContainer/Join" to="." method="_on_Join_pressed"]
+[connection signal="mouse_entered" from="MainMenu/Panel/VBoxContainer/School" to="." method="_on_School_mouse_entered"]
+[connection signal="pressed" from="MainMenu/Panel/VBoxContainer/School" to="." method="_on_School_pressed"]
+[connection signal="mouse_entered" from="MainMenu/Panel/VBoxContainer/Settings" to="." method="_on_Settings_mouse_entered"]
+[connection signal="pressed" from="MainMenu/Panel/VBoxContainer/Settings" to="." method="_on_Settings_pressed"]
+[connection signal="mouse_entered" from="MainMenu/Panel/Quit" to="." method="_on_Quit_mouse_entered"]
 [connection signal="pressed" from="MainMenu/Panel/Quit" to="." method="_on_Quit_pressed"]
 [connection signal="popup_hide" from="NewGame" to="." method="_on_NewGame_popup_hide"]
+[connection signal="mouse_entered" from="NewGame/Panel/Start" to="." method="_on_Start_mouse_entered"]
 [connection signal="pressed" from="NewGame/Panel/Start" to="." method="_on_Start_pressed"]
+[connection signal="timeout" from="Beep/BeepTimer" to="." method="_on_BeepTimer_timeout"]
+[connection signal="timeout" from="Click/ClickTimer" to="." method="_on_ClickTimer_timeout"]

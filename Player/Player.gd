@@ -99,18 +99,18 @@ func _physics_process(delta):
             velocity = ship.move_and_slide(velocity)
         
         #Map
-        if camera_state == "zooming_out" and $ChaseCamera.zoom < Vector2(15,15):
+        if camera_state == "zooming_out" and $ChaseCamera.zoom < Vector2(20,20):
             $ChaseCamera.zoom += Vector2(.2,.2)
-        elif camera_state == "zooming_out" and $ChaseCamera.zoom > Vector2(15,15):
-            $ChaseCamera.zoom = Vector2(15,15)
-        elif camera_state == "zooming_out" and $ChaseCamera.zoom == Vector2(15,15):
+        elif camera_state == "zooming_out" and $ChaseCamera.zoom > Vector2(20,20):
+            $ChaseCamera.zoom = Vector2(20,20)
+        elif camera_state == "zooming_out" and $ChaseCamera.zoom == Vector2(20,20):
             camera_state = "zoomed_out"
             
-        if camera_state == "zooming_in" and $ChaseCamera.zoom > Vector2(2*ship_size,2*ship_size):
+        if camera_state == "zooming_in" and $ChaseCamera.zoom > Vector2(3*ship_size,3*ship_size):
             $ChaseCamera.zoom -= Vector2(.2,.2)
-        elif camera_state == "zooming_in" and $ChaseCamera.zoom < Vector2(2*ship_size,2*ship_size):
+        elif camera_state == "zooming_in" and $ChaseCamera.zoom < Vector2(3*ship_size,3*ship_size):
             $ChaseCamera.zoom = Vector2(2*ship_size,2*ship_size)
-        elif camera_state == "zooming_in" and $ChaseCamera.zoom == Vector2(2*ship_size,2*ship_size):
+        elif camera_state == "zooming_in" and $ChaseCamera.zoom == Vector2(3*ship_size,3*ship_size):
             camera_state = "zoomed_in"
         
         if $ChaseCamera.zoom < Vector2(10,10):
