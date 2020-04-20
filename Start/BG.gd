@@ -3,8 +3,8 @@ extends Node2D
 
 var relative_x
 var relative_y
-var mouse_x
-var mouse_y
+var mouse_x = 0
+var mouse_y = 0
 var mod = 10
 var wait = true
 onready var viewport_size = get_viewport().size
@@ -14,6 +14,10 @@ onready var viewport_size = get_viewport().size
 func _ready() -> void:
     wait = false
 
+func _input(event):
+    if event is InputEventMouseMotion:
+        mouse_x = event.position.x
+        mouse_y = event.position.y
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -38,7 +42,4 @@ func _process(delta: float) -> void:
         $Layer4/ParallaxLayer.motion_offset.x = 6 * mod * relative_x
         $Layer4/ParallaxLayer.motion_offset.y = 6 * mod * relative_y
 
-func _input(event):
-    if event is InputEventMouseMotion:
-        mouse_x = event.position.x
-        mouse_y = event.position.y
+

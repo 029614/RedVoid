@@ -1,0 +1,25 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Assets/explosions/explosion1/2.png" type="Texture" id=1]
+[ext_resource path="res://Assets/explosions/explosion1/1.png" type="Texture" id=2]
+[ext_resource path="res://Assets/explosions/explosion1/3.png" type="Texture" id=3]
+[ext_resource path="res://Assets/explosions/explosion1/4.png" type="Texture" id=4]
+[ext_resource path="res://Assets/explosions/explosion1/5.png" type="Texture" id=5]
+[ext_resource path="res://Assets/explosions/explosion1/6.png" type="Texture" id=6]
+[ext_resource path="res://Assets/explosions/explosion1/7.png" type="Texture" id=7]
+[ext_resource path="res://Assets/explosions/explosion1/8.png" type="Texture" id=8]
+[ext_resource path="res://Assets/explosions/explosion1/Explosion1.gd" type="Script" id=9]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), null ],
+"loop": false,
+"name": "default",
+"speed": 20.0
+} ]
+
+[node name="Explosion1" type="AnimatedSprite"]
+frames = SubResource( 1 )
+frame = 8
+script = ExtResource( 9 )
+[connection signal="animation_finished" from="." to="." method="_on_Explosion1_animation_finished"]
