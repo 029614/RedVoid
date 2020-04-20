@@ -54,7 +54,7 @@ scroll_ignore_camera_zoom = true
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="Background"]
 modulate = Color( 0.956863, 0.819608, 0.819608, 1 )
-motion_scale = Vector2( 0.2, 0.2 )
+motion_scale = Vector2( 0.12, 0.12 )
 motion_mirroring = Vector2( 1920, 1080 )
 
 [node name="Sprite" type="Sprite" parent="Background/ParallaxLayer"]
@@ -68,7 +68,7 @@ scroll_ignore_camera_zoom = true
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="Foreground"]
 modulate = Color( 0.768627, 0.878431, 0.933333, 1 )
-motion_scale = Vector2( 0.3, 0.3 )
+motion_scale = Vector2( 0.15, 0.15 )
 motion_mirroring = Vector2( 1920, 1080 )
 
 [node name="Sprite" type="Sprite" parent="Foreground/ParallaxLayer"]
@@ -78,7 +78,7 @@ texture = ExtResource( 4 )
 scroll_ignore_camera_zoom = true
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="Nebula"]
-motion_scale = Vector2( 0.1, 0.1 )
+motion_scale = Vector2( 0.05, 0.05 )
 
 [node name="Nebula" type="Sprite" parent="Nebula/ParallaxLayer"]
 modulate = Color( 1, 1, 1, 0.694118 )
@@ -92,7 +92,7 @@ transform = Transform2D( 1, 0, 0, 1, 980, 540 )
 scroll_ignore_camera_zoom = true
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="Particles"]
-motion_scale = Vector2( 0.5, 0.5 )
+motion_scale = Vector2( 0.2, 0.2 )
 motion_mirroring = Vector2( 1920, 1080 )
 
 [node name="Particles" type="Sprite" parent="Particles/ParallaxLayer"]
