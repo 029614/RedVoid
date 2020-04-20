@@ -237,6 +237,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Panel2" type="Panel" parent="MainMenu"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -205.0
+margin_top = -39.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MainMenu/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_colors/font_color = Color( 0.0784314, 1, 0, 0.564706 )
+text = "Version: 0.1a"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TextureRect" type="TextureRect" parent="MainMenu"]
 visible = false
 anchor_left = 1.0
