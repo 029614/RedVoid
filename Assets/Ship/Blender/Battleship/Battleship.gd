@@ -2,8 +2,8 @@ extends KinematicBody2D
 
 #References
 var scene = Global.world
-onready var pilot = $Pilot.get_children()[0]
-onready var fuel_gauge = pilot.fuel_gauge
+#onready var pilot = $Pilot.get_children()[0]
+#onready var fuel_gauge = pilot.fuel_gauge
 
 
 #Preloads
@@ -62,11 +62,11 @@ var mouse_pos
 
 
 func _ready() -> void:
-    $Pilot.get_children()[0].ship = self
+  #  $Pilot.get_children()[0].ship = self
 
 
 func _physics_process(delta: float) -> void:
-    rotation = pilot.rotation
+    #rotation = pilot.rotation
     #After Burner
     if animate_after_burner == true:
         thrust_modifier = 10

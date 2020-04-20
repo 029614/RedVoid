@@ -16,8 +16,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-    relative_x = (mouse_x - (viewport_size.x/2)) / (viewport_size.x/2)
-    relative_y = (mouse_y - (viewport_size.y/2)) / (viewport_size.y/2)
+    relative_x = -(mouse_x - (viewport_size.x/2)) / (viewport_size.x/2)
+    relative_y = -(mouse_y - (viewport_size.y/2)) / (viewport_size.y/2)
     $Canvas/ParallaxLayer.motion_offset.x = 1 * mod * relative_x
     $Canvas/ParallaxLayer.motion_offset.y = 1 * mod * relative_y
     

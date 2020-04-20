@@ -49,6 +49,7 @@ onready var gun_coords = $GunCoords
 export var fuel = 5000
 var fuel_cap = 5000
 var shields = 100
+var ship_size = 1
 
 #Controls
 var rotation_dir
