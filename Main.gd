@@ -8,6 +8,7 @@ var ships
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     #Global.connect("player_landed", self, "onPlanet")
+    Input.set_mouse_mode(1)
     Global.connect("torpedo_request", self, "issueTorpedo")
     Global.connect("request_planets", self, "sendPlanetPositions")
     Global.emit_signal("main_ready")
