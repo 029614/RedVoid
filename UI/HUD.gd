@@ -10,6 +10,8 @@ var icons_active = false
 
 var icons = []
 var tracking = []
+
+var cannon = "stopped"
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     pass
@@ -32,7 +34,7 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
     
-    if Input.is_action_just_pressed("compose_message"):
+    if Input.is_action_just_released("compose_message"):
         if get_focus_owner() == $ReadOut/LineInput:
             pass
         else:
@@ -184,6 +186,13 @@ func beep():
     $Sounds/Beep.play(0.0)
     $Sounds/Beep/BeepTimer.start()
 
+func cannon(value):
+    if value == true and cannon == "stopped":
+        $Sounds/Cannon.play(0.0)
+        cannon = "playing"
+    elif value == false and cannon == "playing":
+        $Sounds/Cannon.stop()
+        cannon = "stopped"
 
 func _on_BeepTimer_timeout() -> void:
     $Sounds/Beep.stop()

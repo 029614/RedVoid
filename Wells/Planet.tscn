@@ -69,7 +69,7 @@ position = Vector2( 319.815, 265.339 )
 [node name="Prog" type="Node2D" parent="."]
 
 [node name="CaptureProgress" type="TextureProgress" parent="Prog"]
-self_modulate = Color( 0.494118, 1, 0.180392, 0.278431 )
+self_modulate = Color( 0.494118, 1, 0.180392, 0.392157 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -86,11 +86,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NinePatchRect" type="NinePatchRect" parent="Prog/CaptureProgress"]
+[node name="Unclaimed" type="NinePatchRect" parent="Prog/CaptureProgress"]
 self_modulate = Color( 1, 1, 1, 0.32549 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Planet" type="Label" parent="Prog"]
 margin_left = -128.0
@@ -104,5 +107,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="area_shape_entered" from="Landing" to="." method="_on_Landing_area_shape_entered"]
+[connection signal="area_shape_exited" from="Landing" to="." method="_on_Landing_area_shape_exited"]
 [connection signal="body_entered" from="Arrival" to="." method="_on_Arrival_body_entered"]
 [connection signal="body_exited" from="Arrival" to="." method="_on_Arrival_body_exited"]

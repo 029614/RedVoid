@@ -68,7 +68,7 @@ scroll_ignore_camera_zoom = true
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="Foreground"]
 modulate = Color( 0.768627, 0.878431, 0.933333, 1 )
-motion_scale = Vector2( 0.15, 0.15 )
+motion_scale = Vector2( 0.2, 0.2 )
 motion_mirroring = Vector2( 1920, 1080 )
 
 [node name="Sprite" type="Sprite" parent="Foreground/ParallaxLayer"]
@@ -92,7 +92,7 @@ transform = Transform2D( 1, 0, 0, 1, 980, 540 )
 scroll_ignore_camera_zoom = true
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="Particles"]
-motion_scale = Vector2( 0.2, 0.2 )
+motion_scale = Vector2( 0.25, 0.25 )
 motion_mirroring = Vector2( 1920, 1080 )
 
 [node name="Particles" type="Sprite" parent="Particles/ParallaxLayer"]

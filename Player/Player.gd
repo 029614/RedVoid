@@ -143,10 +143,12 @@ func _input(event):
         if ship.location_state == "free" and current_weapon == "missile" and Input.is_action_just_pressed("weapons"):
             #Global.emit_signal("torpedo_request", self)
             ship.fireControl("missile")
-        if ship.location_state == "free" and current_weapon == "cannon" and Input.is_action_pressed("weapons"):
+        if ship.location_state == "free" and current_weapon == "cannon" and firing_cannon == false and Input.is_action_pressed("weapons"):
             firing_cannon = true
-        elif ship.location_state == "free" and current_weapon == "cannon" and Input.is_action_just_released("weapons"):
+            hud.cannon(true)
+        elif ship.location_state == "free" and current_weapon == "cannon" and firing_cannon == true and Input.is_action_just_released("weapons"):
             firing_cannon = false
+            hud.cannon(false)
         
         #Camera Zoom
         if Input.is_action_pressed("zoom_in") and camera_state == "zoomed_in":

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Start/BG.gd" type="Script" id=1]
 [ext_resource path="res://Assets/canvas.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Assets/Images/Title.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Sounds/Beep.ogg" type="AudioStream" id=8]
 [ext_resource path="res://Assets/Sounds/Button.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Planets/Planet1.png" type="Texture" id=10]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.117647, 0.67451, 0, 0.266667 )
@@ -114,8 +115,8 @@ transform = Transform2D( 1, 0, 0, 1, 960, 540 )
 [node name="ParallaxLayer" type="ParallaxLayer" parent="BG/Layer4"]
 
 [node name="Sprite" type="Sprite" parent="BG/Layer4/ParallaxLayer"]
-position = Vector2( 365.044, -266.859 )
-texture = ExtResource( 7 )
+position = Vector2( 259.278, 177.787 )
+texture = ExtResource( 10 )
 
 [node name="MainMenu" type="Control" parent="."]
 anchor_right = 1.0
@@ -389,7 +390,7 @@ __meta__ = {
 
 [node name="Beep" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
-volume_db = -10.0
+volume_db = -12.0
 
 [node name="BeepTimer" type="Timer" parent="Beep"]
 wait_time = 0.092
@@ -403,6 +404,17 @@ pitch_scale = 1.2
 [node name="ClickTimer" type="Timer" parent="Click"]
 wait_time = 0.08
 one_shot = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 1146.15
+margin_top = -23.7432
+margin_right = 3066.15
+margin_bottom = 476.257
+rect_scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="mouse_entered" from="MainMenu/Panel/VBoxContainer/New" to="." method="_on_New_mouse_entered"]
 [connection signal="pressed" from="MainMenu/Panel/VBoxContainer/New" to="." method="_on_New_pressed"]
 [connection signal="mouse_entered" from="MainMenu/Panel/VBoxContainer/Load" to="." method="_on_Load_mouse_entered"]

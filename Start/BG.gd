@@ -24,22 +24,22 @@ func _process(delta: float) -> void:
     if wait == false:
         relative_x = -(mouse_x - (viewport_size.x/2)) / (viewport_size.x/2)
         relative_y = -(mouse_y - (viewport_size.y/2)) / (viewport_size.y/2)
-        $Canvas/ParallaxLayer.motion_offset.x = 1 * mod * relative_x
-        $Canvas/ParallaxLayer.motion_offset.y = 1 * mod * relative_y
+        $Canvas/ParallaxLayer.motion_offset.x = .5 * mod * relative_x
+        $Canvas/ParallaxLayer.motion_offset.y = .5 * mod * relative_y
         
-        $Nebula/ParallaxLayer.motion_offset.x = 2 * mod * relative_x
-        $Nebula/ParallaxLayer.motion_offset.y = 2 * mod * relative_y
+        $Nebula/ParallaxLayer.motion_offset.x = 1 * mod * relative_x
+        $Nebula/ParallaxLayer.motion_offset.y = 1 * mod * relative_y
         
-        $Layer1/ParallaxLayer.motion_offset.x = 3 * mod * relative_x
-        $Layer1/ParallaxLayer.motion_offset.y = 3 * mod * relative_y
+        $Layer1/ParallaxLayer.motion_offset.x = 2 * mod * relative_x
+        $Layer1/ParallaxLayer.motion_offset.y = 2 * mod * relative_y
         
-        $Layer2/ParallaxLayer.motion_offset.x = 4 * mod * relative_x
-        $Layer2/ParallaxLayer.motion_offset.y = 4 * mod * relative_y
+        $Layer2/ParallaxLayer.motion_offset.x = 3 * mod * relative_x
+        $Layer2/ParallaxLayer.motion_offset.y = 3 * mod * relative_y
         
-        $Layer3/ParallaxLayer.motion_offset.x = 5 * mod * relative_x
-        $Layer3/ParallaxLayer.motion_offset.y = 5 * mod * relative_y
+        $Layer3/ParallaxLayer.motion_offset.x = 4 * mod * relative_x
+        $Layer3/ParallaxLayer.motion_offset.y = 4 * mod * relative_y
         
-        $Layer4/ParallaxLayer.motion_offset.x = 6 * mod * relative_x
-        $Layer4/ParallaxLayer.motion_offset.y = 6 * mod * relative_y
+        $Layer4/ParallaxLayer.motion_offset.x = 8 * mod * relative_x
+        $Layer4/ParallaxLayer.motion_offset.y = 8 * mod * relative_y
 
 

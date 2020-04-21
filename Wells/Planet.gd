@@ -62,7 +62,12 @@ func _physics_process(delta: float) -> void:
             planet_state = "occupied"
             capture(capturing_fac, self)
             capturing_fac = null
+            $Prog/CaptureProgress/Unclaimed.hide()
             print("successful capture")
+    
+    if planet_state == "empty" and capture_perc > 0:
+        print("planet empty")
+        capture_perc -= .5
 
 func capture(faction, planet):
     if ownership != faction and planet == self:
@@ -127,3 +132,8 @@ func set_planet_color(color):
 func get_planet_color():
     pass
 
+
+
+func _on_Landing_area_shape_exited(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
+    if planet_state != "occupied":
+        planet_state = "empty"
