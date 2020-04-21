@@ -71,6 +71,14 @@ func _physics_process(delta: float) -> void:
         thrust_modifier = 10
     elif animate_after_burner == false:
         thrust_modifier = 1
+    
+    if animate_engines == true:
+        $Engine1.show()
+        $Engine2.show()
+    elif animate_engines == false:
+        $Engine1.hide()
+        $Engine2.hide()
+        
 
 
 func someFunc():
@@ -104,6 +112,7 @@ func fireControl(weapon):
         m.gun_speed = current_speed
         m.rotation = global_rotation
         m.shooter = self
+        m.ship_velocity = pilot.velocity
         Global.world.add_child(m)
         m.global_position = gun_coords.get_global_position()
         cannon_state = "cooldown"

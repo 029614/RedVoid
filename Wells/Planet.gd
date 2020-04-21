@@ -19,9 +19,24 @@ onready var orbit = {$RotateMe/orbit1: false, $RotateMe/orbit2: false, $RotateMe
 var capture_perc = 0
 var capturing_fac = null
 
+# Planet_resources
+export var hydrogen = false
+export var iron = false
+export var carbon = false
+export var radioisotope = false
+export var lithium = false
+export var silicon = false
+export var conductive_metals = false
+export var platinum = false
+export var lead = false
+export var tungsten = false
+onready var resource_list = {"hydrogen":hydrogen, "iron":iron, "carbon":carbon, "radioisotope":radioisotope, "lithium":lithium, "silicon":silicon, "conductive_metals":conductive_metals, "platinum":platinum, "lead":lead, "tungsten":tungsten}
+
+var resource_store = {"hydrogen":0, "iron":0, "carbon":0, "radioisotope":0, "lithium":0, "silicon":0, "conductive_metals":0, "platinum":0, "lead":0, "tungsten":0}
+
 
 # Planet states
-var planet_states = ["empty", "occupied", "being_captured"]
+var planet_states = ["empty", "occupied", "being_captured", "colonized"]
 var planet_state = "empty"
 
 # Called when the node enters the scene tree for the first time.
@@ -68,6 +83,9 @@ func _physics_process(delta: float) -> void:
     if planet_state == "empty" and capture_perc > 0:
         print("planet empty")
         capture_perc -= .5
+    
+    if planet_state == "colonized":
+        resourceTurn()
 
 func capture(faction, planet):
     if ownership != faction and planet == self:
@@ -133,6 +151,11 @@ func get_planet_color():
     pass
 
 
+func resourceTurn():
+    for resource in resource_list.keys():
+        if resource_list.resource == true:
+            resource_store.resource += 1
+            
 
 func _on_Landing_area_shape_exited(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
     if planet_state != "occupied":

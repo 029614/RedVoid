@@ -4,8 +4,9 @@ extends RigidBody2D
 var projectile_speed = 1500
 var gun_speed = 0
 var lifetime = 1
+var ship_velocity = Vector2()
 var shooter = null
-onready var impulse = Vector2(projectile_speed, 0).rotated((rotation - deg2rad(9)) + deg2rad(randi()%10))
+onready var impulse
 
 
 # Called when the node enters the scene tree for the first time.
@@ -15,6 +16,7 @@ func _ready() -> void:
     t.set_wait_time(lifetime)
     t.connect("timeout", self, "bulletExpire")
     t.start()
+    impulse = Vector2(projectile_speed, 0).rotated((rotation - deg2rad(9)) + deg2rad(randi()%10)) + ship_velocity
     apply_impulse(Vector2(), impulse)
 
 

@@ -35,11 +35,11 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
     
     if Input.is_action_just_released("compose_message"):
-        if get_focus_owner() == $ReadOut/LineInput:
+        if get_focus_owner() == $ConsoleBottom/ReadOut/LineInput:
             pass
         else:
-            $ReadOut/LineInput.grab_focus()
-            $ReadOut/LineInput.clear()
+            $ConsoleBottom/ReadOut/LineInput.grab_focus()
+            $ConsoleBottom/ReadOut/LineInput.clear()
 
 
 
@@ -48,8 +48,8 @@ func fuelWarning():
         blink_speed = -5
     elif red_alpha == 180:
         blink_speed = 5
-    $Vitals/FuelGauge.set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
-    $Vitals/FuelGauge.get_node("Label").set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
+    $ConsoleFuel/FuelGauge.set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
+    $ConsoleFuel/FuelGauge.get_node("Label").set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
     red_alpha -= blink_speed
         
 
@@ -65,9 +65,9 @@ func get_fire_mode():
 
 #sets the fuel gauge current value and max value
 func set_fuel(fuel, fuel_max):
-    $Vitals/FuelGauge.set_value(fuel)
+    $ConsoleFuel/FuelGauge.set_value(fuel)
     if fuel_max and $Vitals/FuelGauge.get_max() != fuel_max:
-        $Vitals/FuelGauge.set_max(fuel_max)
+        $ConsoleFuel/FuelGauge.set_max(fuel_max)
 
 #returns the current fuel display as fuel/fuel_max
 func get_fuel():
@@ -149,15 +149,15 @@ func get_warnings():
 func _on_LineInput_text_entered(new_text: String) -> void:
     if new_text.begins_with("/"):
         Global.world.command(new_text)
-        $ReadOut/LineInput.clear()
-        $ReadOut/LineInput.set_focus_mode(0)
-        $ReadOut/LineInput.set_focus_mode(1)
+        $ConsoleBottom/ReadOut/LineInput.clear()
+        $ConsoleBottom/ReadOut/LineInput.set_focus_mode(0)
+        $ConsoleBottom/ReadOut/LineInput.set_focus_mode(1)
     else:
         var t = "Player: " + new_text
         set_message(t)
-        $ReadOut/LineInput.clear()
-        $ReadOut/LineInput.set_focus_mode(0)
-        $ReadOut/LineInput.set_focus_mode(1)
+        $ConsoleBottom/ReadOut/LineInput.clear()
+        $ConsoleBottom/ReadOut/LineInput.set_focus_mode(0)
+        $ConsoleBottom/ReadOut/LineInput.set_focus_mode(1)
     beep()
 
 

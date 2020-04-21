@@ -34,6 +34,11 @@ scale = Vector2( 2, 2 )
 [node name="Planet4" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
 position = Vector2( -10557.7, 6344.66 )
 scale = Vector2( 2, 2 )
+hydrogen = true
+iron = true
+carbon = true
+radioisotope = true
+lithium = true
 
 [node name="Planet5" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
 position = Vector2( -10365.7, -7148.53 )

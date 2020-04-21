@@ -28,9 +28,6 @@ func _physics_process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
     if Input.is_action_just_pressed("Quit"):
         get_tree().quit()
-
-func placeTarg(loc, title):
-    pass
     
 func command(command):
     if command == "/restart":
