@@ -1,5 +1,4 @@
 extends Node2D
-var target = preload("res://Target.tscn")
 var new_position = Vector2()
 onready var player = $Factions/Faction/Actor
 var ships
@@ -31,10 +30,7 @@ func _input(event: InputEvent) -> void:
         get_tree().quit()
 
 func placeTarg(loc, title):
-    var t = target.instance()
-    t.get_node("Planet").set_text(title)
-    self.add_child(t)
-    t.set_global_position(loc)
+    pass
     
 func command(command):
     if command == "/restart":

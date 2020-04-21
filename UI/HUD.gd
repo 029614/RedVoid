@@ -127,7 +127,7 @@ func set_message(message):
     l.set_text(message)
     l.set_custom_minimum_size(Vector2(530, 0))
     l.set_autowrap(true)
-    $ReadOut/ScrollContainer/VBoxContainer.add_child(l)
+    $ConsoleBottom/ReadOut/ScrollContainer/VBoxContainer.add_child(l)
 
 #returns a list of all messages
 func get_messages():
