@@ -196,3 +196,17 @@ func cannon(value):
 
 func _on_BeepTimer_timeout() -> void:
     $Sounds/Beep.stop()
+
+
+
+
+
+func _on_HideButton_toggled(button_pressed: bool) -> void:
+    if button_pressed == true:
+        $ConsoleBottom.set_size(Vector2($ConsoleBottom.get_size().x,137))
+        $ConsoleBottom.set_position(Vector2($ConsoleBottom.get_position().x,$ConsoleBottom.get_position().y + 171))
+        $ConsoleBottom/HideButton.set_text("Show")
+    elif button_pressed == false:
+        $ConsoleBottom.set_size(Vector2($ConsoleBottom.get_size().x,308))
+        $ConsoleBottom.set_position(Vector2($ConsoleBottom.get_position().x,$ConsoleBottom.get_position().y - 171))
+        $ConsoleBottom/HideButton.set_text("Hide")

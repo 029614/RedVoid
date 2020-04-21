@@ -8,7 +8,7 @@ onready var last_position = get_position()
 onready var ship = get_parent().get_parent()
 onready var faction = ship.get_parent().get_parent()
 onready var hud = $CanvasLayer/HUD
-onready var fuel_gauge = $CanvasLayer/HUD/Vitals/FuelGauge
+onready var fuel_gauge = $CanvasLayer/HUD/ConsoleFuel/FuelGauge
 
 #input and direction
 var velocity = Vector2()
@@ -240,19 +240,19 @@ func playerLog(string):
 func weaponSelect(select):
     if select == 1:
         current_weapon = "cannon"
-        $CanvasLayer/HUD/Weapons/VBoxContainer/Missiles/Control.hide()
-        $CanvasLayer/HUD/Weapons/VBoxContainer/Bombs/Control.hide()
-        $CanvasLayer/HUD/Weapons/VBoxContainer/Guns/Control.show()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Missiles/Control.hide()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Bombs/Control.hide()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Guns/Control.show()
     elif select == 2:
         current_weapon = "missile"
-        $CanvasLayer/HUD/Weapons/VBoxContainer/Missiles/Control.show()
-        $CanvasLayer/HUD/Weapons/VBoxContainer/Bombs/Control.hide()
-        $CanvasLayer/HUD/Weapons/VBoxContainer/Guns/Control.hide()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Missiles/Control.show()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Bombs/Control.hide()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Guns/Control.hide()
     elif select == 3:
         current_weapon = "bomb"
-        $CanvasLayer/HUD/Weapons/VBoxContainer/Missiles/Control.hide()
-        $CanvasLayer/HUD/Weapons/VBoxContainer/Bombs/Control.show()
-        $CanvasLayer/HUD/Weapons/VBoxContainer/Guns/Control.hide()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Missiles/Control.hide()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Bombs/Control.show()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Guns/Control.hide()
 
 
 func _on_CannonCoolDown_timeout() -> void:
