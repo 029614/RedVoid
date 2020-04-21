@@ -30,8 +30,8 @@ func _ready() -> void:
     if randi()%3+1 == 1:
         moon = true
     var normal_scale = Vector2(1/get_scale().x, 1/get_scale().y)
-    $Planet.set_scale(normal_scale)
-    $Planet.set_position($Planet.get_position()*normal_scale)
+    $Prog/Planet.set_scale(normal_scale)
+    $Prog/Planet.set_position($Prog/Planet.get_position()*normal_scale)
     mass = pow((mass * self.get_scale().x), 2) * mass_multiplyer
     planet_radius = planet_radius * self.get_scale().x
     print(self.name, " Mass: ", mass, " Radius: ", planet_radius)
@@ -40,6 +40,8 @@ func _ready() -> void:
     var gp = self.global_position
     var mp = get_parent().get_parent().position
     var gp2 = mp + lp
+    look_at(get_parent().get_node("Sun").get_global_position())
+    $Prog.global_rotation = 0
     #print("lp, gp, mp,  gp2: ", lp, gp, mp, gp2)
     
     #print("Planet Radius, ", name, ": ", planet_radius)
@@ -48,14 +50,13 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
     $RotateMe.rotation += orbit_velocity * delta
-    look_at(get_parent().get_node("Sun").get_global_position())
     
     #Capturing
     if planet_state == "being_captured" :
         if capture_perc < 100.0:
             capture_perc += .1
             print(capture_perc)
-            $CaptureProgress.set_value(capture_perc)
+            $Prog/CaptureProgress.set_value(capture_perc)
         elif capture_perc >= 100:
             capture_perc = 100
             planet_state = "occupied"

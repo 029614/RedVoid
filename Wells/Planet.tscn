@@ -37,18 +37,6 @@ shape = SubResource( 3 )
 
 [node name="Constructions" type="Node2D" parent="."]
 
-[node name="Planet" type="Label" parent="."]
-margin_left = -123.919
-margin_top = 260.28
-margin_right = 132.081
-margin_bottom = 300.28
-text = "Planet"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="PlanetSprite" parent="." instance=ExtResource( 1 )]
 scale = Vector2( 1.11733, 1.11733 )
 
@@ -78,16 +66,18 @@ position = Vector2( -326.008, 252.823 )
 [node name="orbit8" type="Position2D" parent="RotateMe"]
 position = Vector2( 319.815, 265.339 )
 
-[node name="CaptureProgress" type="TextureProgress" parent="."]
+[node name="Prog" type="Node2D" parent="."]
+
+[node name="CaptureProgress" type="TextureProgress" parent="Prog"]
 self_modulate = Color( 0.494118, 1, 0.180392, 0.278431 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -456.0
-margin_top = -464.0
+margin_top = -456.0
 margin_right = 456.0
-margin_bottom = 448.0
+margin_bottom = 456.0
 step = 0.1
 texture_progress = ExtResource( 3 )
 fill_mode = 4
@@ -96,11 +86,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NinePatchRect" type="NinePatchRect" parent="CaptureProgress"]
+[node name="NinePatchRect" type="NinePatchRect" parent="Prog/CaptureProgress"]
 self_modulate = Color( 1, 1, 1, 0.32549 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 4 )
+
+[node name="Planet" type="Label" parent="Prog"]
+margin_left = -128.0
+margin_top = 264.0
+margin_right = 128.0
+margin_bottom = 304.0
+text = "Planet"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="area_shape_entered" from="Landing" to="." method="_on_Landing_area_shape_entered"]
 [connection signal="body_entered" from="Arrival" to="." method="_on_Arrival_body_entered"]
 [connection signal="body_exited" from="Arrival" to="." method="_on_Arrival_body_exited"]
