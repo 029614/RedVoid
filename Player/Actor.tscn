@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Particles/HeatShield.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Sounds/Engine.ogg" type="AudioStream" id=2]
-[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Player/Actor.gd" type="Script" id=6]
+[ext_resource path="res://Player/Interceptor.gd" type="Script" id=6]
 [ext_resource path="res://Assets/Ship/FighterSprite.tscn" type="PackedScene" id=14]
 
 [sub_resource type="CapsuleShape2D" id=1]
@@ -95,6 +94,4 @@ volume_db = -80.0
 wait_time = 0.05
 
 [node name="Pilot" type="Node2D" parent="."]
-
-[node name="Player" parent="Pilot" instance=ExtResource( 3 )]
 [connection signal="timeout" from="CannonCoolDown" to="." method="_on_CannonCoolDown_timeout"]

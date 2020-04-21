@@ -16,6 +16,13 @@ var ownership = null
 var orbit_assignment
 onready var orbit = {$RotateMe/orbit1: false, $RotateMe/orbit2: false, $RotateMe/orbit3: false, $RotateMe/orbit4: false, $RotateMe/orbit5: false, $RotateMe/orbit6: false, $RotateMe/orbit7: false, $RotateMe/orbit8: false}
 
+var capture_perc = 0
+var capturing_fac = null
+
+
+# Planet states
+var planet_states = ["empty", "occupied", "being_captured"]
+var planet_state = "empty"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -42,29 +49,36 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
     $RotateMe.rotation += orbit_velocity * delta
     look_at(get_parent().get_node("Sun").get_global_position())
-
-func readyTakeOff():
-    self._is_active_takeoff = true
-    $KinematicBody2D.hide()
-    $Area2D/CollisionShape2D.disabled = true
-    print("ready for takeoff!")
-
-func takeOff():
-    $KinematicBody2D.show()
-    $Area2D/CollisionShape2D.set_disabled(false)
+    
+    #Capturing
+    if planet_state == "being_captured" :
+        if capture_perc < 100.0:
+            capture_perc += .1
+            print(capture_perc)
+            $CaptureProgress.set_value(capture_perc)
+        elif capture_perc >= 100:
+            capture_perc = 100
+            planet_state = "occupied"
+            capture(capturing_fac, self)
+            capturing_fac = null
+            print("successful capture")
 
 func capture(faction, planet):
     if ownership != faction and planet == self:
         ownership = faction
-        $FactionIndicator.set_modulate(faction.faction_color)
+        faction.planets.append(self)
+        var message = str(planet.name) + " has been captured by " + str(faction.name) + "."
+        Global.messageAll(message)
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
     if Global.player_registry.has(area.get_parent()) and _is_destructive == true:
         Global.emit_signal("player_died")
     elif area.name == "LandingGear" and _is_destructive == false:
-        Global.emit_signal("player_landed", self)
-        print("player is landing")
-
+        area.get_parent().location_state = "landing"
+        area.get_parent().pilot.planet = self
+        planet_state = "being_captured"
+        capturing_fac = area.get_parent().pilot.faction
+        print("lalala")
 
 func _on_Arrival_body_entered(body: Node) -> void:
     print(body)

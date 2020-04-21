@@ -61,7 +61,6 @@ func _ready() -> void:
     acceleration = thrust/mass
     rads_per_sec = 6.283185*rps
     $AlienFighterSprite/ShipAccent.modulate = enemy_color
-    Global.player_registry.append(self)
     
 
 func apply_gravity(delta):
@@ -134,7 +133,7 @@ func draw_arrow(arrow, t, mp):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-    target = get_parent().get_parent().get_node("Faction/Actor").global_position
+    target = Vector2(0,0)
     var mp = Global.world.position #position of Main
     var gt = apply_gravity(delta)
     var g = gt[0] #gravity of all planets except target

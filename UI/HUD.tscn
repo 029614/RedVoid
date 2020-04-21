@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Assets/HUD.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Fonts/standardFont.tres" type="DynamicFont" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/Cursor/Crosshair.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/WarningOff.png" type="Texture" id=6]
 [ext_resource path="res://Assets/warningOn.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Sounds/Beep.ogg" type="AudioStream" id=8]
 [ext_resource path="res://UI/HUD.gd" type="Script" id=9]
 
 [sub_resource type="Theme" id=1]
@@ -361,4 +362,15 @@ follow_viewport_enable = true
 [node name="Cursor" type="CanvasLayer" parent="."]
 
 [node name="Crosshair" parent="Cursor" instance=ExtResource( 5 )]
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Beep" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 8 )
+volume_db = -10.0
+
+[node name="BeepTimer" type="Timer" parent="Sounds/Beep"]
+wait_time = 0.092
+one_shot = true
 [connection signal="text_entered" from="ReadOut/LineInput" to="." method="_on_LineInput_text_entered"]
+[connection signal="timeout" from="Sounds/Beep/BeepTimer" to="." method="_on_BeepTimer_timeout"]

@@ -4,9 +4,10 @@ extends Node2D
 """ -------- DECLARATION -------- """
 onready var bodies = Global.bodies
 onready var engine = Global.world
-onready var faction = null
 onready var last_position = get_position()
 onready var ship = get_parent().get_parent()
+onready var faction = ship.get_parent().get_parent()
+onready var hud = $CanvasLayer/HUD
 onready var fuel_gauge = $CanvasLayer/HUD/Vitals/FuelGauge
 
 #input and direction
@@ -50,7 +51,8 @@ var camera_state = "zoomed_in"
 func _ready():
     
     #Connecting signals and presetting flags
-    Global.connect("player_landed", self, "land")
+    ship.pilot = self
+    ship.faction = faction
     Global.connect("player_arrival", self, "setupOrbit")
     Global.connect("player_died", self, "destruct")
     Global._process_player_movement = true
@@ -59,10 +61,10 @@ func _ready():
     $ChaseCamera.zoom = Vector2(2*ship_size,2*ship_size)
 
 func get_input(delta):
-        
+    
+    rotation_dir = 0
     #Directional Inputs
     if ship.location_state == "free":
-        rotation_dir = 0
         if Input.is_action_pressed('ui_right'):
             rotation_dir += 1 
         if Input.is_action_pressed('ui_left'):
@@ -98,6 +100,10 @@ func _physics_process(delta):
         elif ship.location_state == "free":
             velocity = ship.move_and_slide(velocity)
         
+        elif ship.location_state == "landing":
+            print("player has now landed")
+            ship.location_state = "on_planet"
+        
         #Map
         if camera_state == "zooming_out" and $ChaseCamera.zoom < Vector2(20,20):
             $ChaseCamera.zoom += Vector2(.2,.2)
@@ -109,7 +115,7 @@ func _physics_process(delta):
         if camera_state == "zooming_in" and $ChaseCamera.zoom > Vector2(3*ship_size,3*ship_size):
             $ChaseCamera.zoom -= Vector2(.2,.2)
         elif camera_state == "zooming_in" and $ChaseCamera.zoom < Vector2(3*ship_size,3*ship_size):
-            $ChaseCamera.zoom = Vector2(2*ship_size,2*ship_size)
+            $ChaseCamera.zoom = Vector2(3*ship_size,3*ship_size)
         elif camera_state == "zooming_in" and $ChaseCamera.zoom == Vector2(3*ship_size,3*ship_size):
             camera_state = "zoomed_in"
         
@@ -178,6 +184,12 @@ func _input(event):
                 ship.location_state = "free"
                 velocity = Vector2()
                 ship.velocity = Vector2()
+        
+        if ship.location_state == "on_planet" and Input.is_action_just_pressed("ui_up"):
+            ship.location_state = "free"
+            planet = null
+            velocity = Vector2()
+            ship.velocity = Vector2()
 
 func apply_gravity(delta):
     for body in Global.bodies:
@@ -205,19 +217,19 @@ func orbit(orbit, planet):
 func updateGauge():
     #Fuel Gauge
     if ship.fuel > 0:
-        ship.fuel_gauge.set_value((ship.fuel/float(ship.fuel_cap))*100)
+        fuel_gauge.set_value((ship.fuel/float(ship.fuel_cap))*100)
         if ship.fuel/float(ship.fuel_cap)*100 <= 25 and ship.fuel/float(ship.fuel_cap)*100 > 0:
-            ship.fuel_gauge.set_self_modulate(Color8(253,50,40,130))
-            ship.fuel_gauge.get_node("Label").set_self_modulate(Color8(253,50,40,130))
-            ship.fuel_gauge.get_node("Label").set_text("Low Fuel!")
+            fuel_gauge.set_self_modulate(Color8(253,50,40,130))
+            fuel_gauge.get_node("Label").set_self_modulate(Color8(253,50,40,130))
+            fuel_gauge.get_node("Label").set_text("Low Fuel!")
         else:
-            ship.fuel_gauge.set_self_modulate(Color8(54,246,0,109))
-            ship.fuel_gauge.get_node("Label").set_self_modulate(Color8(54,246,0,109))
-            ship.fuel_gauge.get_node("Label").set_text("Fuel")
+            fuel_gauge.set_self_modulate(Color8(54,246,0,109))
+            fuel_gauge.get_node("Label").set_self_modulate(Color8(54,246,0,109))
+            fuel_gauge.get_node("Label").set_text("Fuel")
     else:
-        ship.fuel_gauge.set_self_modulate(Color8(253,50,40,0))
-        ship.fuel_gauge.get_node("Label").set_self_modulate(Color8(243,192,19,202))
-        ship.fuel_gauge.get_node("Label").set_text("-No Fuel-")
+        fuel_gauge.set_self_modulate(Color8(253,50,40,0))
+        fuel_gauge.get_node("Label").set_self_modulate(Color8(243,192,19,202))
+        fuel_gauge.get_node("Label").set_text("-No Fuel-")
 
 func playerLog(string):
     pass

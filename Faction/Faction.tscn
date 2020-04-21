@@ -5,6 +5,14 @@
 [node name="Faction" type="Node"]
 script = ExtResource( 1 )
 
-[node name="Fighters" type="Node" parent="."]
+[node name="Scouts" type="Node" parent="."]
+
+[node name="Interceptors" type="Node" parent="."]
+
+[node name="Bombers" type="Node" parent="."]
+
+[node name="Destroyers" type="Node" parent="."]
+
+[node name="Battleships" type="Node" parent="."]
 
 [node name="Freighters" type="Node" parent="."]

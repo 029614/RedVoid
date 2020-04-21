@@ -57,3 +57,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
 #    pass
+func messageAll(message):
+    for player in player_registry:
+        player.hud.set_message(str(message))
+        player.hud.beep()

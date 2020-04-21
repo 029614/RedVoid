@@ -156,9 +156,11 @@ func _on_LineInput_text_entered(new_text: String) -> void:
         $ReadOut/LineInput.clear()
         $ReadOut/LineInput.set_focus_mode(0)
         $ReadOut/LineInput.set_focus_mode(1)
+    beep()
 
 
 func activateIcons():
+    icons = []
     for ship in get_tree().get_nodes_in_group("ship"):
         if ship != player.ship:
             var t = enemy_icon.instance()
@@ -168,7 +170,8 @@ func activateIcons():
             t.global_scale = Vector2(3,3)
             icons_active = true
             icons.append(t)
-            tracking.append(ship)
+            if tracking.has(ship) == false:
+                tracking.append(ship)
             print("icons activated")
             print("currently active indicators: ", $Ships.get_children())
 
@@ -176,3 +179,11 @@ func deactivateIcons():
     for child in $Ships.get_children():
         child.queue_free()
     icons_active = false
+
+func beep():
+    $Sounds/Beep.play(0.0)
+    $Sounds/Beep/BeepTimer.start()
+
+
+func _on_BeepTimer_timeout() -> void:
+    $Sounds/Beep.stop()

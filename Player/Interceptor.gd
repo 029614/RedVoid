@@ -2,8 +2,7 @@ extends KinematicBody2D
 
 #References
 var scene = Global.world
-onready var pilot = $Pilot.get_children()[0]
-onready var fuel_gauge = pilot.fuel_gauge
+var pilot
 
 
 #Preloads
@@ -12,8 +11,6 @@ var shot = preload("res://Assets/Ship/Weapons/Shot.tscn")
 var explosion = preload("res://Assets/Particles/Explosion.tscn")
 
 #States
-var movement_states = ["idle", "traveling", "patrolling", "landing", "orbiting", "attacking", "harrasing", "retreating", "invading", "escorting", "intercepting", "defending", "delivering"]
-var movement_state = "idle"
 var location_states = ["in_orbit", "on_planet", "in_formation", "free"]
 var location_state = "free"
 
@@ -60,11 +57,12 @@ var rotation_dir
 
 
 func _ready() -> void:
-    $Pilot.get_children()[0].ship = self
+    pass
 
 
 func _physics_process(delta: float) -> void:
-    rotation = pilot.rotation
+    if pilot:
+        rotation = pilot.rotation
     #After Burner
     if animate_after_burner == true:
         thrust_modifier = 10
