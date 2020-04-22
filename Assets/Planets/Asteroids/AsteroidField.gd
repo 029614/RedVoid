@@ -33,7 +33,7 @@ func generate():
         #new_asteroid.sprite.set_flip_h(randBool())
         #new_asteroid.sprite.set_flip_v(randBool())
         add_child(new_asteroid)
-        new_asteroid.position = Vector2((new_asteroid.position.x - 30000) + randi()%60000,(new_asteroid.position.y - 30000) + randi()%60000)
+        new_asteroid.position = Vector2((new_asteroid.position.x - 4000) + randi()%8000,(new_asteroid.position.y - 4000) + randi()%8000)
         x += 1
 
 func randBool():
