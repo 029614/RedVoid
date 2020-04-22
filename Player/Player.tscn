@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://UI/HUD.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Player.gd" type="Script" id=2]
 [ext_resource path="res://starsBack.png" type="Texture" id=3]
 [ext_resource path="res://starsPar.png" type="Texture" id=4]
-[ext_resource path="res://Assets/mapShip.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Nebula.png" type="Texture" id=6]
 [ext_resource path="res://Assets/canvas.png" type="Texture" id=7]
 [ext_resource path="res://Assets/particleSheet.png" type="Texture" id=8]
@@ -37,14 +36,6 @@ script = ExtResource( 10 )
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource( 1 )]
 theme = SubResource( 1 )
-
-[node name="MapIcon" type="Sprite" parent="CanvasLayer"]
-visible = false
-modulate = Color( 0.0313726, 1, 0.0235294, 1 )
-position = Vector2( 959.66, 539.977 )
-rotation = 1.5708
-scale = Vector2( 0.359688, 0.359688 )
-texture = ExtResource( 5 )
 
 [node name="Background" type="ParallaxBackground" parent="."]
 layer = -99

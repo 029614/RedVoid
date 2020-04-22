@@ -62,6 +62,7 @@ var mouse_pos
 
 
 func _ready() -> void:
+    pass
   #  $Pilot.get_children()[0].ship = self
 
 

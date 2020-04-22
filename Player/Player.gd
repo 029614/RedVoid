@@ -17,6 +17,11 @@ var orbital_pos
 var orbit = {}
 var planet
 var zoom = Vector2()
+var zoom_interval = Vector2(1,1)
+var zoom_min = Vector2(5,5)
+var zoom_max = Vector2(250,250)
+var zoom_normal = Vector2(3,3)
+var map_center_relative
 
 #Ship
 onready var ship_size = ship.ship_size
@@ -41,8 +46,10 @@ var firing_cannon = false
 var cannon_speed = 1
 var cannon_ready = true
 
-var camera_states = ["zoomed_in", "zoomed_out", "zooming_in", "zooming_out"]
-var camera_state = "zoomed_in"
+var camera_states = ["zoomed_in", "zoomed_out", "zooming_in", "zooming_out", "tile", "map", "normal"]
+var camera_state = "normal"
+var camera_positions = ["on_player", "on_center"]
+var camera_position = "on_player"
 
 
 
@@ -55,10 +62,15 @@ func _ready():
     ship.faction = faction
     Global.connect("player_arrival", self, "setupOrbit")
     Global.connect("player_died", self, "destruct")
+    Global.connect("main_ready", self, "ready_ready")
     Global._process_player_movement = true
     Global.player_registry.append(self)
     $CanvasLayer/HUD.player = self
-    $ChaseCamera.zoom = Vector2(2*ship_size,2*ship_size)
+    $ChaseCamera.zoom = zoom_normal
+
+func ready_ready():
+    map_center_relative = global_position + Global.world.map_center
+
 
 func get_input(delta):
     
@@ -105,25 +117,38 @@ func _physics_process(delta):
             ship.location_state = "on_planet"
         
         #Map
-        if camera_state == "zooming_out" and $ChaseCamera.zoom < Vector2(50,50):
-            $ChaseCamera.zoom += Vector2(.5,.5)
-        elif camera_state == "zooming_out" and $ChaseCamera.zoom > Vector2(50,50):
-            $ChaseCamera.zoom = Vector2(50,50)
-        elif camera_state == "zooming_out" and $ChaseCamera.zoom == Vector2(50,50):
+        if camera_state == "zooming_out" and $ChaseCamera.zoom < zoom_max:
+            $ChaseCamera.zoom += zoom_interval
+            for label in hud.field_labels:
+                label.scale += zoom_interval
+        elif camera_state == "zooming_out" and $ChaseCamera.zoom > zoom_max:
+            $ChaseCamera.zoom = zoom_max
+            for label in hud.field_labels:
+                label.scale = zoom_max
+        elif camera_state == "zooming_out" and $ChaseCamera.zoom == zoom_max:
             camera_state = "zoomed_out"
+        
+        if camera_state == "map":
+            $ChaseCamera.global_position = map_center_relative
             
         if camera_state == "zooming_in" and $ChaseCamera.zoom > Vector2(3*ship_size,3*ship_size):
-            $ChaseCamera.zoom -= Vector2(.5,.5)
+            $ChaseCamera.zoom -= zoom_interval
+            for label in hud.field_labels:
+                label.scale -= zoom_interval
         elif camera_state == "zooming_in" and $ChaseCamera.zoom < Vector2(3*ship_size,3*ship_size):
             $ChaseCamera.zoom = Vector2(3*ship_size,3*ship_size)
+            for label in hud.field_labels:
+                label.scale = Vector2(3*ship_size,3*ship_size)
         elif camera_state == "zooming_in" and $ChaseCamera.zoom == Vector2(3*ship_size,3*ship_size):
             camera_state = "zoomed_in"
         
         if $ChaseCamera.zoom < Vector2(10,10):
-            $CanvasLayer/MapIcon.hide()
+            hud.player_ind.hide()
         elif $ChaseCamera.zoom >= Vector2(10,10):
-            $CanvasLayer/MapIcon.show()
-        $CanvasLayer/MapIcon.set_global_rotation(ship.get_global_rotation() + deg2rad(90))
+            hud.player_ind.show()
+            hud.player_ind.set_scale($ChaseCamera.zoom/2)
+        hud.player_ind.set_global_rotation(ship.get_global_rotation() + deg2rad(90))
+        hud.player_ind.set_global_position(global_position)
         
         
         updateGauge()
@@ -151,16 +176,44 @@ func _input(event):
             hud.cannon(false)
         
         #Camera Zoom
-        if Input.is_action_pressed("zoom_in") and camera_state == "zoomed_in":
+        if Input.is_action_pressed("zoom_in") and camera_state == "normal":
             $ChaseCamera.set_zoom(Vector2($ChaseCamera.get_zoom().x - .1, $ChaseCamera.get_zoom().y - .1))
-        if Input.is_action_pressed("zoom_out") and camera_state == "zoomed_in":
+            for label in hud.field_labels:
+                label.scale -= Vector2(.1,.1)
+        if Input.is_action_pressed("zoom_out") and camera_state == "normal":
             $ChaseCamera.set_zoom(Vector2($ChaseCamera.get_zoom().x + .1, $ChaseCamera.get_zoom().y + .1))
+            for label in hud.field_labels:
+                label.scale += Vector2(.1,.1)
         
         #Map
-        if Input.is_action_just_pressed("map") and camera_state == "zoomed_in":
-            camera_state = "zooming_out"
-        elif Input.is_action_just_pressed("map") and camera_state == "zoomed_out":
-            camera_state = "zooming_in"
+        if Input.is_action_just_pressed("map") and camera_state != "map":
+            camera_state = "map"
+            if $ChaseCamera.zoom < zoom_max:
+                $ChaseCamera.zoom = zoom_max
+            for label in hud.field_labels:
+                label.scale = zoom_max
+        elif Input.is_action_just_pressed("map") and camera_state == "map":
+            camera_state = "normal"
+            $ChaseCamera.global_position = global_position
+            if $ChaseCamera.zoom > zoom_normal:
+                $ChaseCamera.zoom = zoom_normal
+            for label in hud.field_labels:
+                label.scale = zoom_normal
+        
+        if Input.is_action_just_pressed("tile") and camera_state != "tile":
+            camera_state = "tile"
+            $ChaseCamera.global_position = global_position
+            if $ChaseCamera.zoom != zoom_max/4:
+                $ChaseCamera.zoom = zoom_max/4
+            for label in hud.field_labels:
+                label.scale = zoom_max/4
+        elif Input.is_action_just_pressed("tile") and camera_state == "tile":
+            camera_state = "normal"
+            $ChaseCamera.global_position = global_position
+            if $ChaseCamera.zoom > zoom_normal:
+                $ChaseCamera.zoom = zoom_normal
+            for label in hud.field_labels:
+                label.scale = zoom_normal
         
         #After Burner
         if Input.is_action_pressed("AfterBurner"):

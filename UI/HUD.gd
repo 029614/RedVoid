@@ -1,6 +1,7 @@
 extends Control
 
 onready var player = get_parent().get_parent()
+onready var player_ind = $PosInd/MapInd
 var enemy_icon = preload("res://Assets/Ship/MapIconEnemy.tscn")
 
 var blink_speed = 5
@@ -182,15 +183,11 @@ func activateIcons():
                 tracking.append(ship)
             print("icons activated")
             print("currently active indicators: ", $Ships.get_children())
-    for field in field_labels:
-        field.show()
 
 func deactivateIcons():
     for child in $Ships.get_children():
         child.queue_free()
     icons_active = false
-    for field in field_labels:
-        field.hide()
 
 func asteroidLabels():
     for ast in Global.asteroidFamilies:
@@ -203,7 +200,7 @@ func asteroidLabels():
         n.global_position = ast.global_position
         field_labels.append(n)
         field_names = true
-        n.set_scale(Vector2(50,50))
+        n.set_scale(Vector2(1,1))
     print("field labels: ", field_labels)
     
 
