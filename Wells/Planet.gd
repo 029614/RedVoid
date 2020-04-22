@@ -79,6 +79,7 @@ func _physics_process(delta: float) -> void:
             capture(capturing_fac, self)
             capturing_fac = null
             $Prog/CaptureProgress/Unclaimed.hide()
+            $Prog/CaptureProgress/Unclaimed.self_modulate = ownership.faction_color_alpha
             print("successful capture")
     
     if planet_state == "empty" and capture_perc > 0:
@@ -93,8 +94,8 @@ func capture(faction, planet):
         ownership = faction
         faction.planets.append(self)
         var message = str(planet.name) + " has been captured by " + str(faction.name) + "."
-        $Prog/CaptureProgress.modulate = faction.faction_color
-        grid.modulate = faction.faction_color
+        $Prog/CaptureProgress.self_modulate = faction.faction_color_alpha
+        grid.modulate = faction.faction_color_alpha
         Global.messageAll(message)
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:

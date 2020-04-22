@@ -533,6 +533,12 @@ __meta__ = {
 [node name="Ships" type="CanvasLayer" parent="."]
 follow_viewport_enable = true
 
+[node name="Planets" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
+
+[node name="Asteroids" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
+
 [node name="Cursor" type="CanvasLayer" parent="."]
 
 [node name="Crosshair" parent="Cursor" instance=ExtResource( 5 )]

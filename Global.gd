@@ -11,6 +11,7 @@ signal send_planets
 signal main_ready
 signal capture_planet
 signal torpedo_request
+signal map_ready
 
 
 #Player Event Flags !!!!MOVE TO ACTOR SCRIPT!!!!
@@ -47,6 +48,11 @@ var HUD = null
 var world = null
 var player_registry = []
 var bodies
+var astNames = []
+var asteroidFamilies = []
+
+#Import addresses
+var import_asteroid_names = "res://Assets/Planets/Asteroids/names.cfg"
 
 
 
@@ -61,3 +67,14 @@ func messageAll(message):
     for player in player_registry:
         player.hud.set_message(str(message))
         player.hud.beep()
+
+func asteroidNames():
+    var configFile = ConfigFile.new()
+    var err = configFile.load(import_asteroid_names)
+    if err == OK:
+        print("INI accessed successfully")
+        var sKeys = configFile.get_section_keys("names")
+        for key in sKeys:
+            astNames.append(configFile.get_value("names", key))
+    else:
+        print("INI failed to load: ", err)

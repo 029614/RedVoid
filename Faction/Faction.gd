@@ -1,7 +1,8 @@
 extends Node
 
 
-export (Color) var faction_color = Color(1,1,1,1)
+export (Color) var faction_color = Color8(1,1,1,1)
+var faction_color_alpha
 export var faction_name = "No Name"
 var planets = []
 
@@ -10,7 +11,7 @@ var planets = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-    pass # Replace with function body.
+    faction_color_alpha = Color8(faction_color.r8, faction_color.g8, faction_color.b8, 100)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

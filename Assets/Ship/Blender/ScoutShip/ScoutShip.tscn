@@ -61,6 +61,5 @@ position = Vector2( -643.84, -1.75195 )
 rotation = -1.5708
 scale = Vector2( 1.79678, 1.89075 )
 frames = SubResource( 3 )
-frame = 3
 playing = true
 [connection signal="timeout" from="CannonCoolDown" to="." method="_on_CannonCoolDown_timeout"]

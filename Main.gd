@@ -59,7 +59,6 @@ func destroyAll(things):
 
 func createMap():
     get_random = true
-    print("gridX: ",gridX, " gridY: ",gridY )
     var start_point = Vector2(gUnit,gUnit)
     var end_point = Vector2(gridX*gUnit,gridY*gUnit)
     var grid_point = start_point
@@ -82,6 +81,16 @@ func createMap():
                 new_field.global_position = grid_point - Vector2(gUnit/2,gUnit/2)
                 getRandom(field_quant)
                 new_field.global_position = (new_field.global_position - Vector2(20000,20000)) + Vector2(randX,randY)
+                var distance_ok = false
+                #while distance_ok == false:
+                #    for field in Global.asteroidFamilies:
+                #        if new_field.global_position.distance_to(field.global_position) < 500:
+                #            distance_ok = false
+                #            new_field.global_position = (new_field.global_position - Vector2(20000,20000)) + Vector2(randX,randY)
+                #        else:
+                #            distance_ok = true
+                    
+                Global.asteroidFamilies.append(new_field)
             $Navigation2D/Bodies.add_child(new_planet)
             $Navigation2D/Bodies.add_child(new_rect)
             new_rect.global_position = grid_point - Vector2(gUnit,gUnit)
@@ -91,9 +100,10 @@ func createMap():
             new_planet.grid = new_rect
             #while new_planet.global_position.distance_to(new_sun.global_position) < 2000 and new_planet.global_position.distance_to(grid_point-(Vector2(gUnit/2,gUnit/2))) > 5000:
             #    new_planet.global_position = grid_point - Vector2(randi()%15001,randi()%15001)
-            print("calculating position: ", x, ",", y, " grid point: ", grid_point)
             x += 1
         y += 1
+    nameAsteroidFamilies()
+    Global.emit_signal("map_ready")
 
 func getRandom(cycle):
     var x = 0
@@ -102,6 +112,24 @@ func getRandom(cycle):
         randX = randi()%40000
         randY = randi()%40000
         x += .314
+
+func nameAsteroidFamilies():
+    Global.asteroidNames()
+    var named_families = []
+    var num = float(Global.astNames.size())
+    var den = float(Global.asteroidFamilies.size())
+    var named_ratio = float(num/den)
+    var aNames = Global.astNames
+    for field in Global.asteroidFamilies:
+        if rand_range(0,100) < named_ratio*100:
+            var new_ran = abs(floor(rand_range(0,aNames.size()-1)))
+            var fName = aNames[new_ran]
+            aNames.erase(fName)
+            field.family = fName
+            named_families.append(field)
+    print("asteroid families: ", Global.asteroidFamilies.size())
+    Global.asteroidFamilies = named_families
+    print("named asteroid families: ", Global.asteroidFamilies.size())
         
     
 

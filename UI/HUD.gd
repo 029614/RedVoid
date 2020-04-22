@@ -7,14 +7,17 @@ var blink_speed = 5
 var red_alpha = 130
 
 var icons_active = false
+var field_names = false
 
 var icons = []
 var tracking = []
 
+var field_labels = []
+
 var cannon = "stopped"
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-    pass
+    Global.connect("map_ready", self, "asteroidLabels")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -31,6 +34,9 @@ func _process(delta: float) -> void:
         for icon in icons:
             icon.global_position = tracking[count].global_position
             count += 1
+        
+    
+    
 
 func _input(event: InputEvent) -> void:
     
@@ -176,11 +182,30 @@ func activateIcons():
                 tracking.append(ship)
             print("icons activated")
             print("currently active indicators: ", $Ships.get_children())
+    for field in field_labels:
+        field.show()
 
 func deactivateIcons():
     for child in $Ships.get_children():
         child.queue_free()
     icons_active = false
+    for field in field_labels:
+        field.hide()
+
+func asteroidLabels():
+    for ast in Global.asteroidFamilies:
+        var l = Label.new()
+        var n = Node2D.new()
+        if typeof(ast.family) == TYPE_STRING:
+            l.set_text(ast.family + " Field")
+        $Asteroids.add_child(n)
+        n.add_child(l)
+        n.global_position = ast.global_position
+        field_labels.append(n)
+        field_names = true
+        n.set_scale(Vector2(50,50))
+    print("field labels: ", field_labels)
+    
 
 func beep():
     $Sounds/Beep.play(0.0)
