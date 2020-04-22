@@ -76,10 +76,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -1520.0
-margin_top = 324.0
-margin_right = -1230.0
-margin_bottom = 594.0
+margin_left = -232.0
+margin_top = 100.0
+margin_right = 58.0
+margin_bottom = 390.0
 rect_scale = Vector2( 0.8, 0.8 )
 texture = ExtResource( 6 )
 patch_margin_left = 48
@@ -91,10 +91,10 @@ __meta__ = {
 }
 
 [node name="Weapons" type="Control" parent="ConsoleRight"]
-margin_left = 39.9998
-margin_top = 59.9999
-margin_right = 79.9998
-margin_bottom = 99.9999
+margin_left = 49.9998
+margin_top = 180.0
+margin_right = 89.9998
+margin_bottom = 220.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -203,20 +203,52 @@ text = "<"
 align = 2
 valign = 1
 
-[node name="Warning" type="Control" parent="ConsoleRight"]
-margin_left = 16.0
-margin_top = 158.0
-margin_right = 256.0
-margin_bottom = 278.0
+[node name="ColorRect" type="ColorRect" parent="ConsoleRight"]
+modulate = Color( 0.188235, 0.403922, 0.572549, 0.427451 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -12.0
+margin_bottom = -10.0001
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CenterContainer" type="CenterContainer" parent="ConsoleRight/Warning"]
+[node name="ConsoleRight2" type="NinePatchRect" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -232.0
+margin_top = 324.0
+margin_right = 58.0001
+margin_bottom = 594.0
+rect_scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 6 )
+patch_margin_left = 48
+patch_margin_top = 81
+patch_margin_right = 81
+patch_margin_bottom = 56
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Warning" type="Control" parent="ConsoleRight2"]
+margin_left = 19.9998
+margin_top = 60.0
+margin_right = 260.0
+margin_bottom = 180.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="ConsoleRight2/Warning"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Label" type="Label" parent="ConsoleRight/Warning/CenterContainer"]
+[node name="Label" type="Label" parent="ConsoleRight2/Warning/CenterContainer"]
 margin_left = 12.0
 margin_top = 47.0
 margin_right = 228.0
@@ -224,7 +256,7 @@ margin_bottom = 73.0
 custom_colors/font_color = Color( 0.494118, 1, 0.266667, 0.752941 )
 text = "All Systems Normal"
 
-[node name="ColorRect" type="ColorRect" parent="ConsoleRight"]
+[node name="ColorRect" type="ColorRect" parent="ConsoleRight2"]
 modulate = Color( 0.188235, 0.403922, 0.572549, 0.427451 )
 show_behind_parent = true
 anchor_right = 1.0
@@ -326,9 +358,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = 728.0
-margin_top = -952.0
+margin_top = -752.0
 margin_right = 1060.0
-margin_bottom = -495.0
+margin_bottom = -295.0
 grow_vertical = 0
 rect_scale = Vector2( 0.7, 0.7 )
 texture = ExtResource( 6 )
@@ -385,6 +417,9 @@ margin_bottom = 725.143
 rect_rotation = -90.0
 rect_scale = Vector2( 0.24296, 0.24296 )
 texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ConsoleFuel" type="NinePatchRect" parent="."]
 margin_left = 1688.0
@@ -442,10 +477,10 @@ __meta__ = {
 }
 
 [node name="ConsoleShields" type="NinePatchRect" parent="."]
-margin_left = 1360.0
-margin_top = 864.0
-margin_right = 1592.0
-margin_bottom = 1080.0
+margin_left = 1688.0
+margin_top = 120.0
+margin_right = 1920.0
+margin_bottom = 336.0
 texture = ExtResource( 6 )
 patch_margin_left = 69
 patch_margin_top = 57

@@ -1,12 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/Ship/Blender/Interceptor/Interceptor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
-[ext_resource path="res://Wells/Planet.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Music/bensound-slowmotion.ogg" type="AudioStream" id=4]
 [ext_resource path="res://Faction/Faction.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Ship/Fighter.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Wells/Sun.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Assets/Ship/Blender/ScoutShip/ScoutShip.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Ship/Blender/Destroyer/Destroyer.tscn" type="PackedScene" id=10]
 
@@ -17,32 +15,6 @@ script = ExtResource( 2 )
 [node name="Navigation2D" type="Navigation2D" parent="."]
 
 [node name="Bodies" type="Node2D" parent="Navigation2D"]
-
-[node name="Sun" parent="Navigation2D/Bodies" instance=ExtResource( 7 )]
-scale = Vector2( 2, 2 )
-mass_multiplyer = 1.5
-_is_destructive = true
-
-[node name="Planet2" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
-position = Vector2( 12647.2, -7080.74 )
-scale = Vector2( 2, 2 )
-
-[node name="Planet3" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
-position = Vector2( 15874.9, 13456 )
-scale = Vector2( 2, 2 )
-
-[node name="Planet4" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
-position = Vector2( -10557.7, 6344.66 )
-scale = Vector2( 2, 2 )
-hydrogen = true
-iron = true
-carbon = true
-radioisotope = true
-lithium = true
-
-[node name="Planet5" parent="Navigation2D/Bodies" instance=ExtResource( 3 )]
-position = Vector2( -10365.7, -7148.53 )
-scale = Vector2( 2, 2 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )

@@ -74,10 +74,8 @@ func _physics_process(delta: float) -> void:
     
     if animate_engines == true:
         $Engine1.show()
-        $Engine2.show()
     elif animate_engines == false:
         $Engine1.hide()
-        $Engine2.hide()
         
 
 

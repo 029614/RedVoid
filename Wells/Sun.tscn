@@ -15,6 +15,7 @@ radius = 589.055
 
 [node name="Sun" type="Node2D"]
 position = Vector2( 304, -712 )
+scale = Vector2( 5, 5 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_vertical_guides_": [ -100.148, 99.7619 ]

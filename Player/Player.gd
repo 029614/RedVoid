@@ -105,15 +105,15 @@ func _physics_process(delta):
             ship.location_state = "on_planet"
         
         #Map
-        if camera_state == "zooming_out" and $ChaseCamera.zoom < Vector2(20,20):
-            $ChaseCamera.zoom += Vector2(.2,.2)
-        elif camera_state == "zooming_out" and $ChaseCamera.zoom > Vector2(20,20):
-            $ChaseCamera.zoom = Vector2(20,20)
-        elif camera_state == "zooming_out" and $ChaseCamera.zoom == Vector2(20,20):
+        if camera_state == "zooming_out" and $ChaseCamera.zoom < Vector2(50,50):
+            $ChaseCamera.zoom += Vector2(.5,.5)
+        elif camera_state == "zooming_out" and $ChaseCamera.zoom > Vector2(50,50):
+            $ChaseCamera.zoom = Vector2(50,50)
+        elif camera_state == "zooming_out" and $ChaseCamera.zoom == Vector2(50,50):
             camera_state = "zoomed_out"
             
         if camera_state == "zooming_in" and $ChaseCamera.zoom > Vector2(3*ship_size,3*ship_size):
-            $ChaseCamera.zoom -= Vector2(.2,.2)
+            $ChaseCamera.zoom -= Vector2(.5,.5)
         elif camera_state == "zooming_in" and $ChaseCamera.zoom < Vector2(3*ship_size,3*ship_size):
             $ChaseCamera.zoom = Vector2(3*ship_size,3*ship_size)
         elif camera_state == "zooming_in" and $ChaseCamera.zoom == Vector2(3*ship_size,3*ship_size):

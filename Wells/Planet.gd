@@ -14,6 +14,7 @@ export var orbit_velocity = .1
 var moon = false
 var ownership = null
 var orbit_assignment
+var grid
 onready var orbit = {$RotateMe/orbit1: false, $RotateMe/orbit2: false, $RotateMe/orbit3: false, $RotateMe/orbit4: false, $RotateMe/orbit5: false, $RotateMe/orbit6: false, $RotateMe/orbit7: false, $RotateMe/orbit8: false}
 
 var capture_perc = 0
@@ -92,6 +93,8 @@ func capture(faction, planet):
         ownership = faction
         faction.planets.append(self)
         var message = str(planet.name) + " has been captured by " + str(faction.name) + "."
+        $Prog/CaptureProgress.modulate = faction.faction_color
+        grid.modulate = faction.faction_color
         Global.messageAll(message)
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:

@@ -22,7 +22,7 @@ animations = [ {
 "frames": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ) ],
 "loop": true,
 "name": "default",
-"speed": 20.0
+"speed": 15.0
 } ]
 
 [node name="ScoutShip" type="KinematicBody2D"]
@@ -57,16 +57,10 @@ position = Vector2( 555.384, 0 )
 wait_time = 0.1
 
 [node name="Engine1" type="AnimatedSprite" parent="."]
-position = Vector2( -542.957, -19.7437 )
+position = Vector2( -643.84, -1.75195 )
 rotation = -1.5708
+scale = Vector2( 1.79678, 1.89075 )
 frames = SubResource( 3 )
-frame = 5
-playing = true
-
-[node name="Engine2" type="AnimatedSprite" parent="."]
-position = Vector2( -542.957, 15.2568 )
-rotation = -1.5708
-frames = SubResource( 3 )
-frame = 4
+frame = 3
 playing = true
 [connection signal="timeout" from="CannonCoolDown" to="." method="_on_CannonCoolDown_timeout"]

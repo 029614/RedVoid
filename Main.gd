@@ -1,7 +1,15 @@
 extends Node2D
 var new_position = Vector2()
 onready var player = $Factions/Faction/Actor
+var planet = preload("res://Wells/Planet.tscn")
+var rect = preload("res://GiantRect.tscn")
+var sun = preload("res://Wells/Sun.tscn")
 var ships
+var planet_count = 16
+var gridY = sqrt(planet_count)
+var gridX = sqrt(planet_count)
+var gUnit = 15000
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -16,6 +24,7 @@ func _ready() -> void:
     Global.world = self
     print(Global.world)
     Global.bodies = $Navigation2D/Bodies.get_children()
+    createMap()
     
     #$Freighter.goTo(bodies.get_node("Planet5"))
 
@@ -43,3 +52,40 @@ func destroyAll(things):
     print("yay")
     for ship in things:
         ship.queue_free()
+
+func createMap():
+    print("gridX: ",gridX, " gridY: ",gridY )
+    var start_point = Vector2(gUnit,gUnit)
+    var end_point = Vector2(gridX*gUnit,gridY*gUnit)
+    var grid_point = start_point
+    var y = 1
+    var new_sun = sun.instance()
+    $Navigation2D/Bodies.add_child(new_sun)
+    new_sun.global_position = end_point/2
+    while y <= gridY:
+        var x = 1
+        grid_point = Vector2()
+        while grid_point.x < end_point.x:
+            grid_point = Vector2(gUnit*x,gUnit*y)
+            var new_planet = planet.instance()
+            var new_rect = rect.instance()
+            $Navigation2D/Bodies.add_child(new_planet)
+            $Navigation2D/Bodies.add_child(new_rect)
+            new_rect.global_position = grid_point - Vector2(15000,15000)
+            new_planet.global_position = grid_point - Vector2(gUnit/2,gUnit/2)
+            new_planet.global_position = (new_planet.global_position - Vector2(4000,4000)) + Vector2(randi()%8001,randi()%8001)
+            new_planet.grid = new_rect
+            #while new_planet.global_position.distance_to(new_sun.global_position) < 2000 and new_planet.global_position.distance_to(grid_point-(Vector2(gUnit/2,gUnit/2))) > 5000:
+            #    new_planet.global_position = grid_point - Vector2(randi()%15001,randi()%15001)
+            print("calculating position: ", x, ",", y, " grid point: ", grid_point)
+            x += 1
+        y += 1
+    
+
+
+
+
+
+
+
+

@@ -1,12 +1,26 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Ship/Blender/Destroyer/DestroyerAccent.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Ship/Blender/Destroyer/Destroyer.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Ship/Weapons/Turret203.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Ship/Blender/Destroyer/Destroyer.gd" type="Script" id=4]
+[ext_resource path="res://Assets/EnginePlume/01.png" type="Texture" id=5]
+[ext_resource path="res://Assets/EnginePlume/02.png" type="Texture" id=6]
+[ext_resource path="res://Assets/EnginePlume/03.png" type="Texture" id=7]
+[ext_resource path="res://Assets/EnginePlume/04.png" type="Texture" id=8]
+[ext_resource path="res://Assets/EnginePlume/05.png" type="Texture" id=9]
+[ext_resource path="res://Assets/EnginePlume/06.png" type="Texture" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 511.283, 69.8547 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ) ],
+"loop": true,
+"name": "default",
+"speed": 25.0
+} ]
 
 [node name="Destroyer" type="KinematicBody2D"]
 scale = Vector2( 0.3, 0.3 )
@@ -32,3 +46,19 @@ position = Vector2( -303.009, -5.39224 )
 scale = Vector2( 0.25, 0.25 )
 
 [node name="Pilot" type="Node2D" parent="."]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -697.854, -35.8486 )
+rotation = -1.5708
+scale = Vector2( 1, 2.10691 )
+frames = SubResource( 2 )
+frame = 3
+playing = true
+
+[node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
+position = Vector2( -697.853, 22.7042 )
+rotation = -1.5708
+scale = Vector2( 1, 2.10691 )
+frames = SubResource( 2 )
+frame = 2
+playing = true
