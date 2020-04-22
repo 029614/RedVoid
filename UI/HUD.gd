@@ -148,7 +148,7 @@ func get_warnings():
 
 func _on_LineInput_text_entered(new_text: String) -> void:
     if new_text.begins_with("/"):
-        Global.world.command(new_text)
+        Global.world.command(new_text, player)
         $ConsoleBottom/ReadOut/LineInput.clear()
         $ConsoleBottom/ReadOut/LineInput.set_focus_mode(0)
         $ConsoleBottom/ReadOut/LineInput.set_focus_mode(1)

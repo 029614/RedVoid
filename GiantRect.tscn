@@ -4,6 +4,6 @@
 
 [node name="Node2D" type="Sprite"]
 modulate = Color( 1, 1, 1, 0.435294 )
-scale = Vector2( 15, 15 )
+scale = Vector2( 60, 60 )
 texture = ExtResource( 1 )
 centered = false
