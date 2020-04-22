@@ -1,16 +1,14 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Ship/Blender/Interceptor/Interceptor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
-[ext_resource path="res://Assets/Planets/Asteroids/Asteroid1.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Music/bensound-slowmotion.ogg" type="AudioStream" id=4]
 [ext_resource path="res://Faction/Faction.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Assets/Ship/Fighter.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Ship/Blender/ScoutShip/ScoutShip.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Ship/Blender/Destroyer/Destroyer.tscn" type="PackedScene" id=10]
 
 [node name="NewMain" type="Node2D"]
-position = Vector2( 8822.1, 4486.84 )
+position = Vector2( 9509.19, 4650.43 )
 script = ExtResource( 2 )
 
 [node name="Navigation2D" type="Navigation2D" parent="."]
@@ -39,11 +37,5 @@ position = Vector2( 8389.93, 6294.7 )
 [node name="Faction2" parent="Factions" instance=ExtResource( 5 )]
 faction_color = Color( 0.768627, 0, 0, 1 )
 faction_name = "Enemy Faction"
-
-[node name="Enemy" parent="Factions/Faction2" instance=ExtResource( 6 )]
-position = Vector2( 8358.37, 5451.25 )
-
-[node name="Asteroid1" parent="." instance=ExtResource( 3 )]
-position = Vector2( 4693.48, 2797.44 )
 
 [editable path="Factions/Faction1"]

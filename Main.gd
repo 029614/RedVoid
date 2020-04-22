@@ -3,6 +3,7 @@ var new_position = Vector2()
 var planet = preload("res://Wells/Planet.tscn")
 var rect = preload("res://GiantRect.tscn")
 var sun = preload("res://Wells/Sun.tscn")
+var aField = preload("res://Assets/Planets/Asteroids/AsteroidField.tscn")
 var ships
 var planet_count = 16
 var gridY = sqrt(planet_count)
@@ -18,13 +19,13 @@ var randY = randi()%9001
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     #Global.connect("player_landed", self, "onPlanet")
+    Global.world = self
     Input.set_mouse_mode(1)
     Global.connect("torpedo_request", self, "issueTorpedo")
     Global.connect("request_planets", self, "sendPlanetPositions")
     Global.emit_signal("main_ready")
     Global._play = true
     print("Main is ready")
-    Global.world = self
     print(Global.world)
     Global.bodies = $Navigation2D/Bodies.get_children()
     createMap()
@@ -70,9 +71,17 @@ func createMap():
         var x = 1
         grid_point = Vector2()
         while grid_point.x < end_point.x:
+            var field_quant = rand_range(5,20)
             grid_point = Vector2(gUnit*x,gUnit*y)
             var new_planet = planet.instance()
             var new_rect = rect.instance()
+            while field_quant > 0:
+                field_quant -= 1
+                var new_field = aField.instance()
+                $Navigation2D/Bodies.add_child(new_field)
+                new_field.global_position = grid_point - Vector2(gUnit/2,gUnit/2)
+                getRandom(field_quant)
+                new_field.global_position = (new_field.global_position - Vector2(20000,20000)) + Vector2(randX,randY)
             $Navigation2D/Bodies.add_child(new_planet)
             $Navigation2D/Bodies.add_child(new_rect)
             new_rect.global_position = grid_point - Vector2(gUnit,gUnit)
