@@ -15,7 +15,7 @@ var family
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     asteroids = [asteroid1, asteroid2, asteroid3, asteroid4, asteroid5]
-    size = randi()%50+10
+    size = randi()%75+10
     generate()
     self.rotation = rand_range(0,360)
 

@@ -3,6 +3,8 @@ extends Control
 onready var player = get_parent().get_parent()
 onready var player_ind = $PosInd/MapInd
 var enemy_icon = preload("res://Assets/Ship/MapIconEnemy.tscn")
+var planet_ind = preload("res://Assets/Planets/MapPlanet.tscn")
+var asteroid_ind = preload("res://Assets/Planets/Asteroids/MapAsteroid.tscn")
 
 var blink_speed = 5
 var red_alpha = 130
@@ -10,8 +12,11 @@ var red_alpha = 130
 var icons_active = false
 var field_names = false
 
-var icons = []
-var tracking = []
+var ship_icons = []
+var ship_tracking = []
+
+var planet_icons = []
+var asteroid_icons = []
 
 var field_labels = []
 
@@ -23,18 +28,21 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-    if player.camera_state and player.camera_state == "zoomed_out" and icons_active == false:
+    if player.camera_state and player.camera_state != "normal" and icons_active == false:
         activateIcons()
         print(player.camera_state, icons_active)
-    elif player.camera_state != "zoomed_out" and icons_active == true:
+    elif player.camera_state == "normal" and icons_active == true:
         deactivateIcons()
         print(player.camera_state, icons_active)
     
     if icons_active == true:
         var count = 0
-        for icon in icons:
-            icon.global_position = tracking[count].global_position
+        for icon in ship_icons:
+            icon.global_position = ship_tracking[count].global_position
+            icon.scale = player.get_node("ChaseCamera").zoom/5
             count += 1
+        for icon in $Planets.get_children():
+            icon.scale = player.get_node("ChaseCamera").zoom/5
         
     
     
@@ -169,7 +177,46 @@ func _on_LineInput_text_entered(new_text: String) -> void:
 
 
 func activateIcons():
-    icons = []
+    shipLabels()
+    planetLabels()
+
+func deactivateIcons():
+    for child in $Ships.get_children():
+        child.queue_free()
+    for child in $Planets.get_children():
+        child.queue_free()
+    icons_active = false
+
+func asteroidLabels():
+    for ast in Global.asteroidFamilies:
+        var l = Label.new()
+        var s = asteroid_ind.instance()
+        var n = Node2D.new()
+        if typeof(ast.family) == TYPE_STRING:
+            l.set_text(ast.family)
+        $Asteroids.add_child(n)
+        n.add_child(l)
+        n.add_child(s)
+        asteroid_icons.append(s)
+        n.global_position = ast.global_position
+        field_labels.append(n)
+        field_names = true
+        n.set_scale(Vector2(1,1))
+
+func planetLabels():
+    planet_icons = []
+    for planet in get_tree().get_nodes_in_group("planets"):
+        var t = planet_ind.instance()
+        t.name = planet.name
+        $Planets.add_child(t)
+        t.global_position = planet.global_position
+        t.global_scale = Vector2(3,3)
+        icons_active = true
+        planet_icons.append(t)
+        print("planet icons activated")
+
+func shipLabels():
+    ship_icons = []
     for ship in get_tree().get_nodes_in_group("ship"):
         if ship != player.ship:
             var t = enemy_icon.instance()
@@ -178,30 +225,10 @@ func activateIcons():
             t.global_position = ship.global_position
             t.global_scale = Vector2(3,3)
             icons_active = true
-            icons.append(t)
-            if tracking.has(ship) == false:
-                tracking.append(ship)
-            print("icons activated")
-            print("currently active indicators: ", $Ships.get_children())
-
-func deactivateIcons():
-    for child in $Ships.get_children():
-        child.queue_free()
-    icons_active = false
-
-func asteroidLabels():
-    for ast in Global.asteroidFamilies:
-        var l = Label.new()
-        var n = Node2D.new()
-        if typeof(ast.family) == TYPE_STRING:
-            l.set_text(ast.family + " Field")
-        $Asteroids.add_child(n)
-        n.add_child(l)
-        n.global_position = ast.global_position
-        field_labels.append(n)
-        field_names = true
-        n.set_scale(Vector2(1,1))
-    print("field labels: ", field_labels)
+            ship_icons.append(t)
+            if ship_tracking.has(ship) == false:
+                ship_tracking.append(ship)
+            print("ship icons activated")
     
 
 func beep():

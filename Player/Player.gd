@@ -198,7 +198,7 @@ func _input(event):
             if $ChaseCamera.zoom > zoom_normal:
                 $ChaseCamera.zoom = zoom_normal
             for label in hud.field_labels:
-                label.scale = zoom_normal
+                label.scale = zoom_normal*2
         
         if Input.is_action_just_pressed("tile") and camera_state != "tile":
             camera_state = "tile"
@@ -213,7 +213,7 @@ func _input(event):
             if $ChaseCamera.zoom > zoom_normal:
                 $ChaseCamera.zoom = zoom_normal
             for label in hud.field_labels:
-                label.scale = zoom_normal
+                label.scale = zoom_normal*2
         
         #After Burner
         if Input.is_action_pressed("AfterBurner"):

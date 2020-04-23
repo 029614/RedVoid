@@ -85,7 +85,6 @@ func createMap():
             
             #asteroid fields
             while field_quant > 0:
-                field_quant -= 1
                 var new_field = aField.instance()
                 $Navigation2D/Bodies.add_child(new_field)
                 new_field.global_position = grid_point - Vector2(gUnit/2,gUnit/2)
@@ -97,15 +96,17 @@ func createMap():
                 while distance_ok == false:
                     if Global.asteroidFamilies.size() > 0:
                         for field in Global.asteroidFamilies:
-                            if new_field.global_position.distance_to(field.global_position) < 15000 and new_field.global_position.distance_to(new_planet.global_position) < 15000:
-                                    new_field.global_position = (new_field.global_position - Vector2(20000,20000)) + Vector2(randX,randY)
+                            #print("distance between fields: ", new_field.global_position.distance_to(field.global_position))
+                            if new_field.global_position.distance_to(field.global_position) <= 10000 and new_field.global_position.distance_to(new_planet.global_position) <= 15000:
+                                    new_field.global_position = (new_field.global_position - Vector2(rand_range(20000,25000),rand_range(20000,25000))) + Vector2(randX,randY)
                                     new_field.global_position.x = clamp(new_field.global_position.x, (grid_point.x)-(gUnit*.8), (grid_point.x)+(gUnit*.8))
                                     new_field.global_position.y = clamp(new_field.global_position.y, (grid_point.y)-(gUnit*.8), (grid_point.y)+(gUnit*.8))
-                                    break
+                                    #break
                         distance_ok = true
                     else:
                         break
                 Global.asteroidFamilies.append(new_field)
+                field_quant -= 1
             x += 1
         y += 1
     nameAsteroidFamilies()
@@ -115,11 +116,12 @@ func getRandom(cycle):
     var x = 0
     while x < 2*cycle:
         randomize()
-        randX = randi()%40000
-        randY = randi()%40000
+        randX = rand_range(40000,5000)
+        randY = rand_range(40000,5000)
         x += .314
 
 func nameAsteroidFamilies():
+    var ast_suff = ["belt","field","cloud","collection","patch","cluster","pack","chain"]
     Global.asteroidNames()
     var named_families = []
     var num = float(Global.astNames.size())
@@ -129,13 +131,13 @@ func nameAsteroidFamilies():
     for field in Global.asteroidFamilies:
         if aNames.size() == 1:
             var fName = aNames[0]
-            field.family = fName
+            field.family = fName + " " + ast_suff[randi()%8]
             named_families.append(field)
         elif aNames.size() > 1:
             var new_ran = abs(floor(rand_range(0,aNames.size()-1)))
             var fName = aNames[new_ran]
             aNames.erase(fName)
-            field.family = fName
+            field.family = fName + " " + ast_suff[randi()%8]
             named_families.append(field)
     print("asteroid families: ", Global.asteroidFamilies.size())
     Global.asteroidFamilies = named_families

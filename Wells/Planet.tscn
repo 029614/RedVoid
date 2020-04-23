@@ -14,7 +14,9 @@ radius = 245.384
 [sub_resource type="CircleShape2D" id=3]
 radius = 483.743
 
-[node name="Planet" type="Node2D"]
+[node name="Planet" type="Node2D" groups=[
+"planets",
+]]
 scale = Vector2( 2.5, 2.5 )
 script = ExtResource( 2 )
 __meta__ = {
