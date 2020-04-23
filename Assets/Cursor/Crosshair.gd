@@ -14,6 +14,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
     $Outer.rotation += .005
     $Inner.rotation -= .01
+    $Mouse.name = "Mouse"
 
 func _input(event: InputEvent) -> void:
     if event is InputEventMouseMotion:
@@ -27,3 +28,16 @@ func _on_Timer_timeout() -> void:
     self.modulate = Color8(255,255,255,alpha)
     hidden = true
     
+
+
+func _on_Mouse_area_entered(area: Area2D) -> void:
+    print("Mouse: ", area.name, " has entered")
+    if area.name == "AsteroidField":
+        area.get_parent().scale = get_parent().scale*1.2
+        area.get_parent().modulate = Color8(0,82,255,150)
+
+
+func _on_Mouse_area_exited(area: Area2D) -> void:
+    if area.name == "AsteroidField":
+        area.get_parent().scale = get_parent().scale/2
+        area.get_parent().modulate = Color8(189,189,189,100)

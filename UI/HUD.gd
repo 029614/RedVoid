@@ -190,8 +190,8 @@ func deactivateIcons():
 func asteroidLabels():
     for ast in Global.asteroidFamilies:
         var l = Label.new()
-        var s = asteroid_ind.instance()
         var n = Node2D.new()
+        var s = asteroid_ind.instance()
         if typeof(ast.family) == TYPE_STRING:
             l.set_text(ast.family)
         $Asteroids.add_child(n)

@@ -2,6 +2,7 @@ extends Node2D
 
 onready var player = get_parent().get_parent().get_parent().get_node("Faction/Actor")
 onready var freighter = get_parent().get_parent().get_parent().get_node("Freightor")
+var station = preload("res://Assets/SpaceStation/SpaceStation.tscn")
 
 onready var mass =  planet_radius
 var planet_radius = randi()%150+50
@@ -97,6 +98,7 @@ func capture(faction, planet):
         $Prog/CaptureProgress.self_modulate = faction.faction_color_alpha
         grid.modulate = faction.faction_color_alpha
         Global.messageAll(message)
+        beginSpaceStation()
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
     if Global.player_registry.has(area.get_parent()) and _is_destructive == true:
@@ -164,3 +166,7 @@ func resourceTurn():
 func _on_Landing_area_shape_exited(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
     if planet_state != "occupied":
         planet_state = "empty"
+
+func beginSpaceStation():
+    var new_station = station.instance()
+    $RotateMe/SpaceStation.add_child(new_station)

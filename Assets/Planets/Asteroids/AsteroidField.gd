@@ -15,7 +15,7 @@ var family
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     asteroids = [asteroid1, asteroid2, asteroid3, asteroid4, asteroid5]
-    size = randi()%75+10
+    size = randi()%70+10
     generate()
     self.rotation = rand_range(0,360)
 
@@ -30,12 +30,12 @@ func generate():
     while x < size:
         randomize()
         var new_asteroid = asteroids[rand_range(0,4)].instance()
-        var rscale = rand_range(.1,.8)
+        var rscale = rand_range(.05,1)
         new_asteroid.global_scale = Vector2(rscale, rscale)
         #new_asteroid.sprite.set_flip_h(randBool())
         #new_asteroid.sprite.set_flip_v(randBool())
         add_child(new_asteroid)
-        new_asteroid.position = Vector2((new_asteroid.position.x - 2000) + randi()%4000,(new_asteroid.position.y - 4000) + randi()%8000)
+        new_asteroid.position = Vector2((new_asteroid.position.x - 4000) + randi()%8000,(new_asteroid.position.y - 4000) + randi()%8000)
         x += 1
 
 func randBool():

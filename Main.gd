@@ -80,7 +80,7 @@ func createMap():
             new_rect.global_position = grid_point - Vector2(gUnit,gUnit)
             new_planet.global_position = grid_point - Vector2(gUnit/2,gUnit/2)
             getRandom(y)
-            new_planet.global_position = (new_planet.global_position - Vector2(20000,20000)) + Vector2(randX,randY)
+            new_planet.global_position = (new_planet.global_position - Vector2(22500,22500)) + Vector2(randX,randY)
             new_planet.grid = new_rect
             
             #asteroid fields
@@ -89,19 +89,19 @@ func createMap():
                 $Navigation2D/Bodies.add_child(new_field)
                 new_field.global_position = grid_point - Vector2(gUnit/2,gUnit/2)
                 getRandom(field_quant)
-                new_field.global_position = (new_field.global_position - Vector2(20000,20000)) + Vector2(randX,randY)
-                new_field.global_position.x = clamp(new_field.global_position.x, (grid_point.x)-(gUnit*.8), (grid_point.x)+(gUnit*.8))
-                new_field.global_position.y = clamp(new_field.global_position.y, (grid_point.y)-(gUnit*.8), (grid_point.y)+(gUnit*.8))
+                new_field.global_position = (new_field.global_position - Vector2(22500,22500)) + Vector2(randX,randY)
+                new_field.global_position.x = clamp(new_field.global_position.x, (grid_point.x)-(gUnit+1000), (grid_point.x-1000))
+                new_field.global_position.y = clamp(new_field.global_position.y, (grid_point.y)-(gUnit+1000), (grid_point.y-1000))
+                var new_field_origin = new_field.global_position
                 var distance_ok = false
                 while distance_ok == false:
                     if Global.asteroidFamilies.size() > 0:
-                        for field in Global.asteroidFamilies:
+                        for field in $Navigation2D/Bodies.get_children():
                             #print("distance between fields: ", new_field.global_position.distance_to(field.global_position))
-                            if new_field.global_position.distance_to(field.global_position) <= 10000 and new_field.global_position.distance_to(new_planet.global_position) <= 15000:
-                                    new_field.global_position = (new_field.global_position - Vector2(rand_range(20000,25000),rand_range(20000,25000))) + Vector2(randX,randY)
-                                    new_field.global_position.x = clamp(new_field.global_position.x, (grid_point.x)-(gUnit*.8), (grid_point.x)+(gUnit*.8))
-                                    new_field.global_position.y = clamp(new_field.global_position.y, (grid_point.y)-(gUnit*.8), (grid_point.y)+(gUnit*.8))
-                                    #break
+                            if new_field != field and new_field.global_position.distance_to(field.global_position) <= 10000: #and new_field.global_position.distance_to(new_planet.global_position) <= 15000:
+                                new_field.global_position = (new_field_origin - Vector2(22500,22500)) + Vector2(randX,randY)
+                                new_field.global_position.x = clamp(new_field.global_position.x, (grid_point.x)-(gUnit+1000), (grid_point.x-1000))
+                                new_field.global_position.y = clamp(new_field.global_position.y, (grid_point.y)-(gUnit+1000), (grid_point.y-1000))
                         distance_ok = true
                     else:
                         break
@@ -116,8 +116,8 @@ func getRandom(cycle):
     var x = 0
     while x < 2*cycle:
         randomize()
-        randX = rand_range(40000,5000)
-        randY = rand_range(40000,5000)
+        randX = randi()%45000
+        randY = randi()%45000
         x += .314
 
 func nameAsteroidFamilies():

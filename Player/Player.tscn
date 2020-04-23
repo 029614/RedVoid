@@ -59,7 +59,7 @@ scroll_ignore_camera_zoom = true
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="Foreground"]
 modulate = Color( 0.768627, 0.878431, 0.933333, 1 )
-motion_scale = Vector2( 0.3, 0.3 )
+motion_scale = Vector2( 0.2, 0.2 )
 motion_mirroring = Vector2( 1920, 1080 )
 
 [node name="Sprite" type="Sprite" parent="Foreground/ParallaxLayer"]

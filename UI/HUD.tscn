@@ -531,7 +531,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Cursor" type="Node2D" parent="."]
+
+[node name="Crosshair" parent="Cursor" instance=ExtResource( 5 )]
+
 [node name="Ships" type="CanvasLayer" parent="."]
+layer = 0
 follow_viewport_enable = true
 
 [node name="PosInd" type="CanvasLayer" parent="."]
@@ -546,10 +551,6 @@ follow_viewport_enable = true
 
 [node name="Asteroids" type="CanvasLayer" parent="."]
 follow_viewport_enable = true
-
-[node name="Cursor" type="CanvasLayer" parent="."]
-
-[node name="Crosshair" parent="Cursor" instance=ExtResource( 5 )]
 
 [node name="Sounds" type="Node" parent="."]
 
