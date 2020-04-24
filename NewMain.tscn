@@ -21,7 +21,7 @@ volume_db = -15.146
 autoplay = true
 
 [node name="Destroyer" parent="." instance=ExtResource( 10 )]
-position = Vector2( -2269.65, 361.85 )
+position = Vector2( 1240.73, 3144.34 )
 
 [node name="Factions" type="Node" parent="."]
 
