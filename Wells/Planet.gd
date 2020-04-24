@@ -169,4 +169,5 @@ func _on_Landing_area_shape_exited(area_id: int, area: Area2D, area_shape: int, 
 
 func beginSpaceStation():
     var new_station = station.instance()
-    $RotateMe/SpaceStation.add_child(new_station)
+    new_station.planet = self
+    $SpaceStation.add_child(new_station)

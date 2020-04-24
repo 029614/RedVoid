@@ -69,10 +69,6 @@ position = Vector2( -326.008, 252.823 )
 [node name="orbit8" type="Position2D" parent="RotateMe"]
 position = Vector2( 319.815, 265.339 )
 
-[node name="SpaceStation" type="Position2D" parent="RotateMe"]
-position = Vector2( 483.2, -348.8 )
-scale = Vector2( 1, 1 )
-
 [node name="Prog" type="Node2D" parent="."]
 
 [node name="CaptureProgress" type="TextureProgress" parent="Prog"]
@@ -113,6 +109,10 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SpaceStation" type="Position2D" parent="."]
+position = Vector2( 483.2, -348.8 )
+scale = Vector2( 1, 1 )
 [connection signal="area_shape_entered" from="Landing" to="." method="_on_Landing_area_shape_entered"]
 [connection signal="area_shape_exited" from="Landing" to="." method="_on_Landing_area_shape_exited"]
 [connection signal="body_entered" from="Arrival" to="." method="_on_Arrival_body_entered"]

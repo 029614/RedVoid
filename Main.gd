@@ -86,7 +86,9 @@ func createMap():
             #asteroid fields
             while field_quant > 0:
                 var new_field = aField.instance()
+                new_field.add_to_group("asteroid_fields")
                 $Navigation2D/Bodies.add_child(new_field)
+                new_field.set_z_index(-1)
                 new_field.global_position = grid_point - Vector2(gUnit/2,gUnit/2)
                 getRandom(field_quant)
                 new_field.global_position = (new_field.global_position - Vector2(22500,22500)) + Vector2(randX,randY)
@@ -140,7 +142,7 @@ func nameAsteroidFamilies():
             field.family = fName + " " + ast_suff[randi()%8]
             named_families.append(field)
     print("asteroid families: ", Global.asteroidFamilies.size())
-    Global.asteroidFamilies = named_families
+    #Global.asteroidFamilies = named_families
     print("named asteroid families: ", Global.asteroidFamilies.size())
         
     
