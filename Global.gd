@@ -78,3 +78,10 @@ func asteroidNames():
             astNames.append(configFile.get_value("names", key))
     else:
         print("INI failed to load: ", err)
+
+func getClosest(array:Array,pos:Vector2):
+    var closest = null
+    for obj in array:
+        if closest == null or obj.get_global_position().distance_to(pos) <= closest.get_global_position().distance_to(pos):
+            closest = obj
+    return closest.global_position

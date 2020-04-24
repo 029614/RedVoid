@@ -59,6 +59,7 @@ func destroyAll(things):
         ship.queue_free()
 
 func createMap():
+    var tile_count = 1
     get_random = true
     var start_point = Vector2(gUnit,gUnit)
     var end_point = Vector2(gridX*gUnit,gridY*gUnit)
@@ -82,11 +83,14 @@ func createMap():
             getRandom(y)
             new_planet.global_position = (new_planet.global_position - Vector2(22500,22500)) + Vector2(randX,randY)
             new_planet.grid = new_rect
+            new_planet.add_to_group("tile" + str(tile_count))
+            new_planet.add_to_group("planets")
             
             #asteroid fields
             while field_quant > 0:
                 var new_field = aField.instance()
-                new_field.add_to_group("asteroid_fields")
+                new_field.add_to_group("tile" + str(tile_count))
+                new_field.add_to_group("asteroid_fields_tile" + str(tile_count))
                 $Navigation2D/Bodies.add_child(new_field)
                 new_field.set_z_index(-1)
                 new_field.global_position = grid_point - Vector2(gUnit/2,gUnit/2)
@@ -110,6 +114,7 @@ func createMap():
                 Global.asteroidFamilies.append(new_field)
                 field_quant -= 1
             x += 1
+            tile_count += 1
         y += 1
     nameAsteroidFamilies()
     Global.emit_signal("map_ready")
