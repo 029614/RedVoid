@@ -1,7 +1,9 @@
 extends Node2D
 
 var shuttle = preload("res://Assets/Ship/Blender/Shuttle/Shuttle.tscn")
-onready var positions = $s1/positions
+var oGun = preload("res://Assets/SpaceStation/OrbitalGun/OrbitalGun.tscn")
+var sYard = preload("res://Assets/SpaceStation/ShipYard/ShipYard.tscn")
+onready var positions = $Stages/s1/positions
 var planet
 
 var stage = 1
@@ -9,7 +11,7 @@ var stages = 6
 var team_1_working = true
 var team_2_working = true
 
-var materials = 0
+var materials = 2000
 var completion = 0
 var stage_completion = 250
 var enough_time = false
@@ -40,42 +42,50 @@ func nextWeld(team):
         $Team1.global_position = pos[randi()%pos.size()].global_position
 
 func stageUp():
-    if completion >= stage * stage_completion and enough_time == true:
+    if completion >= stage * stage_completion:
         stage += 1
         if stage == 2:
-            positions = $s2/positions
-            $s2.show()
-            $s1.hide()
+            positions = $Stages/s2/positions
+            $Stages/s2.show()
+            $Stages/s1.hide()
             nextWeld(3)
             shuttle_capacity = shuttle_capacity*stage
         elif stage == 3:
-            positions = $s3/positions
-            $s3.show()
-            $s2.hide()
+            positions = $Stages/s3/positions
+            $Stages/s3.show()
+            $Stages/s2.hide()
             nextWeld(3)
             shuttle_capacity = shuttle_capacity*stage
         elif stage == 4:
-            positions = $s4/positions
-            $s4.show()
-            $s3.hide()
+            positions = $Stages/s4/positions
+            $Stages/s4.show()
+            $Stages/s3.hide()
             nextWeld(3)
             shuttle_capacity = shuttle_capacity*stage
         elif stage == 5:
-            positions = $s4/positions
-            $s4.hide()
-            $s5.show()
+            positions = $Stages/s5/positions
+            $Stages/s4.hide()
+            $Stages/s5.show()
             nextWeld(3)
             shuttle_capacity = shuttle_capacity*stage
         elif stage == 6:
+            positions = $Stages/s6/positions
+            $Stages/s5.hide()
+            $Stages/s6.show()
+            nextWeld(3)
+            shuttle_capacity = shuttle_capacity*stage
+        elif stage == 7:
+            $Stages/s6.hide()
+            $Stages/s7.show()
             $Team1/Particles2D.set_emitting(false)
             $Team2/Particles2D.set_emitting(false)
             $Team1.hide()
             $Team2.hide()
             $WeldTime.stop()
             $WeldTime2.stop()
-            $projectTimer.stop()
-            $Turret203.show()
             shuttle_capacity = shuttle_capacity*stage
+            build(sYard)
+            build(oGun)
         
 
 func _on_WeldTime_timeout() -> void:
@@ -96,10 +106,6 @@ func _on_WeldTime_timeout() -> void:
         team_1_working = true
         $WeldTime2.set_wait_time(rand_range(.3,3))
         nextWeld(1)
-
-
-func _on_projectTimer_timeout() -> void:
-    enough_time = true
 
 
 func _on_WeldTime2_timeout() -> void:
@@ -151,4 +157,19 @@ func _on_report_timeout() -> void:
     print("Space Station resources: ", materials, ". Completion:", completion/10, "%.")
 
 func build(construction):
-    pass
+    var new = construction.instance()
+    new.planet = planet
+    new.station = self
+    planet.get_node("Constructions").add_child(new)
+    new.global_position = survey()
+
+func survey():
+    var begin = planet.global_position - Vector2(5000,5000)
+    var end = planet.global_position + Vector2(5000,5000)
+    var location = Vector2(rand_range(begin.x, end.x), rand_range(begin.y,end.y))
+    while location.distance_to(planet.global_position) < 2500:
+        location = Vector2(rand_range(begin.x, end.x), rand_range(begin.y,end.y))
+    return location
+
+
+

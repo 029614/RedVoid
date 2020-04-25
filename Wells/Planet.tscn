@@ -17,7 +17,7 @@ radius = 483.743
 [node name="Planet" type="Node2D" groups=[
 "planets",
 ]]
-scale = Vector2( 2.5, 2.5 )
+scale = Vector2( 4, 4 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_vertical_guides_": [ -100.148, 99.7619 ]
@@ -112,7 +112,6 @@ __meta__ = {
 
 [node name="SpaceStation" type="Position2D" parent="."]
 position = Vector2( 483.2, -348.8 )
-scale = Vector2( 1, 1 )
 [connection signal="area_shape_entered" from="Landing" to="." method="_on_Landing_area_shape_entered"]
 [connection signal="area_shape_exited" from="Landing" to="." method="_on_Landing_area_shape_exited"]
 [connection signal="body_entered" from="Arrival" to="." method="_on_Arrival_body_entered"]

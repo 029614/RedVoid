@@ -5,13 +5,13 @@ var planet
 var station
 
 var stage = 1
-var stages = 6
+var stages = 5
 var team_1_working = true
 var team_2_working = true
 
 var materials = 0
 var completion = 0
-var stage_completion = 125
+var stage_completion = 200
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -59,22 +59,14 @@ func stageUp():
             $s4.hide()
             nextWeld(3)
         elif stage == 6:
-            positions = $s6/positions
             $s6.show()
             $s5.hide()
-            nextWeld(3)
-        elif stage == 7:
-            $s7.show()
-            $s6.hide()
             $Team1/Particles2D.set_emitting(false)
             $Team2/Particles2D.set_emitting(false)
             $Team1.hide()
             $Team2.hide()
             $WeldTime.stop()
             $WeldTime2.stop()
-            for gun in $Guns.get_children():
-                gun.show()
-            station.build(station.oGun)
         
 
 func _on_WeldTime_timeout() -> void:
