@@ -85,3 +85,30 @@ func getClosest(array:Array,pos:Vector2):
         if closest == null or obj.get_global_position().distance_to(pos) <= closest.get_global_position().distance_to(pos):
             closest = obj
     return closest.global_position
+
+        
+
+func time_of_flight(velocity,distance,acceleration): #all values are floats
+    var total = (sqrt(velocity*velocity+2*acceleration*distance) - velocity) / acceleration
+    #print("time of flight, v, d, a, total: ",velocity,", ",distance,", ",acceleration,", ",total)
+    return total
+
+func time_to_decelerate(velocity,acceleration): #all values are floats
+    return velocity/float(acceleration)
+    
+func time_to_match_velocity(velocity,acceleration,other_vel): #all values are floats
+    print("time to match vel: ",velocity," , ",acceleration," , ",other_vel," , ",(velocity-other_vel).length())
+    return (velocity-other_vel).length()/float(acceleration)
+    
+func time_to_rotate(rps, current_rotation, desired_rotation):
+    print("current_rotation: ", current_rotation, " desired_rotation: ", desired_rotation, 
+        " time_to_rotate: ", abs(desired_rotation - current_rotation) / rps)
+    return abs((desired_rotation - current_rotation) / rps)
+
+
+func average(a):
+    var s = 0.0
+    for i in a:
+        s+=i
+    s=s/a.size()
+    return s

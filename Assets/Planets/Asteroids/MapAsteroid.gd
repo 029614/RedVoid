@@ -4,6 +4,7 @@ extends Sprite
 # Declare member variables here. Examples:
 # var a: int = 2
 # var b: String = "text"
+var mass = 0
 
 
 # Called when the node enters the scene tree for the first time.

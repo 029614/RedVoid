@@ -78,40 +78,29 @@ func get_input(delta):
     #Directional Inputs
     if ship.location_state == "free":
         if Input.is_action_pressed('ui_right'):
-            rotation_dir += 1 
+            ship.rotateShip(delta, 1, ship.rads_per_sec*delta)
         if Input.is_action_pressed('ui_left'):
-            rotation_dir -= 1
+            ship.rotateShip(delta, -1, ship.rads_per_sec*delta)
         if Input.is_action_pressed('ui_down'):
-            pass
+            if ship.rotation < ship.velocity.normalized().rotated(deg2rad(180)).angle():
+                ship.rotateShip(delta, 1, ship.rads_per_sec*delta)
+            elif ship.rotation > ship.velocity.normalized().rotated(deg2rad(180)).angle():
+                ship.rotateShip(delta, -1, ship.rads_per_sec*delta)
         if Input.is_action_pressed('ui_up') and ship.fuel >= 0:
-            
-            
-            #Input Movements
-            current_speed = velocity.length()
-            ship.current_speed = velocity.length()
-            velocity += Vector2(1, 0).rotated(ship.rotation).normalized() * (ship.acceleration * ship.thrust_modifier) * delta
-            velocity = velocity.clamped(ship.max_speed)
-            ship.fuel -= 1 * (ship.thrust_modifier * 2)
-            ship.animate_engines = true
-        else: 
-            ship.animate_engines = false
+            ship.accelerate(delta)
+        else:
+            ship.glide()
                 
 
 func _physics_process(delta):
     if Global._play == true:
         get_input(delta)
-        apply_gravity(delta)
-        rotation += rotation_dir * ship.rotation_speed * delta
         
         if ship.location_state == "in_orbit":
             ship.global_position = orbital_pos.get_global_position()
             ship.look_at(planet.get_global_position())
             ship.rotation += deg2rad(-90)
             
-        #For flying around normally
-        elif ship.location_state == "free":
-            velocity = ship.move_and_slide(velocity)
-        
         elif ship.location_state == "landing":
             print("player has now landed")
             ship.location_state = "on_planet"
@@ -245,10 +234,6 @@ func _input(event):
             planet = null
             velocity = Vector2()
             ship.velocity = Vector2()
-
-func apply_gravity(delta):
-    for body in Global.bodies:
-        velocity += ( body.mass / (body.global_position.distance_to(ship.global_position)) * ship.global_position.direction_to(body.global_position) ) * delta
 
 func setupOrbit(orbit_data, target):
     planet = target

@@ -10,6 +10,7 @@ var asteroids = []
 var size = 0
 var asteroid_field = []
 var family
+var mass = 0
 
 
 # Called when the node enters the scene tree for the first time.

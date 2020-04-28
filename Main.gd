@@ -77,7 +77,7 @@ func createMap():
             var new_planet = planet.instance()
             var new_rect = rect.instance()
             $Navigation2D/Bodies.add_child(new_planet)
-            $Navigation2D/Bodies.add_child(new_rect)
+            $Navigation2D.add_child(new_rect)
             new_rect.global_position = grid_point - Vector2(gUnit,gUnit)
             new_planet.global_position = grid_point - Vector2(gUnit/2,gUnit/2)
             getRandom(y)

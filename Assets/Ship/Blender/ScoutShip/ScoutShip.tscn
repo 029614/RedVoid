@@ -44,5 +44,5 @@ position = Vector2( 555.384, 0 )
 wait_time = 0.1
 
 [node name="Engine1" parent="." instance=ExtResource( 5 )]
-frame = 1
+frame = 5
 [connection signal="timeout" from="CannonCoolDown" to="." method="_on_CannonCoolDown_timeout"]
