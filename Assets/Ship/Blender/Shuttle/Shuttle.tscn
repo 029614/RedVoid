@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Ship/Engine/Engine1.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Ship/Blender/Shuttle/shuttle.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Ship/Blender/Shuttle/ShuttleAccent.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Ship/Blender/Shuttle/Shuttle.gd" type="Script" id=4]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 95.4881
+height = 443.391
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 901.662
+
+[node name="Shuttle" type="KinematicBody2D"]
+scale = Vector2( 0.25, 0.25 )
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource( 1 )
+disabled = true
+
+[node name="Engine1" parent="." instance=ExtResource( 1 )]
+position = Vector2( -410.662, -5.45318 )
+frame = 1
+
+[node name="Ship" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="Accent" type="Sprite" parent="."]
+position = Vector2( 2.09503, -2.09502 )
+texture = ExtResource( 3 )
+
+[node name="Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource( 2 )

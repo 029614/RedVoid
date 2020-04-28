@@ -1,92 +1,86 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://Assets/Ship/ship00.png" type="Texture" id=1]
-[ext_resource path="res://Assets/Ship/ship01.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Ship/ship02.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Ship/ship03.png" type="Texture" id=4]
-[ext_resource path="res://Assets/launch/Highlighter.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Particles/HeatShield.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Sounds/Engine.ogg" type="AudioStream" id=2]
+[ext_resource path="res://Assets/Ship/AlienFighterSprite.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Ship/Fighter.gd" type="Script" id=6]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 63.313, 22.1864 )
+[sub_resource type="CapsuleShape2D" id=1]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 75.1661, 37.1417 )
+extents = Vector2( 50.2752, 20.8533 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 25.7776, 42.0471 )
+extents = Vector2( 75.1661, 37.1417 )
 
-[sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 56.0794, 23.1085 )
+[sub_resource type="ConvexPolygonShape2D" id=4]
+points = PoolVector2Array( -30, -30, -56, 30, 56, 30, 30, -30, 0, -50 )
 
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 22.3065, 64 )
+extents = Vector2( 56.0794, 23.1085 )
 
-[sub_resource type="SpriteFrames" id=6]
-animations = [ {
-"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 20.8575, 50.5637 )
 
-[sub_resource type="SpriteFrames" id=7]
-animations = [ {
-"frames": [ ExtResource( 5 ), null ],
-"loop": true,
-"name": "default",
-"speed": 2.0
-} ]
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 79.7457, 95.166 )
 
-[node name="Fighter" type="KinematicBody2D"]
+[node name="Fighter" type="KinematicBody2D" groups=[
+"ship",
+]]
 scale = Vector2( 0.25, 0.25 )
+collision_layer = 2
+collision_mask = 29
 script = ExtResource( 6 )
+enemy_color = Color( 0.886275, 0.152941, 0.152941, 1 )
 
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( -0.224365, 0.0114136 )
-rotation = 1.5708
-texture = ExtResource( 1 )
-offset = Vector2( 0.224365, 73.599 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
 
 [node name="DamageEngines" type="CollisionShape2D" parent="."]
 position = Vector2( -86.1864, 0.393127 )
 rotation = 1.5708
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="DamageCargo" type="CollisionShape2D" parent="."]
 position = Vector2( -27.7472, 0.393127 )
 rotation = 1.5708
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="DamageNose" type="CollisionShape2D" parent="."]
 position = Vector2( 69.616, 0 )
 rotation = 1.5708
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="DamageWeapons" type="CollisionShape2D" parent="."]
 position = Vector2( 18.7523, 0 )
 rotation = 1.5708
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 
 [node name="LandingGear" type="Area2D" parent="."]
+position = Vector2( -35.5891, 0.418701 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LandingGear"]
 position = Vector2( -87.2675, 0 )
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
-[node name="Flying" type="AnimatedSprite" parent="."]
-visible = false
-position = Vector2( -26.7934, 0.669174 )
+[node name="ShipArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShipArea"]
+position = Vector2( 23.298, -2.51286 )
 rotation = 1.5708
-frames = SubResource( 6 )
-frame = 2
-playing = true
-offset = Vector2( -0.069603, 48.021 )
+shape = SubResource( 7 )
 
-[node name="Highlighter" type="AnimatedSprite" parent="."]
-visible = false
-position = Vector2( -3.05176e-05, -1.16794 )
-scale = Vector2( 6.65291, 6.65291 )
-frames = SubResource( 7 )
-frame = 1
-playing = true
+[node name="GunCoords" type="Position2D" parent="."]
+position = Vector2( 162.828, 0 )
+
+[node name="HeatShield" type="Position2D" parent="."]
+
+[node name="HeatShield2" parent="HeatShield" instance=ExtResource( 1 )]
+position = Vector2( 104.527, 0 )
+
+[node name="EngineSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+volume_db = -5.9
+
+[node name="AlienFighterSprite" parent="." instance=ExtResource( 3 )]

@@ -1,0 +1,97 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Assets/Particles/HeatShield.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Ship/FighterSprite.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Ship/Blender/Interceptor/Interceptor.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Sounds/Engine.ogg" type="AudioStream" id=4]
+
+[sub_resource type="CapsuleShape2D" id=1]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 50.2752, 20.8533 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 75.1661, 37.1417 )
+
+[sub_resource type="ConvexPolygonShape2D" id=4]
+points = PoolVector2Array( -30, -30, -56, 30, 56, 30, 30, -30, 0, -50 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 56.0794, 23.1085 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 20.8575, 50.5637 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 79.7457, 95.166 )
+
+[node name="Actor" type="KinematicBody2D" groups=[
+"ship",
+]]
+light_mask = 524288
+scale = Vector2( 0.25, 0.25 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" parent="." instance=ExtResource( 2 )]
+position = Vector2( -17.48, -19.6673 )
+
+[node name="DamageEngines" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( -86.1864, 0.393127 )
+rotation = 1.5708
+shape = SubResource( 2 )
+
+[node name="DamageCargo" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( -27.7472, 0.393127 )
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="DamageNose" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 69.616, 0 )
+rotation = 1.5708
+shape = SubResource( 4 )
+
+[node name="DamageWeapons" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 18.7523, 0 )
+rotation = 1.5708
+shape = SubResource( 5 )
+
+[node name="LandingGear" type="Area2D" parent="."]
+visible = false
+position = Vector2( -35.5891, 0.418701 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LandingGear"]
+position = Vector2( -87.2675, 0 )
+shape = SubResource( 6 )
+
+[node name="ShipArea" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShipArea"]
+position = Vector2( 23.298, -2.51286 )
+rotation = 1.5708
+shape = SubResource( 7 )
+
+[node name="GunCoords" type="Position2D" parent="."]
+position = Vector2( 162.828, 0 )
+
+[node name="HeatShield" type="Position2D" parent="."]
+
+[node name="HeatShield2" parent="HeatShield" instance=ExtResource( 1 )]
+position = Vector2( 104.527, 0 )
+
+[node name="EngineSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+volume_db = -80.0
+
+[node name="CannonCoolDown" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="Pilot" type="Node2D" parent="."]
+[connection signal="timeout" from="CannonCoolDown" to="." method="_on_CannonCoolDown_timeout"]

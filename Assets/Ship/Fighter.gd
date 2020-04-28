@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
-onready var bodies = get_parent().get_node("Navigation2D/Bodies")
+var scene
+var player
 
 #input and direction
 var velocity = Vector2()
@@ -9,17 +10,17 @@ var target = null
 var origin = Vector2()
 var travel_distance = 0
 
+var static_velocity # velocity/delta
+var current_gravity 
+
 #Ship
+
 onready var thrust = 2000
 var mass = 10
-export var fuel = 250000
 
-#Ship Components
-var fuel_tank_tier = 1 #1-3
-var engine_tier = 1 #1-3
-var shields_tier = 1 #0-3
-var cargo_tier = 0 #1-3
-var weapons_tier = 1 #0-3
+export var fuel = 250000
+export var max_fuel = 250000
+var shields = 100
 
 #launcher
 var launch_speed = 100
@@ -31,8 +32,9 @@ var rps = 1
 var rads_per_sec = 0
 
 #speed managers
-export (int) var speed = 500
-export (float) var rotation_speed = 2
+#export (int) var speed = 500
+#export (float) var rotation_speed = 2
+export (Color) var enemy_color = Color(1,1,1,1)
 var current_speed = 0
 var max_speed = 99999
 
@@ -50,6 +52,7 @@ var target_balance = 0 #( <0 is behind, >0 is in front)
 #states
 var states = ["travel", "landing", "launching", "combat", "patrol", "docked"]
 var state = "patrol"
+var faction = null
 
 
 
@@ -57,16 +60,18 @@ var state = "patrol"
 func _ready() -> void:
     acceleration = thrust/mass
     rads_per_sec = 6.283185*rps
+    $AlienFighterSprite/ShipAccent.modulate = enemy_color
     
 
-func get_gravity(delta):
+func apply_gravity(delta):
     var g = Vector2(0,0)
     var t = Vector2(0,0)
-    for body in bodies.get_children():
+    for body in Global.bodies:
         if body.position == target:
             t = ( body.mass / (body.global_position.distance_to(self.global_position)) * self.global_position.direction_to(body.global_position) )
         else:
             g += ( body.mass / (body.global_position.distance_to(self.global_position)) * self.global_position.direction_to(body.global_position) )
+    current_gravity = g
     return [g, t]
 
 
@@ -95,8 +100,10 @@ func update_movement(delta):
     if fuel >= 0:
         
         #Changing the sprite to the one with engine plumes
-        $Sprite.hide()
-        $Flying.show()
+        if $AlienFighterSprite/Particles2D.is_emitting() == false:
+            $AlienFighterSprite/Particles2D.restart()
+            $EngineSound.play()
+            print($EngineSound.is_playing())
         
         #Input Movements
         current_speed = velocity.length()
@@ -108,8 +115,10 @@ func update_movement(delta):
     else:
         
         #Changing the sprite back to the one without engine plumes
-        $Sprite.show()
-        $Flying.hide()
+            $Sprite/Particles2D.set_emitting(false)
+            $Sprite/AB1.set_emitting(false)
+            $Sprite/AB2.set_emitting(false)
+            $EngineSound.stop()
 
 func draw_arrow(arrow, t, mp):
     var d = self.global_position.distance_to(t)
@@ -124,9 +133,9 @@ func draw_arrow(arrow, t, mp):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-    target = get_node("/root/NewMain/Actor").global_position
-    var mp = get_parent().position #position of Main
-    var gt = get_gravity(delta)
+    target = Vector2(0,0)
+    var mp = Global.world.position #position of Main
+    var gt = apply_gravity(delta)
     var g = gt[0] #gravity of all planets except target
     var tgrav = gt[1] #gravity of target
     var d = self.global_position.direction_to(target) #direction to target
@@ -167,8 +176,12 @@ func _physics_process(delta: float) -> void:
     
     #self.look_at(lookat)
     velocity += (g+tgrav) * delta
+    static_velocity = velocity/delta
     update_movement(delta)
     velocity = move_and_slide(velocity)
+    
+    if shields <= 0:
+        self.queue_free()
 
 
 # Behaviors
@@ -188,3 +201,10 @@ func runFrom(body):
 # Pathfinding
 func calculatePath(origin, target):
     pass
+
+
+
+
+
+
+

@@ -1,0 +1,235 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Assets/Particles/corona.png" type="Texture" id=1]
+[ext_resource path="res://Assets/SpaceStation/ShipYard/stage2.png" type="Texture" id=2]
+[ext_resource path="res://Assets/SpaceStation/ShipYard/stage1.png" type="Texture" id=3]
+[ext_resource path="res://Assets/SpaceStation/ShipYard/stage3.png" type="Texture" id=4]
+[ext_resource path="res://Assets/SpaceStation/ShipYard/stage5.png" type="Texture" id=5]
+[ext_resource path="res://Assets/SpaceStation/ShipYard/stage6.png" type="Texture" id=6]
+[ext_resource path="res://Assets/SpaceStation/ShipYard/CompletedLightsOn.png" type="Texture" id=7]
+[ext_resource path="res://Assets/SpaceStation/ShipYard/ShipYard.gd" type="Script" id=8]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.488889, 1 )
+colors = PoolColorArray( 1, 0.686275, 0.278431, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 200.0
+initial_velocity_random = 0.56
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 4.0
+color_ramp = SubResource( 2 )
+
+[node name="ShipYard" type="Node2D"]
+scale = Vector2( 2, 2 )
+script = ExtResource( 8 )
+
+[node name="s6" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 0.106744, 0.106744 )
+texture = ExtResource( 7 )
+
+[node name="positions" type="Node2D" parent="s6"]
+
+[node name="s1-1" type="Position2D" parent="s6/positions"]
+position = Vector2( 57.3493, -33.793 )
+
+[node name="s1-2" type="Position2D" parent="s6/positions"]
+position = Vector2( -58.3761, 34.5437 )
+
+[node name="s1-3" type="Position2D" parent="s6/positions"]
+position = Vector2( 40.276, 52.9584 )
+
+[node name="s1-4" type="Position2D" parent="s6/positions"]
+position = Vector2( -36.6049, -56.0698 )
+
+[node name="s1-5" type="Position2D" parent="s6/positions"]
+position = Vector2( 0.175354, 42.3373 )
+
+[node name="s1-6" type="Position2D" parent="s6/positions"]
+position = Vector2( -0.0387573, -56.062 )
+
+[node name="s5" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0.0607018, 11.6796 )
+scale = Vector2( 0.106744, 0.106744 )
+texture = ExtResource( 6 )
+
+[node name="positions" type="Node2D" parent="s5"]
+
+[node name="s1-1" type="Position2D" parent="s5/positions"]
+position = Vector2( -99.5494, -115.517 )
+
+[node name="s1-2" type="Position2D" parent="s5/positions"]
+position = Vector2( 105.558, -223.716 )
+
+[node name="s1-3" type="Position2D" parent="s5/positions"]
+position = Vector2( 146.111, -64.9849 )
+
+[node name="s1-4" type="Position2D" parent="s5/positions"]
+position = Vector2( -544.781, 405.159 )
+
+[node name="s1-5" type="Position2D" parent="s5/positions"]
+position = Vector2( -544.452, -199.077 )
+
+[node name="s1-6" type="Position2D" parent="s5/positions"]
+position = Vector2( 175.054, -418.115 )
+
+[node name="s4" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0.70043, 11.6796 )
+scale = Vector2( 0.106744, 0.106744 )
+texture = ExtResource( 5 )
+
+[node name="positions" type="Node2D" parent="s4"]
+
+[node name="s1-1" type="Position2D" parent="s4/positions"]
+position = Vector2( -303.292, -225.229 )
+
+[node name="s1-2" type="Position2D" parent="s4/positions"]
+position = Vector2( 429.445, -448.611 )
+
+[node name="s1-3" type="Position2D" parent="s4/positions"]
+position = Vector2( 470.103, 448.982 )
+
+[node name="s1-4" type="Position2D" parent="s4/positions"]
+position = Vector2( -537.938, 423.297 )
+
+[node name="s1-5" type="Position2D" parent="s4/positions"]
+position = Vector2( -511.59, -447.653 )
+
+[node name="s1-6" type="Position2D" parent="s4/positions"]
+position = Vector2( 428.735, -231.593 )
+
+[node name="s3" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0.482804, 11.4897 )
+scale = Vector2( 0.106744, 0.106744 )
+texture = ExtResource( 4 )
+
+[node name="positions" type="Node2D" parent="s3"]
+
+[node name="s1-1" type="Position2D" parent="s3/positions"]
+position = Vector2( -311.465, -434.452 )
+
+[node name="s1-2" type="Position2D" parent="s3/positions"]
+position = Vector2( 440.746, -443.281 )
+
+[node name="s1-3" type="Position2D" parent="s3/positions"]
+position = Vector2( -306.362, -222.986 )
+
+[node name="s1-4" type="Position2D" parent="s3/positions"]
+position = Vector2( 576.936, -203.379 )
+
+[node name="s1-5" type="Position2D" parent="s3/positions"]
+position = Vector2( 142.346, -2.7619 )
+
+[node name="s1-6" type="Position2D" parent="s3/positions"]
+position = Vector2( -370.795, 1.03564 )
+
+[node name="s1-7" type="Position2D" parent="s3/positions"]
+position = Vector2( 383.057, 214.876 )
+
+[node name="s1-8" type="Position2D" parent="s3/positions"]
+position = Vector2( -124.437, 210.424 )
+
+[node name="s1-9" type="Position2D" parent="s3/positions"]
+position = Vector2( -547.31, 423.014 )
+
+[node name="s1-10" type="Position2D" parent="s3/positions"]
+position = Vector2( 481.834, 447.017 )
+
+[node name="s2" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0.774848, 24.7288 )
+scale = Vector2( 0.106744, 0.106744 )
+texture = ExtResource( 2 )
+
+[node name="positions" type="Node2D" parent="s2"]
+
+[node name="s1-1" type="Position2D" parent="s2/positions"]
+position = Vector2( -261.104, 323.223 )
+
+[node name="s1-2" type="Position2D" parent="s2/positions"]
+position = Vector2( 389.655, 100.771 )
+
+[node name="s1-3" type="Position2D" parent="s2/positions"]
+position = Vector2( -312.426, 91.6287 )
+
+[node name="s1-4" type="Position2D" parent="s2/positions"]
+position = Vector2( 385.576, 286.223 )
+
+[node name="s1-5" type="Position2D" parent="s2/positions"]
+position = Vector2( 563.885, -124.497 )
+
+[node name="s1-6" type="Position2D" parent="s2/positions"]
+position = Vector2( -311.826, -122.639 )
+
+[node name="s1" type="Sprite" parent="."]
+position = Vector2( -0.211844, 24.5788 )
+scale = Vector2( 0.106744, 0.106744 )
+texture = ExtResource( 3 )
+
+[node name="positions" type="Node2D" parent="s1"]
+
+[node name="s1-1" type="Position2D" parent="s1/positions"]
+position = Vector2( -511.128, 301.297 )
+
+[node name="s1-2" type="Position2D" parent="s1/positions"]
+position = Vector2( -314.846, 316.736 )
+
+[node name="s1-3" type="Position2D" parent="s1/positions"]
+position = Vector2( 243.902, 317.19 )
+
+[node name="s1-4" type="Position2D" parent="s1/positions"]
+position = Vector2( 401.065, 284.892 )
+
+[node name="s1-5" type="Position2D" parent="s1/positions"]
+position = Vector2( 69.8724, -4.89863 )
+
+[node name="s1-6" type="Position2D" parent="s1/positions"]
+position = Vector2( -21.7753, 8.29359 )
+
+[node name="WeldTime" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="WeldTime2" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="Team1" type="Node2D" parent="."]
+scale = Vector2( 0.106744, 0.106744 )
+
+[node name="Particles2D" type="Particles2D" parent="Team1"]
+amount = 50
+explosiveness = 0.54
+process_material = SubResource( 3 )
+
+[node name="Corona" type="Sprite" parent="Team1"]
+modulate = Color( 0.572549, 0.929412, 0.988235, 0.231373 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 1 )
+
+[node name="Team2" type="Node2D" parent="."]
+scale = Vector2( 0.106744, 0.106744 )
+
+[node name="Particles2D" type="Particles2D" parent="Team2"]
+amount = 25
+explosiveness = 0.54
+process_material = SubResource( 3 )
+
+[node name="Corona" type="Sprite" parent="Team2"]
+modulate = Color( 0.572549, 0.929412, 0.988235, 0.231373 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 1 )
+
+[node name="Guns" type="Node2D" parent="."]
+scale = Vector2( 0.33, 0.33 )

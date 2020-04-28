@@ -1,137 +1,298 @@
-extends KinematicBody2D
+extends Node2D
+
 
 """ -------- DECLARATION -------- """
-onready var bodies = get_parent().get_node("Bodies")
-onready var engine = get_parent()
-onready var launch_origin = get_parent().get_node("Start").get_global_position()
+onready var bodies = Global.bodies
+onready var engine = Global.world
 onready var last_position = get_position()
+onready var ship = get_parent().get_parent()
+onready var faction = ship.get_parent().get_parent()
+onready var hud = $CanvasLayer/HUD
+onready var fuel_gauge = $CanvasLayer/HUD/ConsoleFuel/FuelGauge
 
 #input and direction
-var horizontal_input
-var vertical_input
 var velocity = Vector2()
 var rotation_dir = 0
+var orbital_pos
+var orbit = {}
+var planet
+var zoom = Vector2()
+var zoom_interval = Vector2(1,1)
+var zoom_min = Vector2(5,5)
+var zoom_max = Vector2(250,250)
+var zoom_normal = Vector2(3,3)
+var map_center_relative
 
 #Ship
-var thrust = 999
-var mass = 10
-export var fuel = 2500
-
-#Ship Components
-var fuel_tank_tier = 1 #1-3
-var engine_tier = 1 #1-3
-var shields_tier = 0 #0-3
-var cargo_tier = 1 #1-3
-var weapons_tier = 0 #0-3
-var jump_drive = false
+onready var ship_size = ship.ship_size
 
 #launcher
-var power = 0
-var power_indicator = 0
-var launch_speed = 10
+var launch_speed = 100
 
 #physics
-var acceleration = 0
-var inertia = 0
 var friction = 1
+var v_dir = Vector2()
 
 #speed managers
 export (int) var speed = 500
-export (float) var rotation_speed = 2
 var current_speed = 0
-var max_speed = 99999
+
+#flags
+var _weapon_select = "cannon" #Can be cannon, missile or bomb
+
+var weapon_states = ["missiles", "bombs", "cannon"]
+var current_weapon = "cannon"
+var firing_cannon = false
+var cannon_speed = 1
+var cannon_ready = true
+
+var camera_states = ["zoomed_in", "zoomed_out", "zooming_in", "zooming_out", "tile", "map", "normal"]
+var camera_state = "normal"
+var camera_positions = ["on_player", "on_center"]
+var camera_position = "on_player"
+
 
 
 """ -------- FUNCTIONS -------- """
 #initialize variables
 func _ready():
-    set_process_input(true)
-    acceleration = thrust/mass
-    Global.connect("player_landed", self, "land")
+    
+    #Connecting signals and presetting flags
+    ship.pilot = self
+    ship.faction = faction
+    Global.connect("player_arrival", self, "setupOrbit")
+    Global.connect("player_died", self, "destruct")
+    Global.connect("main_ready", self, "ready_ready")
+    Global._process_player_movement = true
+    Global.player_registry.append(self)
+    $CanvasLayer/HUD.player = self
+    $ChaseCamera.zoom = zoom_normal
 
+func ready_ready():
+    map_center_relative = global_position + Global.world.map_center
 
 
 func get_input(delta):
+    
     rotation_dir = 0
-    if Input.is_action_pressed('ui_right'):
-        rotation_dir += 1
-    if Input.is_action_pressed('ui_left'):
-        rotation_dir -= 1
-    if Input.is_action_pressed('ui_down'):
-        pass
-    if Input.is_action_pressed('ui_up') and fuel >= 0:
-        $Sprite.hide()
-        $Flying.show()
-        current_speed = velocity.length()
-        velocity += Vector2(acceleration*delta, 0).rotated(rotation).normalized()
-        velocity = velocity.clamped(max_speed)
-        fuel -= 1
-    else:
-        $Sprite.show()
-        $Flying.hide()
+    #Directional Inputs
+    if ship.location_state == "free":
+        if Input.is_action_pressed('ui_right'):
+            ship.rotateShip(delta, 1, ship.rads_per_sec*delta)
+        if Input.is_action_pressed('ui_left'):
+            ship.rotateShip(delta, -1, ship.rads_per_sec*delta)
+        if Input.is_action_pressed('ui_down'):
+            if ship.rotation < ship.velocity.normalized().rotated(deg2rad(180)).angle():
+                ship.rotateShip(delta, 1, ship.rads_per_sec*delta)
+            elif ship.rotation > ship.velocity.normalized().rotated(deg2rad(180)).angle():
+                ship.rotateShip(delta, -1, ship.rads_per_sec*delta)
+        if Input.is_action_pressed('ui_up') and ship.fuel >= 0:
+            ship.accelerate(delta)
+        else:
+            ship.glide()
+                
 
 func _physics_process(delta):
-    if Global._is_player_picked == false and Global._process_player_movement == true and Global._player_is_landed == true:
+    if Global._play == true:
         get_input(delta)
-        get_gravity(delta)
-        rotation += rotation_dir * rotation_speed * delta
-        velocity = Vector2(lerp(velocity.x, 0, friction), lerp(velocity.y, 0, friction))
-        velocity = move_and_slide(velocity)
-    if Global._is_player_picked == false and Global._process_player_movement == true:
-        get_input(delta)
-        get_gravity(delta)
-        rotation += rotation_dir * rotation_speed * delta
-        velocity = move_and_slide(velocity)
-        var move_overlay = get_position() - last_position
-        last_position = get_position()
-        engine.overlay.set_position(engine.overlay.get_position() - move_overlay/2)
-    elif Global._is_player_picked == true:
-        var new_position = get_global_mouse_position()
-        if new_position.distance_to(launch_origin) > 200:
-            pass
+        
+        if ship.location_state == "in_orbit":
+            ship.global_position = orbital_pos.get_global_position()
+            ship.look_at(planet.get_global_position())
+            ship.rotation += deg2rad(-90)
+            
+        elif ship.location_state == "landing":
+            print("player has now landed")
+            ship.location_state = "on_planet"
+        
+        #Map
+        if camera_state == "zooming_out" and $ChaseCamera.zoom < zoom_max:
+            $ChaseCamera.zoom += zoom_interval
+            for label in hud.field_labels:
+                label.scale += zoom_interval
+        elif camera_state == "zooming_out" and $ChaseCamera.zoom > zoom_max:
+            $ChaseCamera.zoom = zoom_max
+            for label in hud.field_labels:
+                label.scale = zoom_max
+        elif camera_state == "zooming_out" and $ChaseCamera.zoom == zoom_max:
+            camera_state = "zoomed_out"
+        
+        if camera_state == "map":
+            $ChaseCamera.global_position = map_center_relative
+            
+        if camera_state == "zooming_in" and $ChaseCamera.zoom > Vector2(3*ship_size,3*ship_size):
+            $ChaseCamera.zoom -= zoom_interval
+            for label in hud.field_labels:
+                label.scale -= zoom_interval
+        elif camera_state == "zooming_in" and $ChaseCamera.zoom < Vector2(3*ship_size,3*ship_size):
+            $ChaseCamera.zoom = Vector2(3*ship_size,3*ship_size)
+            for label in hud.field_labels:
+                label.scale = Vector2(3*ship_size,3*ship_size)
+        elif camera_state == "zooming_in" and $ChaseCamera.zoom == Vector2(3*ship_size,3*ship_size):
+            camera_state = "zoomed_in"
+        
+        if $ChaseCamera.zoom < Vector2(10,10):
+            hud.player_ind.hide()
+        elif $ChaseCamera.zoom >= Vector2(10,10):
+            hud.player_ind.show()
+            hud.player_ind.set_scale($ChaseCamera.zoom/2)
+        hud.player_ind.set_global_rotation(ship.get_global_rotation() + deg2rad(90))
+        hud.player_ind.set_global_position(global_position)
+        
+        
+        updateGauge()
+        
+        if ship.shields <= 0:
+            self.queue_free()
+        
+    #cannon
+    if firing_cannon == true:
+        ship.fireControl("cannon")
+        
+
+func _input(event):
+    if Global._play == true:
+        
+        #Weapons
+        if ship.location_state == "free" and current_weapon == "missile" and Input.is_action_just_pressed("weapons"):
+            #Global.emit_signal("torpedo_request", self)
+            ship.fireControl("missile")
+        if ship.location_state == "free" and current_weapon == "cannon" and firing_cannon == false and Input.is_action_pressed("weapons"):
+            firing_cannon = true
+            hud.cannon(true)
+        elif ship.location_state == "free" and current_weapon == "cannon" and firing_cannon == true and Input.is_action_just_released("weapons"):
+            firing_cannon = false
+            hud.cannon(false)
+        
+        #Camera Zoom
+        if Input.is_action_pressed("zoom_in") and camera_state == "normal":
+            $ChaseCamera.set_zoom(Vector2($ChaseCamera.get_zoom().x - .1, $ChaseCamera.get_zoom().y - .1))
+            for label in hud.field_labels:
+                label.scale -= Vector2(.1,.1)
+        if Input.is_action_pressed("zoom_out") and camera_state == "normal":
+            $ChaseCamera.set_zoom(Vector2($ChaseCamera.get_zoom().x + .1, $ChaseCamera.get_zoom().y + .1))
+            for label in hud.field_labels:
+                label.scale += Vector2(.1,.1)
+        
+        #Map
+        if Input.is_action_just_pressed("map") and camera_state != "map":
+            camera_state = "map"
+            if $ChaseCamera.zoom < zoom_max:
+                $ChaseCamera.zoom = zoom_max
+            for label in hud.field_labels:
+                label.scale = zoom_max
+        elif Input.is_action_just_pressed("map") and camera_state == "map":
+            camera_state = "normal"
+            $ChaseCamera.global_position = global_position
+            if $ChaseCamera.zoom > zoom_normal:
+                $ChaseCamera.zoom = zoom_normal
+            for label in hud.field_labels:
+                label.scale = zoom_normal*2
+        
+        if Input.is_action_just_pressed("tile") and camera_state != "tile":
+            camera_state = "tile"
+            $ChaseCamera.global_position = global_position
+            if $ChaseCamera.zoom != zoom_max/4:
+                $ChaseCamera.zoom = zoom_max/4
+            for label in hud.field_labels:
+                label.scale = zoom_max/4
+        elif Input.is_action_just_pressed("tile") and camera_state == "tile":
+            camera_state = "normal"
+            $ChaseCamera.global_position = global_position
+            if $ChaseCamera.zoom > zoom_normal:
+                $ChaseCamera.zoom = zoom_normal
+            for label in hud.field_labels:
+                label.scale = zoom_normal*2
+        
+        #After Burner
+        if Input.is_action_pressed("AfterBurner"):
+            ship.fire_after_burner = true
+        elif Input.is_action_just_released("AfterBurner"):
+            ship.fire_after_burner = false
+        
+        #Weapon Select
+        if Input.is_action_just_pressed("cannon"):
+            weaponSelect(1)
+        if Input.is_action_just_pressed("missile"):
+            weaponSelect(2)
+        if Input.is_action_just_pressed("bomb"):
+            weaponSelect(3)
+        
+        #orbit
+        if orbit and planet:
+            if Input.is_action_just_pressed("orbit") and ship.location_state == "free":
+                orbit(orbit, planet)
+                velocity = Vector2()
+                ship.velocity = Vector2()
+            elif Input.is_action_just_pressed("orbit") and ship.location_state == "in_orbit":
+                ship.location_state = "free"
+                velocity = Vector2()
+                ship.velocity = Vector2()
+        
+        if ship.location_state == "on_planet" and Input.is_action_just_pressed("ui_up"):
+            ship.location_state = "free"
+            planet = null
+            velocity = Vector2()
+            ship.velocity = Vector2()
+
+func setupOrbit(orbit_data, target):
+    planet = target
+    orbit = orbit_data
+    print("Orbital Coordinates Received")
+    
+func orbit(orbit, planet):
+    var p_pos = ship.get_global_position()
+    var obd = {} # Orbit By Distance. Contains a list of orbits. orbit reference:distance from ship
+    for pos in orbit:
+        if orbit.get(pos) == false:
+            obd[pos] = pos.get_global_position().distance_to(p_pos)
+    var s = obd.values()
+    s.sort()
+    for key in obd:
+        if obd[key] == s[0]:
+            orbital_pos = key
+    ship.location_state = "in_orbit"
+    print("all code has run")
+
+func updateGauge():
+    #Fuel Gauge
+    if ship.fuel > 0:
+        fuel_gauge.set_value((ship.fuel/float(ship.fuel_cap))*100)
+        if ship.fuel/float(ship.fuel_cap)*100 <= 25 and ship.fuel/float(ship.fuel_cap)*100 > 0:
+            fuel_gauge.set_self_modulate(Color8(253,50,40,130))
+            fuel_gauge.get_node("Label").set_self_modulate(Color8(253,50,40,130))
+            fuel_gauge.get_node("Label").set_text("Low Fuel!")
         else:
-            self.set_global_position(new_position)
-            power_indicator = self.global_position.distance_to(launch_origin) * 2
-            power = self.global_position.distance_to(launch_origin) * 2
-        self.look_at(launch_origin)
+            fuel_gauge.set_self_modulate(Color8(54,246,0,109))
+            fuel_gauge.get_node("Label").set_self_modulate(Color8(54,246,0,109))
+            fuel_gauge.get_node("Label").set_text("Fuel")
+    else:
+        fuel_gauge.set_self_modulate(Color8(253,50,40,0))
+        fuel_gauge.get_node("Label").set_self_modulate(Color8(243,192,19,202))
+        fuel_gauge.get_node("Label").set_text("-No Fuel-")
 
-func _input_event(viewport, event, shape_idx):
-    if _event_is_left_click(event): # check if left click is pressed on the body
-        print(event.pressed)
-        Global._is_player_picked = event.pressed
+func playerLog(string):
+    pass
 
-func _input(event): # check if left click is released even outside of the body
-    if _event_is_left_click(event) and not event.pressed and Global._is_player_picked == true:
-        if Global._player_is_launched == false:
-            launch()
-            Global._player_is_launched = true
-    if _event_is_left_click(event) and not event.pressed:
-        Global._is_player_picked = false
-    if Global._player_is_landed == true and Input.is_action_just_pressed("weapons"):
-        print("player launch")
-        Global._player_is_landed == false
-        velocity += Vector2(1, 0).rotated(rotation).normalized()*launch_speed
-        velocity = move_and_slide(velocity)
 
-func _event_is_left_click(event):
-    return event is InputEventMouseButton and event.button_index == BUTTON_LEFT
+func weaponSelect(select):
+    if select == 1:
+        current_weapon = "cannon"
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Missiles/Control.hide()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Bombs/Control.hide()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Guns/Control.show()
+    elif select == 2:
+        current_weapon = "missile"
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Missiles/Control.show()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Bombs/Control.hide()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Guns/Control.hide()
+    elif select == 3:
+        current_weapon = "bomb"
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Missiles/Control.hide()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Bombs/Control.show()
+        $CanvasLayer/HUD/ConsoleRight/Weapons/VBoxContainer/Guns/Control.hide()
 
-func get_gravity(delta):
-    for body in bodies.get_children():
-        velocity += ( body.mass / (body.position.distance_to(self.position)) * self.position.direction_to(body.position) ) * delta
 
-func launch():
-    velocity += Vector2(1, 0).rotated(rotation).normalized()*power
-    velocity = move_and_slide(velocity)
-    Global._process_player_movement = true
-    $Highlighter.hide()
-    $ChaseCamera.make_current()
-
-func land(planet):
-    Global._player_is_landed = true
-#    self.set_global_position(planet.get_global_position())
-#    _has_launched = false
-#    _process_movement = false
-#    launch_origin = planet.get_global_position()
-#    fuel = 250
-#    $Highlighter.show()
+func _on_CannonCoolDown_timeout() -> void:
+    $CannonCoolDown.stop()
+    cannon_ready = true

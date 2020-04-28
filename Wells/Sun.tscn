@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Planets/PlanetSprite.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Wells/Sun.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Planets/Sun.png" type="Texture" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 357.373
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 396.113
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 589.055
+
+[node name="Sun" type="Node2D"]
+position = Vector2( 304, -712 )
+scale = Vector2( 20, 20 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_vertical_guides_": [ -100.148, 99.7619 ]
+}
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+shape = SubResource( 1 )
+
+[node name="Landing" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Landing"]
+shape = SubResource( 2 )
+
+[node name="Arrival" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arrival"]
+shape = SubResource( 3 )
+
+[node name="Constructions" type="Node2D" parent="."]
+
+[node name="Planet" type="Label" parent="."]
+margin_left = -128.0
+margin_top = 112.0
+margin_right = 128.0
+margin_bottom = 152.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlanetSprite" parent="." instance=ExtResource( 1 )]
+scale = Vector2( 1.11733, 1.11733 )
+texture = ExtResource( 4 )
+
+[node name="RotateMe" type="Node2D" parent="."]
+
+[node name="orbit1" type="Position2D" parent="RotateMe"]
+position = Vector2( 540.132, 9.08826 )
+
+[node name="orbit2" type="Position2D" parent="RotateMe"]
+position = Vector2( 2.27216, -558.074 )
+
+[node name="orbit3" type="Position2D" parent="RotateMe"]
+position = Vector2( -557.055, -4.54419 )
+
+[node name="orbit4" type="Position2D" parent="RotateMe"]
+position = Vector2( 5.20245, 559.692 )
+
+[node name="orbit5" type="Position2D" parent="RotateMe"]
+position = Vector2( 404.44, -378.943 )
+
+[node name="orbit6" type="Position2D" parent="RotateMe"]
+position = Vector2( -391.166, -400.682 )
+
+[node name="orbit7" type="Position2D" parent="RotateMe"]
+position = Vector2( -414.619, 384.603 )
+
+[node name="orbit8" type="Position2D" parent="RotateMe"]
+position = Vector2( 451.595, 335.773 )
+
+[node name="FactionIndicator" type="Node2D" parent="."]
+[connection signal="area_shape_entered" from="Landing" to="." method="_on_Landing_area_shape_entered"]
+[connection signal="body_entered" from="Arrival" to="." method="_on_Arrival_body_entered"]
+[connection signal="body_exited" from="Arrival" to="." method="_on_Arrival_body_exited"]

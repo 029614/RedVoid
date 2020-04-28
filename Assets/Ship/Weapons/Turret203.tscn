@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Ship/Weapons/203.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Ship/Weapons/203Accent.png" type="Texture" id=2]
+
+[node name="Turret203" type="Sprite"]
+position = Vector2( -172, 1.00012 )
+texture = ExtResource( 1 )
+offset = Vector2( 172, -1.00012 )
+
+[node name="Accent" type="Sprite" parent="."]
+position = Vector2( 174, -1 )
+texture = ExtResource( 2 )
