@@ -2,9 +2,15 @@ extends Node
 
 
 export (Color) var faction_color = Color8(1,1,1,1)
+var possible_colors = [Color8(28,99,255,255),Color8(255,216,0,255),Color8(255,14,0,255),Color8(0,255,171,255),Color8(185,0,255,255),Color8(92,255,0,255)]
 var faction_color_alpha
 export var faction_name = "No Name"
 var planets = []
+
+var scoutship = preload("res://Assets/Ship/Blender/ScoutShip/ScoutShip.tscn")
+var interceptor = preload("res://Assets/Ship/Blender/Interceptor/Interceptor.tscn")
+var destroyer = preload("res://Assets/Ship/Blender/Destroyer/Destroyer.tscn")
+var battleship = preload("res://Assets/Ship/Blender/Battleship/Battleship.tscn")
 
 
 #Resources

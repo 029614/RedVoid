@@ -119,6 +119,9 @@ func createMap():
     nameAsteroidFamilies()
     Global.emit_signal("map_ready")
 
+func createFactions():
+    pass
+
 func getRandom(cycle):
     var x = 0
     while x < 2*cycle:

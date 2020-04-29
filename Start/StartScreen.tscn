@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Start/BG.gd" type="Script" id=1]
 [ext_resource path="res://Assets/canvas.png" type="Texture" id=2]
@@ -45,12 +45,43 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
+[sub_resource type="Theme" id=8]
+
+[sub_resource type="StyleBoxFlat" id=11]
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="Theme" id=10]
+Button/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
+Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
+Button/colors/font_color_hover = Color( 0.94, 0.94, 0.94, 1 )
+Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
+Button/constants/hseparation = 2
+Button/fonts/font = null
+Button/styles/disabled = null
+Button/styles/focus = null
+Button/styles/hover = SubResource( 11 )
+Button/styles/normal = SubResource( 9 )
+Button/styles/pressed = null
+
 [node name="StartScreen" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_horizontal_guides_": [ 208.971 ],
+"_edit_use_anchors_": false,
+"_edit_vertical_guides_": [ 650.385 ]
 }
 
 [node name="BG" type="Node2D" parent="."]
@@ -324,49 +355,139 @@ rect_min_size = Vector2( 300, 0 )
 
 [node name="Color" type="HBoxContainer" parent="NewGame/Panel/VBoxContainer/Select"]
 margin_left = 400.0
-margin_right = 551.0
+margin_right = 477.0
 margin_bottom = 24.0
+theme = SubResource( 8 )
+
+[node name="Label" type="Label" parent="NewGame/Panel/VBoxContainer/Select/Color"]
+margin_top = 5.0
+margin_right = 37.0
+margin_bottom = 19.0
+text = "Color:"
+
+[node name="color" type="Button" parent="NewGame/Panel/VBoxContainer/Select/Color"]
+self_modulate = Color( 0.109804, 0.388235, 1, 1 )
+margin_left = 41.0
+margin_right = 77.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 36, 24 )
+focus_mode = 0
+theme = SubResource( 10 )
+enabled_focus_mode = 0
+
+[node name="Popup" type="Popup" parent="NewGame/Panel/VBoxContainer/Select/Color/color"]
+visible = true
+margin_left = 1.0
+margin_top = 25.0
+margin_right = 37.0
+margin_bottom = 145.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="NewGame/Panel/VBoxContainer/Select/Color"]
-margin_top = 5.0
-margin_right = 87.0
-margin_bottom = 19.0
-text = "Faction Color:"
+[node name="VBoxContainer" type="VBoxContainer" parent="NewGame/Panel/VBoxContainer/Select/Color/color/Popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -0.950256
+margin_top = 1.58713
+margin_right = -0.950256
+margin_bottom = 31.5871
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="ColorPicker" type="ColorPickerButton" parent="NewGame/Panel/VBoxContainer/Select/Color"]
-margin_left = 91.0
-margin_right = 151.0
+[node name="Blue" type="Button" parent="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer"]
+visible = false
+self_modulate = Color( 0.109804, 0.388235, 1, 1 )
+margin_right = 36.0
 margin_bottom = 24.0
-rect_min_size = Vector2( 60, 0 )
+rect_min_size = Vector2( 36, 24 )
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="Yellow" type="Button" parent="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer"]
+self_modulate = Color( 1, 0.847059, 0, 1 )
+margin_right = 36.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 36, 24 )
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="Red" type="Button" parent="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer"]
+self_modulate = Color( 1, 0.054902, 0, 1 )
+margin_top = 24.0
+margin_right = 36.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 36, 24 )
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="Ocean" type="Button" parent="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer"]
+self_modulate = Color( 0, 1, 0.670588, 1 )
+margin_top = 48.0
+margin_right = 36.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 36, 24 )
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="Purple" type="Button" parent="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer"]
+self_modulate = Color( 0.72549, 0, 1, 1 )
+margin_top = 72.0
+margin_right = 36.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 36, 24 )
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="Green" type="Button" parent="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer"]
+self_modulate = Color( 0.364706, 1, 0, 1 )
+margin_top = 96.0
+margin_right = 36.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 36, 24 )
+focus_mode = 0
+enabled_focus_mode = 0
 
 [node name="Options" type="HBoxContainer" parent="NewGame/Panel/VBoxContainer"]
 margin_top = 54.0
 margin_right = 551.0
-margin_bottom = 74.0
+margin_bottom = 78.0
 custom_constants/separation = 20
 alignment = 1
 
 [node name="MapSize" type="MenuButton" parent="NewGame/Panel/VBoxContainer/Options"]
-margin_left = 118.0
-margin_right = 187.0
-margin_bottom = 20.0
+margin_left = 85.0
+margin_right = 154.0
+margin_bottom = 24.0
 text = "Map Size"
 switch_on_hover = true
 
-[node name="Enemies" type="MenuButton" parent="NewGame/Panel/VBoxContainer/Options"]
-margin_left = 207.0
-margin_right = 344.0
-margin_bottom = 20.0
+[node name="HBoxContainer" type="HBoxContainer" parent="NewGame/Panel/VBoxContainer/Options"]
+margin_left = 174.0
+margin_right = 377.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 203, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="NewGame/Panel/VBoxContainer/Options/HBoxContainer"]
+margin_top = 5.0
+margin_right = 125.0
+margin_bottom = 19.0
 text = "Number of Factions"
-switch_on_hover = true
+
+[node name="Enemies" type="SpinBox" parent="NewGame/Panel/VBoxContainer/Options/HBoxContainer"]
+margin_left = 129.0
+margin_right = 203.0
+margin_bottom = 24.0
 
 [node name="Difficulty" type="MenuButton" parent="NewGame/Panel/VBoxContainer/Options"]
-margin_left = 364.0
-margin_right = 433.0
-margin_bottom = 20.0
+margin_left = 397.0
+margin_right = 466.0
+margin_bottom = 24.0
 text = "Difficulty"
 switch_on_hover = true
 
@@ -430,6 +551,13 @@ __meta__ = {
 [connection signal="mouse_entered" from="MainMenu/Panel/Quit" to="." method="_on_Quit_mouse_entered"]
 [connection signal="pressed" from="MainMenu/Panel/Quit" to="." method="_on_Quit_pressed"]
 [connection signal="popup_hide" from="NewGame" to="." method="_on_NewGame_popup_hide"]
+[connection signal="pressed" from="NewGame/Panel/VBoxContainer/Select/Color/color" to="." method="_on_color_pressed"]
+[connection signal="pressed" from="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer/Blue" to="." method="_on_Blue_pressed"]
+[connection signal="pressed" from="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer/Yellow" to="." method="_on_Yellow_pressed"]
+[connection signal="pressed" from="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer/Red" to="." method="_on_Red_pressed"]
+[connection signal="pressed" from="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer/Ocean" to="." method="_on_Ocean_pressed"]
+[connection signal="pressed" from="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer/Purple" to="." method="_on_Purple_pressed"]
+[connection signal="pressed" from="NewGame/Panel/VBoxContainer/Select/Color/color/Popup/VBoxContainer/Green" to="." method="_on_Green_pressed"]
 [connection signal="mouse_entered" from="NewGame/Panel/Start" to="." method="_on_Start_mouse_entered"]
 [connection signal="pressed" from="NewGame/Panel/Start" to="." method="_on_Start_pressed"]
 [connection signal="timeout" from="Beep/BeepTimer" to="." method="_on_BeepTimer_timeout"]

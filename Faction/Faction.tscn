@@ -4,6 +4,7 @@
 
 [node name="Faction" type="Node"]
 script = ExtResource( 1 )
+faction_color = Color( 0.364706, 1, 0, 1 )
 
 [node name="Scouts" type="Node" parent="."]
 

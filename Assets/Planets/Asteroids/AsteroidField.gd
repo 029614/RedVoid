@@ -11,6 +11,12 @@ var size = 0
 var asteroid_field = []
 var family
 var mass = 0
+var ownership = null
+
+var planet_state = "empty"
+var capture_perc = 0
+var capturing_fac = null
+var capturing_ship = null
 
 
 # Called when the node enters the scene tree for the first time.
@@ -22,12 +28,32 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#    pass
+func _process(delta: float) -> void:
+    
+    #Capturing
+    if planet_state == "being_captured" :
+        if capture_perc < 100.0:
+            capture_perc += .1
+            print(capture_perc)
+        elif capture_perc >= 100:
+            capture_perc = 100
+            capture(capturing_fac, self)
+            capturing_fac = null
+            print("successful capture")
+    
+    if planet_state == "empty" and capture_perc > 0:
+        capture_perc -= .1
 
 
 func generate():
     var x = 0
+    var first_asteroid = asteroids[rand_range(0,4)].instance()
+    first_asteroid.global_scale = Vector2(2,2)
+    first_asteroid.get_node("Sprite").set_flip_h(randBool())
+    first_asteroid.get_node("Sprite").set_flip_v(randBool())
+    first_asteroid.rotation = deg2rad(rand_range(1,360))
+    add_child(first_asteroid)
+    first_asteroid.position = Vector2(0,0)
     while x < size:
         randomize()
         var new_asteroid = asteroids[rand_range(0,4)].instance()
@@ -45,3 +71,28 @@ func randBool():
         return true
     else:
         return false
+
+
+func capture(faction, planet):
+    if ownership != faction and planet == self:
+        ownership = faction
+        faction.planets.append(self)
+        var message = str(name) + " has been captured by " + str(faction.name) + "."
+        Global.messageAll(message)
+        $Sprite.self_modulate = ownership.faction_color_alpha
+        planet_state = "occupied"
+
+
+func _on_Area2D_body_entered(body: Node) -> void:
+    print("body entered: ", body, " Name: ", body.name)
+    if body.name == "ScoutShip" and body.faction != ownership:
+        planet_state = "being_captured"
+        capturing_fac = body.faction
+        capturing_ship = body
+
+
+func _on_Area2D_body_exited(body: Node) -> void:
+    if body == capturing_ship and planet_state == "being captured":
+        planet_state = "empty"
+        capturing_fac = null
+        capturing_ship = null
