@@ -138,4 +138,5 @@ tile={
 
 [rendering]
 
+threads/thread_model=2
 environment/default_environment="res://default_env.tres"

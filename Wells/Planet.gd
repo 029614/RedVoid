@@ -114,13 +114,12 @@ func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int,
         area.get_parent().pilot.planet = self
         planet_state = "being_captured"
         capturing_fac = area.get_parent().pilot.faction
-        print("lalala")
 
 func _on_Arrival_body_entered(body: Node) -> void:
     print(body)
     if body.get("pilot"):
         body.pilot.planet = self
-        body.pilot.orbit = orbit
+        body.pilot.orbit = $RotateMe
 
 
 func _on_Arrival_body_exited(body):

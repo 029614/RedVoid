@@ -1,6 +1,6 @@
 extends Node
 
-var faction = null
+onready var faction = get_parent().get_parent()
 
 #various information for landing and capturing
 var planet = null
@@ -164,7 +164,6 @@ func intercept_pid():
     #var ttd = Global.time_to_match_velocity(ship.velocity, ship.acceleration, target.velocity)
     var ttr = (1.0/ship.rps)*.5
     
-    print(" td: ",td, " tof: ",tof, " ttd: ",ttd, " ttr: ",ttr)
     
     if tof < ((ttd + ttr) * .9):
         #if ship.velocity.length() > target.velocity.length()*1.01:
@@ -239,9 +238,6 @@ func rotation_pid():
             ship.rotateShip(pid_interval, speed_direction, ship.rads_per_sec*pid_interval*speed_direction)
             
     focus_angle = lookat.angle_to_point(ship.global_position)
-    print("lk: ",lookat, " lkang: ",lookat.angle_to_point(ship.global_position),
-        " sp_dir: ",speed_direction, " vel_bal: ",velocity_balance, " lk_bal: ",lookat_balance, 
-        " shp_pos: ", ship.global_position, " tar_pos: ", target.global_position)
 
 
 # Pathfinding
@@ -250,7 +246,6 @@ func calculatePath(origin, target):
     
 func rotDirection(angle1, angle2):
     var direction = wrapf(angle1 - angle2, -Global.pi, Global.pi)
-    print("rotdirection: ", angle1," , ",angle2, " , ",direction)
     if direction < 0:
         return -1
     elif direction > 0:
@@ -274,7 +269,6 @@ func updateShipStatus():
 func _physics_process(delta: float) -> void:
     var aw = [wrapf(focus_angle - acceleration_window, -Global.pi, Global.pi), 
         wrapf(focus_angle + acceleration_window, -Global.pi, Global.pi)]
-    print("aw: ",aw, " focusangle: ",focus_angle, " accel win: ", acceleration_window, " ship rot: ",ship.rotation)
     if rotDirection(ship.rotation, aw[0]) >= 0 and rotDirection(ship.rotation, aw[1]) <= 0:
         ship.accelerate(delta)
     else:

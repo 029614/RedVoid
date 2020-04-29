@@ -41,8 +41,21 @@ func shipsToHome():
     for ship in ships:
         ship.global_position = Vector2(home_planet.global_position.x + 1000, home_planet.global_position.y + 1000)
         
-    
+func findScoutTarget():
+    var p = get_tree().get_nodes_in_group("planets")
+    var closest = null
+    for planet in p:
+        if planet.ownership == null:
+            if closest == null:
+                closest = planet
+            elif home_planet.global_position.distance_to(planet.global_position) < home_planet.global_position.distance_to(closest.global_position):
+                closest = planet
+    return closest
 
+func dispatcher(ship):
+    if findScoutTarget():
+        ship.pilot.goTo(findScoutTarget())
+            
 func get_faction_ships():
     var ships = []
     for section in self.get_children():

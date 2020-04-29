@@ -16,6 +16,8 @@ var target_distance
 var resource
 var velocity
 
+var health = 100
+
 var move_status = "idle" #idle, going_to_target, going_to_base, loading, unloading, landing
 
 

@@ -241,18 +241,23 @@ func setupOrbit(orbit_data, target):
     print("Orbital Coordinates Received")
     
 func orbit(orbit, planet):
-    var p_pos = ship.get_global_position()
-    var obd = {} # Orbit By Distance. Contains a list of orbits. orbit reference:distance from ship
-    for pos in orbit:
-        if orbit.get(pos) == false:
-            obd[pos] = pos.get_global_position().distance_to(p_pos)
-    var s = obd.values()
-    s.sort()
-    for key in obd:
-        if obd[key] == s[0]:
-            orbital_pos = key
+    var o = Navigation2D.new()
+    orbit.add_child(o)
+    o.global_position = global_position
+    orbital_pos = o
     ship.location_state = "in_orbit"
-    print("all code has run")
+#    var p_pos = ship.get_global_position()
+#    var obd = {} # Orbit By Distance. Contains a list of orbits. orbit reference:distance from ship
+#    for pos in orbit:
+#        if orbit.get(pos) == false:
+#            obd[pos] = pos.get_global_position().distance_to(p_pos)
+#    var s = obd.values()
+#    s.sort()
+#    for key in obd:
+#        if obd[key] == s[0]:
+#            orbital_pos = key
+#    ship.location_state = "in_orbit"
+#    print("all code has run")
 
 func updateGauge():
     #Fuel Gauge

@@ -33,7 +33,7 @@ func _on_Area2D_body_entered(body: Node) -> void:
 
 func bulletExpire():
     print("bullet expired")
-    apply_impulse(Vector2(), -impulse)
+    apply_impulse(Vector2(), Vector2())
     $Sprite.hide()
     $Explosion1.show()
     $Explosion1.set_frame(0)
@@ -42,3 +42,9 @@ func bulletExpire():
 
 func _on_Timer_timeout() -> void:
     bulletExpire()
+
+
+func _on_Area2D_area_entered(area: Area2D) -> void:
+    if area.name == "HitBox":
+        area.owner.health -= 5
+        bulletExpire()

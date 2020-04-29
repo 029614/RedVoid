@@ -16,6 +16,8 @@ var completion = 0
 var stage_completion = 250
 var enough_time = false
 
+var health = 100
+
 
 var shuttle_capacity = 1
 
@@ -30,6 +32,9 @@ func _process(delta: float) -> void:
         materials -= 1
         completion += 1
         stageUp()
+    
+    if health <= 0:
+        self.queue_free()
 
 func nextWeld(team):
     var pos = positions.get_children()

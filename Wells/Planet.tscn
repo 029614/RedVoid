@@ -12,7 +12,7 @@ radius = 240.363
 radius = 245.384
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 483.743
+radius = 604.003
 
 [node name="Planet" type="Node2D" groups=[
 "planets",
@@ -44,30 +44,6 @@ shape = SubResource( 3 )
 scale = Vector2( 1.11733, 1.11733 )
 
 [node name="RotateMe" type="Node2D" parent="."]
-
-[node name="orbit1" type="Position2D" parent="RotateMe"]
-position = Vector2( 417.44, 0 )
-
-[node name="orbit2" type="Position2D" parent="RotateMe"]
-position = Vector2( 6.10352e-05, -414.933 )
-
-[node name="orbit3" type="Position2D" parent="RotateMe"]
-position = Vector2( -416.186, 0 )
-
-[node name="orbit4" type="Position2D" parent="RotateMe"]
-position = Vector2( 0.658264, 414.279 )
-
-[node name="orbit5" type="Position2D" parent="RotateMe"]
-position = Vector2( 313.557, -265.339 )
-
-[node name="orbit6" type="Position2D" parent="RotateMe"]
-position = Vector2( -293.467, -291.622 )
-
-[node name="orbit7" type="Position2D" parent="RotateMe"]
-position = Vector2( -326.008, 252.823 )
-
-[node name="orbit8" type="Position2D" parent="RotateMe"]
-position = Vector2( 319.815, 265.339 )
 
 [node name="Prog" type="Node2D" parent="."]
 

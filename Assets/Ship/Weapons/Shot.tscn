@@ -37,5 +37,6 @@ autostart = true
 [node name="Explosion1" parent="." instance=ExtResource( 3 )]
 visible = false
 scale = Vector2( 0.187731, 0.187731 )
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
