@@ -84,7 +84,6 @@ func capture(faction, planet):
 
 
 func _on_Area2D_body_entered(body: Node) -> void:
-    print("body entered: ", body, " Name: ", body.name)
     if body.name == "ScoutShip" and body.faction != ownership:
         planet_state = "being_captured"
         capturing_fac = body.faction

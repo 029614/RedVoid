@@ -4,6 +4,7 @@ var planet = preload("res://Wells/Planet.tscn")
 var rect = preload("res://GiantRect.tscn")
 var sun = preload("res://Wells/Sun.tscn")
 var aField = preload("res://Assets/Planets/Asteroids/AsteroidField.tscn")
+var faction = preload("res://Faction/Faction.tscn")
 var ships
 var planet_count = 16
 var gridY = sqrt(planet_count)
@@ -30,6 +31,7 @@ func _ready() -> void:
     print(Global.world)
     Global.bodies = $Navigation2D/Bodies.get_children()
     createMap()
+    createFactions()
     
     #$Freighter.goTo(bodies.get_node("Planet5"))
 
@@ -120,7 +122,38 @@ func createMap():
     Global.emit_signal("map_ready")
 
 func createFactions():
-    pass
+    var x = 0
+    var colors = Global.colors
+    var planets = get_tree().get_nodes_in_group("planets")
+    
+    if $Factions.get_child_count() > 0:
+        var f = $Factions.get_children()
+        var y = 0
+        while y < f.size():
+            var p = planets[randi()%(planets.size())]
+            planets.erase(p)
+            f[y].planets.append(p)
+            f[y].home_planet = p
+            p.changeOwnership(f[y])
+            f[y].shipsToHome()
+            y+=1
+            
+    while x < Global.number_of_factions-1:
+        var color = colors[randi()%colors.size()]
+        colors.erase(color)
+        var newf = faction.instance()
+        var p = planets[randi()%(planets.size())]
+        planets.erase(p)
+        newf.faction_color = color
+        newf.faction_color_alpha = Color8(color.r8,color.g8,color.b8,100)
+        $Factions.add_child(newf)
+        p.changeOwnership(newf)
+        newf.planets.append(p)
+        newf.home_planet = p
+        newf.createScoutShip()
+        newf.shipsToHome()
+        x+=1
+    print("list of factions: ", $Factions.get_children())
 
 func getRandom(cycle):
     var x = 0
@@ -149,9 +182,6 @@ func nameAsteroidFamilies():
             aNames.erase(fName)
             field.family = fName + " " + ast_suff[randi()%8]
             named_families.append(field)
-    print("asteroid families: ", Global.asteroidFamilies.size())
-    #Global.asteroidFamilies = named_families
-    print("named asteroid families: ", Global.asteroidFamilies.size())
         
     
 

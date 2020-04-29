@@ -213,7 +213,6 @@ func planetLabels():
         t.global_scale = Vector2(3,3)
         icons_active = true
         planet_icons.append(t)
-        print("planet icons activated")
 
 func shipLabels():
     ship_icons = []
@@ -228,7 +227,6 @@ func shipLabels():
             ship_icons.append(t)
             if ship_tracking.has(ship) == false:
                 ship_tracking.append(ship)
-            print("ship icons activated")
     
 
 func beep():

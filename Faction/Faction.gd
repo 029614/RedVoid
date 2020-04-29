@@ -6,11 +6,15 @@ var possible_colors = [Color8(28,99,255,255),Color8(255,216,0,255),Color8(255,14
 var faction_color_alpha
 export var faction_name = "No Name"
 var planets = []
+var home_planet = null
+var player = false
 
 var scoutship = preload("res://Assets/Ship/Blender/ScoutShip/ScoutShip.tscn")
 var interceptor = preload("res://Assets/Ship/Blender/Interceptor/Interceptor.tscn")
 var destroyer = preload("res://Assets/Ship/Blender/Destroyer/Destroyer.tscn")
 var battleship = preload("res://Assets/Ship/Blender/Battleship/Battleship.tscn")
+var ai = preload("res://AI/AIPilot.tscn")
+var player_script = preload("res://Player/Player.tscn")
 
 
 #Resources
@@ -24,10 +28,26 @@ func _ready() -> void:
 #func _process(delta: float) -> void:
 #    pass
 
+func createScoutShip():
+    var new_scout = scoutship.instance()
+    var new_ai = ai.instance()
+    var new_p = player_script.instance()
+    new_scout.get_node("Pilot").add_child(new_ai)
+    $Scouts.add_child(new_scout)
+    print(self, " ship list: ", get_faction_ships())
+    
+func shipsToHome():
+    var ships = get_faction_ships()
+    for ship in ships:
+        ship.global_position = Vector2(home_planet.global_position.x + 1000, home_planet.global_position.y + 1000)
+        
+    
+
 func get_faction_ships():
-    var ships = {}
+    var ships = []
     for section in self.get_children():
-        ships[section] = section.get_children()
+        for ship in section.get_children():
+            ships.append(ship)
     return ships
 
 func get_faction_interceptors():

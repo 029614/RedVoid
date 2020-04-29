@@ -99,6 +99,12 @@ func capture(faction, planet):
         grid.modulate = faction.faction_color_alpha
         Global.messageAll(message)
         beginSpaceStation()
+
+func changeOwnership(faction):
+    ownership = faction
+    $Prog/CaptureProgress.self_modulate = faction.faction_color_alpha
+    grid.modulate = faction.faction_color_alpha
+    beginSpaceStation()
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
     if Global.player_registry.has(area.get_parent()) and _is_destructive == true:

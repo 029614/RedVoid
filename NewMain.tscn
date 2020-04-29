@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Assets/Ship/Blender/Interceptor/Interceptor.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Music/bensound-slowmotion.ogg" type="AudioStream" id=4]
 [ext_resource path="res://Faction/Faction.tscn" type="PackedScene" id=5]
@@ -32,10 +32,11 @@ faction_name = "Player Faction"
 [node name="ScoutShip" parent="Factions/Faction1/Scouts" index="0" instance=ExtResource( 8 )]
 position = Vector2( 8389.93, 6294.7 )
 
-[node name="Actor" parent="Factions/Faction1/Interceptors" index="0" instance=ExtResource( 1 )]
+[node name="Player" parent="Factions/Faction1/Scouts/ScoutShip/Pilot" index="0" instance=ExtResource( 1 )]
 
-[node name="Faction2" parent="Factions" instance=ExtResource( 5 )]
-faction_color = Color( 0.768627, 0, 0, 1 )
-faction_name = "Enemy Faction"
+[node name="Engine1" parent="Factions/Faction1/Scouts/ScoutShip" index="7"]
+frame = 3
 
 [editable path="Factions/Faction1"]
+
+[editable path="Factions/Faction1/Scouts/ScoutShip"]

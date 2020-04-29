@@ -47,9 +47,9 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="Theme" id=8]
 
-[sub_resource type="StyleBoxFlat" id=11]
-
 [sub_resource type="StyleBoxFlat" id=9]
+
+[sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 1, 1, 1, 1 )
 border_width_left = 1
 border_width_top = 1
@@ -61,7 +61,7 @@ corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
-[sub_resource type="Theme" id=10]
+[sub_resource type="Theme" id=11]
 Button/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
 Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
 Button/colors/font_color_hover = Color( 0.94, 0.94, 0.94, 1 )
@@ -70,8 +70,8 @@ Button/constants/hseparation = 2
 Button/fonts/font = null
 Button/styles/disabled = null
 Button/styles/focus = null
-Button/styles/hover = SubResource( 11 )
-Button/styles/normal = SubResource( 9 )
+Button/styles/hover = SubResource( 9 )
+Button/styles/normal = SubResource( 10 )
 Button/styles/pressed = null
 
 [node name="StartScreen" type="Control"]
@@ -372,7 +372,7 @@ margin_right = 77.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 36, 24 )
 focus_mode = 0
-theme = SubResource( 10 )
+theme = SubResource( 11 )
 enabled_focus_mode = 0
 
 [node name="Popup" type="Popup" parent="NewGame/Panel/VBoxContainer/Select/Color/color"]
@@ -483,6 +483,8 @@ text = "Number of Factions"
 margin_left = 129.0
 margin_right = 203.0
 margin_bottom = 24.0
+max_value = 6.0
+value = 4.0
 
 [node name="Difficulty" type="MenuButton" parent="NewGame/Panel/VBoxContainer/Options"]
 margin_left = 397.0

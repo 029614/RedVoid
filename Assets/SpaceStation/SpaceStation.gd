@@ -143,7 +143,6 @@ func findResource():
     for group in planet.get_groups():
         if group != "planets":
             tgroup = group
-            print("group: ", tgroup)
     fields = get_tree().get_nodes_in_group("asteroid_fields_" + tgroup)
     var closest = Global.getClosest(fields, global_position)
     return closest
@@ -154,6 +153,7 @@ func _on_ShuttleTimer_timeout() -> void:
 
 
 func _on_report_timeout() -> void:
+    pass
     print("Space Station resources: ", materials, ". Completion:", completion/10, "%.")
 
 func build(construction):

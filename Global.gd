@@ -26,6 +26,8 @@ var _play = false
 var player_faction = "69 69 Fuck yeah Awesome"
 var player_color = Color8(59,183,45,125)
 
+var colors = [Color8(28,99,255,255), Color8(255,216,0,255), Color8(255,14,0,255), Color8(0,255,171,255), Color8(185,0,255,255), Color8(93,255,0,255)]
+
 #Faction info
 #Faction dictionary. Faction id:{Color:Faction Color, Name: Faction Name, _is_npc: Bool}
 var faction_list = {
@@ -50,6 +52,9 @@ var player_registry = []
 var bodies
 var astNames = []
 var asteroidFamilies = []
+
+#Other stuff I think I need
+var pi = 3.141
 
 #Import addresses
 var import_asteroid_names = "res://Assets/Planets/Asteroids/names.cfg"

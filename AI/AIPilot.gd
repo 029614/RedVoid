@@ -2,6 +2,12 @@ extends Node
 
 var faction = null
 
+#various information for landing and capturing
+var planet = null
+var orbit = null
+var frame_count = 0
+
+
 #input and direction
 onready var ship = get_node("../..")
 
@@ -62,6 +68,7 @@ var acceleration_window = deg2rad(10)
 
 
 func _ready() -> void:
+    ship.pilot = self
     intercept(get_node("/root/NewMain/Factions/Faction1/Scouts/ScoutShip"))
     #goTo(get_node("/root/NewMain/Navigation2D/Bodies/Planet2"))
     

@@ -19,7 +19,6 @@ func _ready() -> void:
 
 
 func _on_AsteroidField_area_entered(area: Area2D) -> void:
-    print("Asteroid: ", area.name, " has entered")
     if area.name == "Mouse":
         get_parent().scale = get_parent().scale*1.2
         get_parent().modulate = Color8(0,82,255,150)
