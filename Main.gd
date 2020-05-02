@@ -140,10 +140,13 @@ func createFactions():
             
     while x < Global.number_of_factions-1:
         var color = colors[randi()%colors.size()]
+        print("faction color: ", color)
+        print("colors: ", colors)
         colors.erase(color)
         var newf = faction.instance()
         var p = planets[randi()%(planets.size())]
         planets.erase(p)
+        newf.instance = true
         newf.faction_color = color
         newf.faction_color_alpha = Color8(color.r8,color.g8,color.b8,100)
         $Factions.add_child(newf)
@@ -164,7 +167,7 @@ func getRandom(cycle):
         x += .314
 
 func nameAsteroidFamilies():
-    var ast_suff = ["belt","field","cloud","collection","patch","cluster","pack","chain"]
+    var ast_suff = ["belt","field","cloud","collection","cluster","pack","chain"]
     Global.asteroidNames()
     var named_families = []
     var num = float(Global.astNames.size())
@@ -180,7 +183,7 @@ func nameAsteroidFamilies():
             var new_ran = abs(floor(rand_range(0,aNames.size()-1)))
             var fName = aNames[new_ran]
             aNames.erase(fName)
-            field.family = fName + " " + ast_suff[randi()%8]
+            field.family = fName + " " + ast_suff[randi()%7]
             named_families.append(field)
         
     

@@ -26,7 +26,6 @@ position = Vector2( 1240.73, 3144.34 )
 [node name="Factions" type="Node" parent="."]
 
 [node name="Faction1" parent="Factions" instance=ExtResource( 5 )]
-faction_color = Color( 0.00784314, 0.0901961, 0.984314, 1 )
 faction_name = "Player Faction"
 
 [node name="ScoutShip" parent="Factions/Faction1/Scouts" index="0" instance=ExtResource( 8 )]
@@ -35,7 +34,7 @@ position = Vector2( 8389.93, 6294.7 )
 [node name="Player" parent="Factions/Faction1/Scouts/ScoutShip/Pilot" index="0" instance=ExtResource( 1 )]
 
 [node name="Engine1" parent="Factions/Faction1/Scouts/ScoutShip" index="7"]
-frame = 3
+frame = 2
 
 [editable path="Factions/Faction1"]
 

@@ -529,6 +529,7 @@ wait_time = 0.08
 one_shot = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 margin_left = 1146.15
 margin_top = -23.7432
 margin_right = 3066.15

@@ -156,11 +156,21 @@ func _on_Green_pressed() -> void:
     changeColor(5)
     
 func changeColor(color):
-    for c in color_list:
-        c.show()
+    for color in color_list:
+        color.show()
     color_list[color].hide()
+    var cs = []
+    for x in color_list:
+        var y = x.get_self_modulate()
+        cs.append(Color8(y.r8,y.g8,y.b8,y.a8))
+    cs.remove(color)
+    Global.colors = cs
     $NewGame/Panel/VBoxContainer/Select/Color/color.self_modulate = color_list[color].self_modulate
     $NewGame/Panel/VBoxContainer/Select/Color/color/Popup.hide()
+    Global.player_color = color_list[color].get_self_modulate()
+    print(color_list)
+    print(cs)
+    print("player color: ", Global.player_color)
     
 
 

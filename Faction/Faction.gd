@@ -1,13 +1,14 @@
 extends Node
 
 
-export (Color) var faction_color = Color8(1,1,1,1)
+onready var faction_color = Color8(1,1,1,1)
 var possible_colors = [Color8(28,99,255,255),Color8(255,216,0,255),Color8(255,14,0,255),Color8(0,255,171,255),Color8(185,0,255,255),Color8(92,255,0,255)]
-var faction_color_alpha
+onready var faction_color_alpha = Color8(faction_color.r8,faction_color.g8,faction_color.b8,100)
 export var faction_name = "No Name"
 var planets = []
 var home_planet = null
 var player = false
+var instance = false
 
 var scoutship = preload("res://Assets/Ship/Blender/ScoutShip/ScoutShip.tscn")
 var interceptor = preload("res://Assets/Ship/Blender/Interceptor/Interceptor.tscn")
@@ -21,7 +22,9 @@ var player_script = preload("res://Player/Player.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-    faction_color_alpha = Color8(faction_color.r8, faction_color.g8, faction_color.b8, 100)
+    if instance == false:
+        faction_color = Global.player_color
+        faction_color_alpha = Color8(faction_color.r8, faction_color.g8, faction_color.b8, 100)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

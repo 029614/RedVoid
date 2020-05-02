@@ -76,11 +76,8 @@ func _physics_process(delta: float) -> void:
             $Prog/CaptureProgress.set_value(capture_perc)
         elif capture_perc >= 100:
             capture_perc = 100
-            planet_state = "occupied"
             capture(capturing_fac, self)
             capturing_fac = null
-            $Prog/CaptureProgress/Unclaimed.hide()
-            $Prog/CaptureProgress/Unclaimed.self_modulate = ownership.faction_color_alpha
             print("successful capture")
     
     if planet_state == "empty" and capture_perc > 0:
@@ -93,9 +90,12 @@ func _physics_process(delta: float) -> void:
 func capture(faction, planet):
     if ownership != faction and planet == self:
         ownership = faction
-        faction.planets.append(self)
+#        faction.planets.append(self)
         var message = str(planet.name) + " has been captured by " + str(faction.name) + "."
         $Prog/CaptureProgress.self_modulate = faction.faction_color_alpha
+        $Prog/CaptureProgress/Unclaimed.hide()
+        $Prog/CaptureProgress/Unclaimed.self_modulate = ownership.faction_color_alpha
+        planet_state = "occupied"
         grid.modulate = faction.faction_color_alpha
         Global.messageAll(message)
         beginSpaceStation()
@@ -103,7 +103,11 @@ func capture(faction, planet):
 func changeOwnership(faction):
     ownership = faction
     $Prog/CaptureProgress.self_modulate = faction.faction_color_alpha
+    $Prog/CaptureProgress/Unclaimed.hide()
+    $Prog/CaptureProgress/Unclaimed.self_modulate = ownership.faction_color_alpha
     grid.modulate = faction.faction_color_alpha
+    $Prog/CaptureProgress.set_value(100)
+    planet_state = "occupied"
     beginSpaceStation()
     
 func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
@@ -112,8 +116,9 @@ func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int,
     elif area.name == "LandingGear" and _is_destructive == false:
         area.get_parent().location_state = "landing"
         area.get_parent().pilot.planet = self
-        planet_state = "being_captured"
-        capturing_fac = area.get_parent().pilot.faction
+        if area.get_parent().faction != ownership:
+            planet_state = "being_captured"
+            capturing_fac = area.get_parent().pilot.faction
 
 func _on_Arrival_body_entered(body: Node) -> void:
     print(body)

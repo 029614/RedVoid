@@ -22,7 +22,7 @@ texture = ExtResource( 2 )
 
 [node name="Accent" type="Sprite" parent="."]
 modulate = Color( 0.784314, 0.254902, 0.741176, 1 )
-position = Vector2( -6.80188, 1.36035 )
+position = Vector2( 10.5987, 0.258512 )
 texture = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -43,5 +43,5 @@ position = Vector2( 555.384, 0 )
 wait_time = 0.1
 
 [node name="Engine1" parent="." instance=ExtResource( 5 )]
-frame = 5
+frame = 1
 [connection signal="timeout" from="CannonCoolDown" to="." method="_on_CannonCoolDown_timeout"]

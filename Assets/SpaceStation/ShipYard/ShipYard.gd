@@ -20,10 +20,11 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-    if station.materials >= .1 and completion < stages*stage_completion:
-        station.materials -= .1
-        completion += .1
-        stageUp()
+    if station:
+        if station.materials >= .1 and completion < stages*stage_completion:
+            station.materials -= .1
+            completion += .1
+            stageUp()
 
 func nextWeld(team):
     var pos = positions.get_children()
