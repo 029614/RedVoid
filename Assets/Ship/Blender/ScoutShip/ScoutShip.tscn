@@ -55,7 +55,7 @@ show_behind_parent = true
 wait_time = 0.1
 
 [node name="Engine1" parent="." instance=ExtResource( 5 )]
-frame = 3
+frame = 4
 
 [node name="Bullets" type="Area2D" parent="."]
 position = Vector2( 6.61102, 8.81466 )

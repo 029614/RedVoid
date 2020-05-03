@@ -189,7 +189,7 @@ func estimateStrength():
 
 
 func _on_Bullets_area_entered(area: Area2D) -> void:
-    if area.name == "HitBoxT" and firing_cannon == true:
+    if area.name == "HitBoxT" and area.get_parent() != self and firing_cannon == true:
         area.get_parent().cannon_strikes = true
     elif area.name == "HitBoxT" and firing_cannon == false:
         area.get_parent().cannon_strikes = false
@@ -197,6 +197,7 @@ func _on_Bullets_area_entered(area: Area2D) -> void:
 func cannonStrike():
     var new_exp = explosion.instance()
     add_child(new_exp)
+    new_exp.scaler = 5
     new_exp.global_position = Vector2(rand_range($ExplosionContainer/Start.global_position.x, $ExplosionContainer/End.global_position.x), rand_range($ExplosionContainer/Start.global_position.y, $ExplosionContainer/End.global_position.y))
     new_exp.play()
 

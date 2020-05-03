@@ -7,6 +7,8 @@ export var speed = 800
 export var rotation_speed = 10
 export var cargo_capacity = 125
 var cargo = 0
+var explode_time = 100
+var destructing = false
 
 
 var target
@@ -76,8 +78,15 @@ func _physics_process(delta: float) -> void:
         base.materials += cargo
         self.queue_free()
     
+    if health <= 0:
+        destructing = true
+    
     if cannon_strikes == true:
         cannonStrike()
+    
+    if destructing == true:
+        explode()
+        explode_time -= 1
 
 func job(destination):
     target = destination
@@ -94,5 +103,27 @@ func unloadResource():
 func cannonStrike():
     var new_exp = explosion.instance()
     add_child(new_exp)
+    new_exp.scaler(5)
     new_exp.global_position = Vector2(rand_range($ExplosionContainer/Start.global_position.x, $ExplosionContainer/End.global_position.x), rand_range($ExplosionContainer/Start.global_position.y, $ExplosionContainer/End.global_position.y))
     new_exp.play()
+    health -= 1
+
+func explode():
+    if explode_time > 0:
+        var new_exp = explosion.instance()
+        add_child(new_exp)
+        new_exp.scaler(5)
+        new_exp.global_position = Vector2(rand_range($ExplosionContainer/Start.global_position.x, $ExplosionContainer/End.global_position.x), rand_range($ExplosionContainer/Start.global_position.y, $ExplosionContainer/End.global_position.y))
+        new_exp.play()
+    else:
+        finalExplosion()
+
+func finalExplosion():
+    var new_exp = explosion.instance()
+    add_child(new_exp)
+    new_exp.scaler(.8)
+    new_exp.final_explosion = true
+    new_exp.global_position = Vector2(rand_range($ExplosionContainer/Start.global_position.x, $ExplosionContainer/End.global_position.x), rand_range($ExplosionContainer/Start.global_position.y, $ExplosionContainer/End.global_position.y))
+    new_exp.play()
+    
+    

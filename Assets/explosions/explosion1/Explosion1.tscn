@@ -19,7 +19,7 @@ animations = [ {
 } ]
 
 [node name="Explosion1" type="AnimatedSprite"]
-scale = Vector2( 0.345854, 0.345854 )
+scale = Vector2( 0.0839478, 0.0839478 )
 frames = SubResource( 1 )
 script = ExtResource( 9 )
 [connection signal="animation_finished" from="." to="." method="_on_Explosion1_animation_finished"]
