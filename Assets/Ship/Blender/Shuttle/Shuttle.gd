@@ -1,6 +1,8 @@
 extends KinematicBody2D
 
 
+var explosion = preload("res://Assets/explosions/explosion1/Explosion1.tscn")
+
 export var speed = 800
 export var rotation_speed = 10
 export var cargo_capacity = 125
@@ -15,6 +17,8 @@ var base_distance
 var target_distance
 var resource
 var velocity
+
+var cannon_strikes = false
 
 var health = 100
 
@@ -71,6 +75,9 @@ func _physics_process(delta: float) -> void:
     elif move_status == "landing" and scale <= Vector2(0.1,0.1):
         base.materials += cargo
         self.queue_free()
+    
+    if cannon_strikes == true:
+        cannonStrike()
 
 func job(destination):
     target = destination
@@ -83,3 +90,9 @@ func loadResource():
 
 func unloadResource():
     pass
+
+func cannonStrike():
+    var new_exp = explosion.instance()
+    add_child(new_exp)
+    new_exp.global_position = Vector2(rand_range($ExplosionContainer/Start.global_position.x, $ExplosionContainer/End.global_position.x), rand_range($ExplosionContainer/Start.global_position.y, $ExplosionContainer/End.global_position.y))
+    new_exp.play()

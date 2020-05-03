@@ -41,8 +41,16 @@ texture = ExtResource( 3 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
 shape = SubResource( 2 )
 
-[node name="HitBox" type="Area2D" parent="."]
+[node name="HitBoxT" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxT"]
 rotation = 1.5708
 shape = SubResource( 3 )
+
+[node name="ExplosionContainer" type="Node2D" parent="."]
+
+[node name="Start" type="Position2D" parent="ExplosionContainer"]
+position = Vector2( -299.998, -103.361 )
+
+[node name="End" type="Position2D" parent="ExplosionContainer"]
+position = Vector2( 292.435, 93.2767 )

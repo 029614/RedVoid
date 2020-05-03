@@ -8,14 +8,14 @@ onready var faction = get_parent().get_parent()
 #Preloads
 var missile = preload("res://Assets/Ship/Weapons/Missile.tscn")
 var shot = preload("res://Assets/Ship/Weapons/Shot.tscn")
-var explosion = preload("res://Assets/Particles/Explosion.tscn")
+var explosion = preload("res://Assets/explosions/explosion1/Explosion1.tscn")
 
 #States
 var location_states = ["in_orbit", "on_planet", "landing", "in_formation", "free"]
 var location_state = "free"
 
 var cannon_states = ["fire", "cooldown"]
-var cannon_state = "fire"
+var cannon_state = "idle"
 
 #Animation Switches
 var animate_engines = false
@@ -52,6 +52,8 @@ var detection_radius = 5000 #how far this ship can detect enemies
 
 #Weapons
 var weapons = ["cannon", "rocket", "laser", "turrets"]
+var cannon_strikes = false
+var firing_cannon = false
 
 #Ship active physics
 var thrust_modifier = 1
@@ -115,25 +117,42 @@ func _physics_process(delta: float) -> void:
         $Engine1.show()
     else:
         $Engine1.hide()
+    
+    if cannon_strikes == true:
+        cannonStrike()
+    
+    if firing_cannon == true and cannon_state == "idle":
+        fireCannon()
+    elif firing_cannon == false and cannon_state == "firing":
+        stopFire()
         
 
+func fireCannon():
+    $GunCoords/ParticleBullets.fire(true)
+    cannon_state = "firing"
+    print("FIRE!")
+    $Bullets.set_monitoring(true)
+
+
 func fireControl(weapon):
-    if weapon == "missile":
-        var m = missile.instance()
-        m.velocity = velocity
-        m.rotation = rotation
-        Global.world.add_child(m)
-        m.global_position = gun_coords.get_global_position()
-    elif weapon == "cannon" and cannon_state == "fire":
-        var m = shot.instance()
-        m.gun_speed = current_speed
-        m.rotation = global_rotation
-        m.shooter = self
-        m.ship_velocity = pilot.velocity
-        Global.world.add_child(m)
-        m.global_position = gun_coords.get_global_position()
-        cannon_state = "cooldown"
-        $CannonCoolDown.start()
+    if weapon == "cannon" and firing_cannon == true and cannon_state == "idle":
+        $GunCoords/ParticleBullets.fire(true)
+        cannon_state = "firing"
+        #var m = shot.instance()
+        #m.gun_speed = current_speed
+        #m.rotation = global_rotation
+        #m.shooter = self
+        #m.ship_velocity = pilot.velocity
+        #Global.world.add_child(m)
+        #m.global_position = gun_coords.get_global_position()
+        #cannon_state = "cooldown"
+        #$CannonCoolDown.start()
+
+func stopFire():
+    $GunCoords/ParticleBullets.fire(false)
+    cannon_state = "idle"
+    print("CEASE FIRE! CEASE FIRE!!!!")
+    $Bullets.set_monitoring(false)
 
 
 func destruct():
@@ -144,7 +163,8 @@ func destruct():
 
 
 func _on_CannonCoolDown_timeout() -> void:
-    cannon_state = "fire"
+    #cannon_state = "fire"
+    pass
     
 
 func proximityScan(sector):
@@ -166,3 +186,21 @@ func estimateStrength():
     var weapon_strength = 1
     var shield_strength = 1
     return weapon_strength + shield_strength
+
+
+func _on_Bullets_area_entered(area: Area2D) -> void:
+    if area.name == "HitBoxT" and firing_cannon == true:
+        area.get_parent().cannon_strikes = true
+    elif area.name == "HitBoxT" and firing_cannon == false:
+        area.get_parent().cannon_strikes = false
+
+func cannonStrike():
+    var new_exp = explosion.instance()
+    add_child(new_exp)
+    new_exp.global_position = Vector2(rand_range($ExplosionContainer/Start.global_position.x, $ExplosionContainer/End.global_position.x), rand_range($ExplosionContainer/Start.global_position.y, $ExplosionContainer/End.global_position.y))
+    new_exp.play()
+
+
+func _on_Bullets_area_exited(area: Area2D) -> void:
+    if area.name == "HitBoxT":
+        area.get_parent().cannon_strikes = false
