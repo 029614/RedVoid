@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Explosion-ZapSplat.ogg-927420f2806faa508f722912799d68ba.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Explosion-ZapSplat.ogg"
+dest_files=[ "res://.import/Explosion-ZapSplat.ogg-927420f2806faa508f722912799d68ba.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

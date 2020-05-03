@@ -27,7 +27,7 @@ disabled = true
 
 [node name="Engine1" parent="." instance=ExtResource( 1 )]
 position = Vector2( -410.662, -5.45318 )
-frame = 3
+frame = 4
 
 [node name="Ship" type="Sprite" parent="."]
 texture = ExtResource( 2 )

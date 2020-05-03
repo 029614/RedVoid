@@ -103,7 +103,7 @@ func unloadResource():
 func cannonStrike():
     var new_exp = explosion.instance()
     add_child(new_exp)
-    new_exp.scaler(5)
+    new_exp.scaler(8)
     new_exp.global_position = Vector2(rand_range($ExplosionContainer/Start.global_position.x, $ExplosionContainer/End.global_position.x), rand_range($ExplosionContainer/Start.global_position.y, $ExplosionContainer/End.global_position.y))
     new_exp.play()
     health -= 1
@@ -114,16 +114,16 @@ func explode():
         add_child(new_exp)
         new_exp.scaler(5)
         new_exp.global_position = Vector2(rand_range($ExplosionContainer/Start.global_position.x, $ExplosionContainer/End.global_position.x), rand_range($ExplosionContainer/Start.global_position.y, $ExplosionContainer/End.global_position.y))
-        new_exp.play()
+        new_exp.begin()
     else:
         finalExplosion()
 
 func finalExplosion():
     var new_exp = explosion.instance()
     add_child(new_exp)
-    new_exp.scaler(.8)
+    new_exp.scaler(.5)
     new_exp.final_explosion = true
     new_exp.global_position = Vector2(rand_range($ExplosionContainer/Start.global_position.x, $ExplosionContainer/End.global_position.x), rand_range($ExplosionContainer/Start.global_position.y, $ExplosionContainer/End.global_position.y))
-    new_exp.play()
+    new_exp.begin()
     
     

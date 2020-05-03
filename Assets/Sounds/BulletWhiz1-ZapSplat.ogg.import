@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/BulletWhiz1-ZapSplat.ogg-760e9cf681b2ad375475a73f04401be9.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/BulletWhiz1-ZapSplat.ogg"
+dest_files=[ "res://.import/BulletWhiz1-ZapSplat.ogg-760e9cf681b2ad375475a73f04401be9.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -199,7 +199,7 @@ func cannonStrike():
     add_child(new_exp)
     new_exp.scaler = 5
     new_exp.global_position = Vector2(rand_range($ExplosionContainer/Start.global_position.x, $ExplosionContainer/End.global_position.x), rand_range($ExplosionContainer/Start.global_position.y, $ExplosionContainer/End.global_position.y))
-    new_exp.play()
+    new_exp.begin()
 
 
 func _on_Bullets_area_exited(area: Area2D) -> void:

@@ -19,6 +19,8 @@ func scaler(value):
     var scale = get_parent().get_scale()
     self.set_scale(Vector2(1/scale.x, 1/scale.y)/value) #2D
     
+func begin():
+    play()
 
 func _on_Explosion1_animation_finished() -> void:
     queue_free()
