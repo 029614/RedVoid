@@ -31,7 +31,6 @@ func _on_Timer_timeout() -> void:
 
 
 func _on_Mouse_area_entered(area: Area2D) -> void:
-    print("Mouse: ", area.name, " has entered")
     if area.name == "AsteroidField":
         area.get_parent().scale = get_parent().scale*1.2
         area.get_parent().modulate = Color8(0,82,255,150)

@@ -107,7 +107,7 @@ func _physics_process(delta: float) -> void:
     
     var lookat = self.global_position+((RvF)*td)
 
-    print("td: ", "d: ", "Rv: ", "RvF: ", "lookat: ", "velocity: ", "g: ", "tang: ", td, d, Rv, RvF, lookat, velocity, g+tgrav, tang)
+    #print("td: ", "d: ", "Rv: ", "RvF: ", "lookat: ", "velocity: ", "g: ", "tang: ", td, d, Rv, RvF, lookat, velocity, g+tgrav, tang)
 
     self.look_at(lookat)
     velocity += (g+tgrav) * delta

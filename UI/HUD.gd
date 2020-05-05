@@ -32,10 +32,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
     if player.camera_state and player.camera_state != "normal" and icons_active == false:
         activateIcons()
-        print(player.camera_state, icons_active)
+        #print(player.camera_state, icons_active)
     elif player.camera_state == "normal" and icons_active == true:
         deactivateIcons()
-        print(player.camera_state, icons_active)
+        #print(player.camera_state, icons_active)
     
     if icons_active == true:
         var count = 0
@@ -201,7 +201,7 @@ func deactivateIcons():
 
 func asteroidLabels():
     for ast in Global.asteroidFamilies:
-        print("asteroid family: ", ast)
+        #print("asteroid family: ", ast)
         var l = Label.new()
         var n = Node2D.new()
         var s = asteroid_ind.instance()

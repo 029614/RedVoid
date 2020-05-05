@@ -34,12 +34,10 @@ func _process(delta: float) -> void:
     if planet_state == "being_captured" :
         if capture_perc < 100.0:
             capture_perc += .1
-            print(capture_perc)
         elif capture_perc >= 100:
             capture_perc = 100
             capture(capturing_fac, self)
             capturing_fac = null
-            print("successful capture")
     
     if planet_state == "empty" and capture_perc > 0:
         capture_perc -= .1

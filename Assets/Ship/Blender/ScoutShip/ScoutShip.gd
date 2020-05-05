@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 #References
 var scene = Global.world
-var pilot
+onready var pilot = $Pilot
 onready var faction = get_parent().get_parent()
 
 #Preloads
@@ -70,7 +70,7 @@ var do_gravity = 1
 
 
 func _ready() -> void:
-    $Accent.modulate = faction.faction_color
+    #$Accent.modulate = faction.faction_color
     
     connect("base_destroyed", self, "_baseDestroyed")
     

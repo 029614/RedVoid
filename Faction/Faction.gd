@@ -10,12 +10,14 @@ var home_planet = null
 var player = false
 var instance = false
 
-var scoutship = preload("res://Assets/Ship/Blender/ScoutShip/ScoutShip.tscn")
-var interceptor = preload("res://Assets/Ship/Blender/Interceptor/Interceptor.tscn")
-var destroyer = preload("res://Assets/Ship/Blender/Destroyer/Destroyer.tscn")
-var battleship = preload("res://Assets/Ship/Blender/Battleship/Battleship.tscn")
-var ai = preload("res://AI/AIPilot.tscn")
-var player_script = preload("res://Player/Player.tscn")
+
+onready var shuttles = $Shuttles
+onready var freighters = $Freighters
+onready var scoutships = $Scouts
+onready var interceptors = $Interceptors
+onready var bombers = $Bombers
+onready var destroyers = $Destroyers
+onready var battleships = $Battleships
 
 
 #Resources
@@ -33,18 +35,6 @@ func _ready() -> void:
 func changeColor(color, color_a):
     faction_color = color
     faction_color_alpha = color_a
-    
-
-func createScoutShip(pilot_type):
-    var new_pilot
-    if pilot_type == "player":
-        new_pilot = player_script.instance()
-    elif pilot_type == "ai":
-        new_pilot = ai.instance()
-    var new_scout = scoutship.instance()
-    new_scout.get_node("Pilot").add_child(new_pilot)
-    $Scouts.add_child(new_scout)
-    print(self, " ship list: ", get_faction_ships())
     
 func shipsToHome():
     var ships = get_faction_ships()
@@ -73,6 +63,11 @@ func get_faction_ships():
             ships.append(ship)
     return ships
 
+func createPath():
+    pass
+
+func nextPOI(ship):
+    pass
 
 
 

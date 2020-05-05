@@ -10,7 +10,7 @@ onready var HUD = get_parent().get_parent()
 func _ready() -> void:
     Global.connect("send_planets", self, "placePlanets")
     Global.connect("main_ready", self, "begin")
-    print("requesting planets")
+    #print("requesting planets")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -26,9 +26,9 @@ func placeShips():
     pass
 
 func placePlanets(positions):
-    print("placing planets")
+    #print("placing planets")
     for pos in positions:
         var p = planet.instance()
         $Planets.add_child(p)
         p.set_position(pos)
-        print("added planet")
+        #print("added planet")

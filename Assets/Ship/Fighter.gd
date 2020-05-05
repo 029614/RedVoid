@@ -79,8 +79,8 @@ func time_of_flight(velocity,distance,accel): #all values are floats
     return (sqrt(velocity*velocity+2*acceleration*distance) - velocity) / acceleration
     
 func time_to_rotate(rps, current_rotation, desired_rotation):
-    print("current_rotation: ", current_rotation, " desired_rotation: ", desired_rotation, 
-        " time_to_rotate: ", abs(desired_rotation - current_rotation) / rads_per_sec)
+    #print("current_rotation: ", current_rotation, " desired_rotation: ", desired_rotation, 
+    #    " time_to_rotate: ", abs(desired_rotation - current_rotation) / rads_per_sec)
     return abs((desired_rotation - current_rotation) / rads_per_sec)
 
 func turn():
@@ -103,7 +103,7 @@ func update_movement(delta):
         if $AlienFighterSprite/Particles2D.is_emitting() == false:
             $AlienFighterSprite/Particles2D.restart()
             $EngineSound.play()
-            print($EngineSound.is_playing())
+            #print($EngineSound.is_playing())
         
         #Input Movements
         current_speed = velocity.length()

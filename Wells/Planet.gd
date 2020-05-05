@@ -51,7 +51,7 @@ func _ready() -> void:
     $Prog/Planet.set_position($Prog/Planet.get_position()*normal_scale)
     mass = pow((mass * self.get_scale().x), 2) * mass_multiplyer
     planet_radius = planet_radius * self.get_scale().x
-    print(self.name, " Mass: ", mass, " Radius: ", planet_radius)
+    #print(self.name, " Mass: ", mass, " Radius: ", planet_radius)
     
     var lp = self.position
     var gp = self.global_position
@@ -72,16 +72,16 @@ func _physics_process(delta: float) -> void:
     if planet_state == "being_captured" :
         if capture_perc < 100.0:
             capture_perc += .1
-            print(capture_perc)
+            #print(capture_perc)
             $Prog/CaptureProgress.set_value(capture_perc)
         elif capture_perc >= 100:
             capture_perc = 100
             capture(capturing_fac, self)
             capturing_fac = null
-            print("successful capture")
+            #print("successful capture")
     
     if planet_state == "empty" and capture_perc > 0:
-        print("planet empty")
+        #print("planet empty")
         capture_perc -= .5
     
     if planet_state == "colonized":
@@ -121,7 +121,7 @@ func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int,
             capturing_fac = area.get_parent().pilot.faction
 
 func _on_Arrival_body_entered(body: Node) -> void:
-    print(body)
+    #print(body)
     if body.get("pilot"):
         body.pilot.planet = self
         body.pilot.orbit = $RotateMe

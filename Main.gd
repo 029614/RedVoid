@@ -28,7 +28,6 @@ func _ready() -> void:
     Global.emit_signal("main_ready")
     Global._play = true
     print("Main is ready")
-    print(Global.world)
     Global.bodies = $Navigation2D/Bodies.get_children()
     createMap()
     createFactions()
@@ -56,7 +55,6 @@ func command(command, player):
         destroyAll(ships)
 
 func destroyAll(things):
-    print("yay")
     for ship in things:
         ship.queue_free()
 
@@ -135,14 +133,13 @@ func createFactions():
             f[y].planets.append(p)
             f[y].home_planet = p
             p.changeOwnership(f[y])
-            f[y].createScoutShip("player")
+            var newS = Global.ec_instance(Global.scoutship, f[y], "player")
+            newS.get_node("Accent").modulate = f[y].faction_color
             f[y].shipsToHome()
             y+=1
             
     while x < Global.number_of_factions-1:
         var color = colors[randi()%colors.size()]
-        print("faction color: ", color)
-        print("colors: ", colors)
         colors.erase(color)
         var newf = faction.instance()
         var p = planets[randi()%(planets.size())]
@@ -153,10 +150,11 @@ func createFactions():
         p.changeOwnership(newf)
         newf.planets.append(p)
         newf.home_planet = p
-        newf.createScoutShip("ai")
+        var newS = Global.ec_instance(Global.scoutship, newf, "ai")
+        newS.get_node("Accent").modulate = newf.faction_color
         newf.shipsToHome()
         x+=1
-    print("list of factions: ", $Factions.get_children())
+    #print("list of factions: ", $Factions.get_children())
 
 func getRandom(cycle):
     var x = 0

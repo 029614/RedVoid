@@ -28,6 +28,17 @@ var player_color = Color8(59,183,45,125)
 
 var colors = [Color8(28,99,255,255), Color8(255,216,0,255), Color8(255,14,0,255), Color8(0,255,171,255), Color8(185,0,255,255), Color8(93,255,0,255)]
 
+#instances
+var shuttle = preload("res://Assets/Ship/Blender/Shuttle/Shuttle.tscn")
+var freighter = preload("res://Assets/Ship/Freighter.tscn")
+var scoutship = preload("res://Assets/Ship/Blender/ScoutShip/ScoutShip.tscn")
+var interceptor = preload("res://Assets/Ship/Blender/Interceptor/Interceptor.tscn")
+var bomber = preload("res://Assets/Ship/Blender/Bomber/Bomber.tscn")
+var destroyer = preload("res://Assets/Ship/Blender/Destroyer/Destroyer.tscn")
+var battleship = preload("res://Assets/Ship/Blender/Battleship/Battleship.tscn")
+var ai_p = preload("res://AI/AIPilot.tscn")
+var player_p = preload("res://Player/Player.tscn")
+
 #Faction info
 #Faction dictionary. Faction id:{Color:Faction Color, Name: Faction Name, _is_npc: Bool}
 var faction_list = {
@@ -140,12 +151,12 @@ func time_to_decelerate(velocity,acceleration): #all values are floats
     return velocity/float(acceleration)
     
 func time_to_match_velocity(velocity,acceleration,other_vel): #all values are floats
-    print("time to match vel: ",velocity," , ",acceleration," , ",other_vel," , ",(velocity-other_vel).length())
+    #print("time to match vel: ",velocity," , ",acceleration," , ",other_vel," , ",(velocity-other_vel).length())
     return (velocity-other_vel).length()/float(acceleration)
     
 func time_to_rotate(rps, current_rotation, desired_rotation):
-    print("current_rotation: ", current_rotation, " desired_rotation: ", desired_rotation, 
-        " time_to_rotate: ", abs(desired_rotation - current_rotation) / rps)
+    #print("current_rotation: ", current_rotation, " desired_rotation: ", desired_rotation, 
+    #    " time_to_rotate: ", abs(desired_rotation - current_rotation) / rps)
     return abs((desired_rotation - current_rotation) / rps)
 
 
@@ -176,10 +187,11 @@ func ec_get_ship_list(faction=null, category=null): #ec_get_ship_list("Faction1"
     if faction == null:
         for x in entities.keys():
             for y in entities[x].ships.keys():
-                #list.append(entities[x][y])
-                return y
+                if entities[x].ships[y] != null:
+                    for item in entities[x].ships[y].values():
+                        list.append(item)
     elif faction != null and category != null:
-        list.append(entities.faction.ships.category.values())
+        list.append(entities.faction.ships.category)
     elif faction != null:
         for x in entities[faction].ships.keys():
             list.append(x)
@@ -188,3 +200,12 @@ func ec_get_ship_list(faction=null, category=null): #ec_get_ship_list("Faction1"
 
 func ec_register_missile(faction, ship, target):
     pass
+
+func ec_instance(ship_type, faction, pilot_type=null):
+    var newS = ship_type.instance()
+    if pilot_type == "ai":
+        newS.get_node("Pilot").add_child(ai_p.instance())
+    elif pilot_type == "player":
+        newS.get_node("Pilot").add_child(player_p.instance())
+    ec_register_ship(faction,newS)
+    return newS

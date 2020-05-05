@@ -168,9 +168,9 @@ func changeColor(color):
     $NewGame/Panel/VBoxContainer/Select/Color/color.self_modulate = color_list[color].self_modulate
     $NewGame/Panel/VBoxContainer/Select/Color/color/Popup.hide()
     Global.player_color = color_list[color].get_self_modulate()
-    print(color_list)
-    print(cs)
-    print("player color: ", Global.player_color)
+    #print(color_list)
+    #print(cs)
+    #print("player color: ", Global.player_color)
     
 
 

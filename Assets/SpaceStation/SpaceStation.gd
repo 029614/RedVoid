@@ -159,7 +159,7 @@ func _on_ShuttleTimer_timeout() -> void:
 
 func _on_report_timeout() -> void:
     pass
-    print("Space Station resources: ", materials, ". Completion:", completion/10, "%.")
+    #print("Space Station resources: ", materials, ". Completion:", completion/10, "%.")
 
 func build(construction):
     var new = construction.instance()

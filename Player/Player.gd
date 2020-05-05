@@ -103,7 +103,7 @@ func _physics_process(delta):
             ship.rotation += deg2rad(-90)
             
         elif ship.location_state == "landing":
-            print("player has now landed")
+            #print("player has now landed")
             ship.location_state = "on_planet"
         
         #Map
@@ -163,7 +163,7 @@ func _input(event):
             hud.cannon(true)
         elif ship.location_state == "free" and current_weapon == "cannon" and ship.firing_cannon == true and Input.is_action_just_released("weapons"):
             ship.firing_cannon = false
-            print("Trigger Released")
+            #print("Trigger Released")
             hud.cannon(false)
         
         #Targeting
@@ -248,7 +248,7 @@ func _input(event):
 func setupOrbit(orbit_data, target):
     planet = target
     orbit = orbit_data
-    print("Orbital Coordinates Received")
+    #print("Orbital Coordinates Received")
     
 func orbit(orbit, planet):
     var o = Navigation2D.new()

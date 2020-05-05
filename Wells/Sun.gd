@@ -25,7 +25,7 @@ func _ready() -> void:
     reName(name)
     mass = pow((mass * self.get_scale().x), 2) * mass_multiplyer
     planet_radius = planet_radius * self.get_scale().x
-    print(self.name, " Mass: ", mass, " Radius: ", planet_radius)
+    #print(self.name, " Mass: ", mass, " Radius: ", planet_radius)
     
     var lp = self.position
     var gp = self.global_position
@@ -44,7 +44,7 @@ func readyTakeOff():
     self._is_active_takeoff = true
     $KinematicBody2D.hide()
     $Area2D/CollisionShape2D.disabled = true
-    print("ready for takeoff!")
+    #print("ready for takeoff!")
 
 func takeOff():
     $KinematicBody2D.show()
@@ -68,7 +68,7 @@ func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int,
         Global.emit_signal("player_died")
     elif area.name == "LandingGear" and _is_destructive == false:
         Global.emit_signal("player_landed", self)
-        print("player is landing")
+        #print("player is landing")
 
 
 func _on_Arrival_body_entered(body: Node) -> void:
