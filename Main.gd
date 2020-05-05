@@ -135,6 +135,7 @@ func createFactions():
             f[y].planets.append(p)
             f[y].home_planet = p
             p.changeOwnership(f[y])
+            f[y].createScoutShip("player")
             f[y].shipsToHome()
             y+=1
             
@@ -147,13 +148,12 @@ func createFactions():
         var p = planets[randi()%(planets.size())]
         planets.erase(p)
         newf.instance = true
-        newf.faction_color = color
-        newf.faction_color_alpha = Color8(color.r8,color.g8,color.b8,100)
+        newf.changeColor(color, Color8(color.r8,color.g8,color.b8,100))
         $Factions.add_child(newf)
         p.changeOwnership(newf)
         newf.planets.append(p)
         newf.home_planet = p
-        newf.createScoutShip()
+        newf.createScoutShip("ai")
         newf.shipsToHome()
         x+=1
     print("list of factions: ", $Factions.get_children())

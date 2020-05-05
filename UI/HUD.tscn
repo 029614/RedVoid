@@ -566,6 +566,9 @@ one_shot = true
 stream = ExtResource( 10 )
 volume_db = -10.0
 pitch_scale = 1.8
+
+[node name="Targeting" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
 [connection signal="text_entered" from="ConsoleBottom/ReadOut/LineInput" to="." method="_on_LineInput_text_entered"]
 [connection signal="toggled" from="ConsoleBottom/HideButton" to="." method="_on_HideButton_toggled"]
 [connection signal="timeout" from="Sounds/Beep/BeepTimer" to="." method="_on_BeepTimer_timeout"]

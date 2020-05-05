@@ -22,20 +22,27 @@ var player_script = preload("res://Player/Player.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-    if instance == false:
-        faction_color = Global.player_color
-        faction_color_alpha = Color8(faction_color.r8, faction_color.g8, faction_color.b8, 100)
+    faction_color = Global.player_color
+    faction_color_alpha = Color8(faction_color.r8, faction_color.g8, faction_color.b8, 100)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
 #    pass
 
-func createScoutShip():
+func changeColor(color, color_a):
+    faction_color = color
+    faction_color_alpha = color_a
+    
+
+func createScoutShip(pilot_type):
+    var new_pilot
+    if pilot_type == "player":
+        new_pilot = player_script.instance()
+    elif pilot_type == "ai":
+        new_pilot = ai.instance()
     var new_scout = scoutship.instance()
-    var new_ai = ai.instance()
-    var new_p = player_script.instance()
-    new_scout.get_node("Pilot").add_child(new_ai)
+    new_scout.get_node("Pilot").add_child(new_pilot)
     $Scouts.add_child(new_scout)
     print(self, " ship list: ", get_faction_ships())
     

@@ -5,12 +5,14 @@ onready var player_ind = $PosInd/MapInd
 var enemy_icon = preload("res://Assets/Ship/MapIconEnemy.tscn")
 var planet_ind = preload("res://Assets/Planets/MapPlanet.tscn")
 var asteroid_ind = preload("res://Assets/Planets/Asteroids/MapAsteroid.tscn")
+var targeting_icon = preload("res://Assets/Targeting/Targeting.tscn")
 
 var blink_speed = 5
 var red_alpha = 130
 
 var icons_active = false
 var field_names = false
+var targetting_active = false
 
 var ship_icons = []
 var ship_tracking = []
@@ -43,6 +45,13 @@ func _process(delta: float) -> void:
             count += 1
         for icon in $Planets.get_children():
             icon.scale = player.get_node("ChaseCamera").zoom/5
+    
+    if targetting_active == true:
+        if $Targeting.get_child_count() > 0:
+            for icon in $Targeting.get_children():
+                icon.global_position = player.target.global_position
+        else:
+            player.target = null
         
     
     
@@ -57,6 +66,9 @@ func _input(event: InputEvent) -> void:
             $ConsoleBottom/ReadOut/LineInput.clear()
 
 
+func startUp():
+    asteroidLabels()
+    planetLabels()
 
 func fuelWarning():
     if red_alpha == 50:
@@ -189,6 +201,7 @@ func deactivateIcons():
 
 func asteroidLabels():
     for ast in Global.asteroidFamilies:
+        print("asteroid family: ", ast)
         var l = Label.new()
         var n = Node2D.new()
         var s = asteroid_ind.instance()
@@ -227,6 +240,14 @@ func shipLabels():
             ship_icons.append(t)
             if ship_tracking.has(ship) == false:
                 ship_tracking.append(ship)
+
+func target(ship):
+    var new_target = targeting_icon.instance()
+    if $Targeting.get_child_count() > 0:
+        for child in $Targeting.get_children():
+            child.queue_free()
+    $Targeting.add_child(new_target)
+    targetting_active = true
     
 
 func beep():

@@ -16,7 +16,9 @@ radius = 901.662
 radius = 104.693
 height = 425.51
 
-[node name="Shuttle" type="KinematicBody2D"]
+[node name="Shuttle" type="KinematicBody2D" groups=[
+"ship",
+]]
 scale = Vector2( 0.25, 0.25 )
 script = ExtResource( 4 )
 

@@ -149,7 +149,7 @@ func findResource():
         if group != "planets":
             tgroup = group
     fields = get_tree().get_nodes_in_group("asteroid_fields_" + tgroup)
-    var closest = Global.getClosest(fields, global_position)
+    var closest = Global.getClosest(self, fields, global_position)
     return closest
 
 func _on_ShuttleTimer_timeout() -> void:

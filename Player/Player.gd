@@ -25,6 +25,7 @@ var map_center_relative
 
 #Ship
 onready var ship_size = ship.ship_size
+var target = null
 
 #launcher
 var launch_speed = 100
@@ -62,14 +63,14 @@ func _ready():
     ship.faction = faction
     Global.connect("player_arrival", self, "setupOrbit")
     Global.connect("player_died", self, "destruct")
-    Global.connect("main_ready", self, "ready_ready")
     Global._process_player_movement = true
     Global.player_registry.append(self)
     $CanvasLayer/HUD.player = self
     $ChaseCamera.zoom = zoom_normal
-
-func ready_ready():
     map_center_relative = global_position + Global.world.map_center
+    hud.startUp()
+    print("ec return all: ", Global.ec_get_ship_list())
+    print("ec return faction 1: ", Global.ec_get_ship_list("faction1"))
 
 
 func get_input(delta):
@@ -118,7 +119,7 @@ func _physics_process(delta):
             camera_state = "zoomed_out"
         
         if camera_state == "map":
-            $ChaseCamera.global_position = map_center_relative
+            $ChaseCamera.set_global_position(map_center_relative)
             
         if camera_state == "zooming_in" and $ChaseCamera.zoom > Vector2(3*ship_size,3*ship_size):
             $ChaseCamera.zoom -= zoom_interval
@@ -164,6 +165,14 @@ func _input(event):
             ship.firing_cannon = false
             print("Trigger Released")
             hud.cannon(false)
+        
+        #Targeting
+        if Input.is_action_pressed("toggle_target"):
+            var targets = get_tree().get_nodes_in_group("ship")
+            var closest_target = Global.getClosest(ship, targets, ship.global_position)
+            print("closest target: ", closest_target, " Name: ", closest_target.name)
+            target = closest_target
+            hud.target(closest_target)
         
         #Camera Zoom
         if Input.is_action_pressed("zoom_in") and camera_state == "normal":

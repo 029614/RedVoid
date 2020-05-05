@@ -89,10 +89,10 @@ func _physics_process(delta: float) -> void:
         explode_time -= 1
 
 func job(destination):
-    target = destination
+    target = destination.global_position
     move_status = "going_to_target"
-    target_distance = self.global_position.distance_to(destination)
-    base_distance = destination.distance_to(base_pos)
+    target_distance = self.global_position.distance_to(target)
+    base_distance = target.distance_to(base_pos)
 
 func loadResource():
     pass

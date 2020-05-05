@@ -38,6 +38,43 @@ var faction_list = {
        }
    }
 
+var entities = {
+    "faction1": {
+        "ships": {
+            "freighters":{
+                "1":"shit",
+                "2":"is",
+                "3":"working!"
+            },
+            "shuttles":null,
+            "scoutships":null,
+            "interceptors":null,
+            "bombers":null,
+            "destroyers":null,
+            "battleships":null
+        }, 
+        "projectiles": "stuff", 
+        "spaceStations": "stuff"
+    },
+    "faction2": {
+        "ships": {
+            "freighters":{
+                "1":"shit2",
+                "2":"is2",
+                "3":"working!2"
+            },
+            "shuttles":null,
+            "scoutships":null,
+            "interceptors":null,
+            "bombers":null,
+            "destroyers":null,
+            "battleships":null
+        }, 
+        "projectiles": "stuff", 
+        "spaceStations": "stuff"
+    }
+    }
+
 #Map Info
 var map_origin = Vector2(0,0)
 var map_limit = Vector2(20000,12000)
@@ -84,12 +121,13 @@ func asteroidNames():
     else:
         print("INI failed to load: ", err)
 
-func getClosest(array:Array,pos:Vector2):
+func getClosest(exception, array:Array,pos:Vector2):
     var closest = null
     for obj in array:
-        if closest == null or obj.get_global_position().distance_to(pos) <= closest.get_global_position().distance_to(pos):
-            closest = obj
-    return closest.global_position
+        if obj != exception:
+            if closest == null or obj.get_global_position().distance_to(pos) <= closest.get_global_position().distance_to(pos):
+                closest = obj
+    return closest
 
         
 
@@ -117,3 +155,32 @@ func average(a):
         s+=i
     s=s/a.size()
     return s
+
+#Entity Controller
+
+func ec_update():
+    pass
+
+func ec_spawn_ship(faction, ship):
+    pass
+
+func ec_register_ship(faction, ship):
+    pass
+
+func ec_get_ship_list(faction=null, category=null): #ec_get_ship_list("Faction1", "Scoutships") - returns all of faction1's scoutships
+    var list = []
+    if faction == null:
+        for x in entities.keys():
+            for y in entities[x].ships.keys():
+                #list.append(entities[x][y])
+                return y
+    elif faction != null and category != null:
+        list.append(entities.faction.ships.category.values())
+    elif faction != null:
+        for x in entities[faction].ships.keys():
+            list.append(x)
+    return list
+                
+
+func ec_register_missile(faction, ship, target):
+    pass

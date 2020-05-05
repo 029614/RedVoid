@@ -64,7 +64,7 @@ process_material = SubResource( 5 )
 
 [node name="Particles2D2" type="Particles2D" parent="."]
 emitting = false
-amount = 15
+amount = 10
 speed_scale = 2.0
 local_coords = false
 process_material = SubResource( 8 )
