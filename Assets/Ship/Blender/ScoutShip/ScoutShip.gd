@@ -24,6 +24,9 @@ var animate_203 = false
 var animate_408 = false
 var animate_after_burner = false
 
+#Animation States
+var engine_state = "off"
+
 #Action Switches
 var fire_rotary = false
 var fire_missile = false
@@ -113,10 +116,14 @@ func _physics_process(delta: float) -> void:
             
         velocity = move_and_slide(velocity)
     
-    if animate_engines:
+    if animate_engines and engine_state == "off":
         $Engine1.show()
-    else:
+        $JetSound.play(0.0)
+        engine_state = "on"
+    elif animate_engines == false and engine_state == "on":
         $Engine1.hide()
+        $JetSound.stop()
+        engine_state = "off"
     
     if cannon_strikes == true:
         cannonStrike()

@@ -73,43 +73,6 @@ func get_faction_ships():
             ships.append(ship)
     return ships
 
-func get_faction_interceptors():
-    return $Interceptors.get_children()
-    
-func get_faction_freighters():
-    return $Freighters.get_children()
-
-func get_faction_Scouts():
-    return $Scouts.get_children()
-
-func get_faction_Bombers():
-    return $Bombers.get_children()
-
-func get_faction_Destroyers():
-    return $Destroyers.get_children()
-
-func get_faction_Battleships():
-    return $Battleships.get_children()
-    
-func get_faction_planets():
-    pass
-
-
-
-func set_faction_color(color):
-    pass
-    
-func get_faction_color():
-    pass
-
-
-
-func set_faction_name(new_name):
-    pass
-
-func get_faction_name():
-    pass
-
 
 
 

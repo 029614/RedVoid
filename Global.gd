@@ -156,6 +156,10 @@ func average(a):
     s=s/a.size()
     return s
 
+
+
+
+
 #Entity Controller
 
 func ec_update():
