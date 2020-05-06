@@ -89,7 +89,8 @@ func getGravity():
     for body in get_node("/root/NewMain/Navigation2D/Bodies").get_children():
         #print("body: ",body)
         g += ( body.mass / (body.global_position.distance_to(self.global_position)) * self.global_position.direction_to(body.global_position) )
-    return g
+    #return g
+    return Vector2(0,0)
 
 func glide():
     animate_engines = false

@@ -4,6 +4,7 @@ var shuttle = preload("res://Assets/Ship/Blender/Shuttle/Shuttle.tscn")
 var oGun = preload("res://Assets/SpaceStation/OrbitalGun/OrbitalGun.tscn")
 var sYard = preload("res://Assets/SpaceStation/ShipYard/ShipYard.tscn")
 onready var positions = $Stages/s1/positions
+onready var Stimer = $ShuttleTimer
 var planet
 
 var stage = 1

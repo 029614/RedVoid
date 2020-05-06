@@ -361,7 +361,6 @@ autostart = true
 
 [node name="ShuttleTimer" type="Timer" parent="."]
 wait_time = 5.0
-autostart = true
 
 [node name="Team1" type="Node2D" parent="."]
 

@@ -181,3 +181,4 @@ func beginSpaceStation():
     var new_station = station.instance()
     new_station.planet = self
     $SpaceStation.add_child(new_station)
+    new_station.Stimer.start()
