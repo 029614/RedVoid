@@ -12,6 +12,7 @@ var asteroid_field = []
 var family
 var mass = 0
 var ownership = null
+var tile
 
 var planet_state = "empty"
 var capture_perc = 0
@@ -77,8 +78,9 @@ func capture(faction, planet):
         faction.planets.append(self)
         var message = str(name) + " has been captured by " + str(faction.name) + "."
         Global.messageAll(message)
-        $Sprite.self_modulate = ownership.faction_color_alpha
+        $Sprite.self_modulate = ownership.faction_color
         planet_state = "occupied"
+        Global.emit_signal("capture", faction)
 
 
 func _on_Area2D_body_entered(body: Node) -> void:

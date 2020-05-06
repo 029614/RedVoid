@@ -26,6 +26,7 @@ var cannon = "stopped"
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     Global.connect("map_ready", self, "asteroidLabels")
+    Global.connect("capture", self, "asteroidLabels")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -40,9 +41,12 @@ func _process(delta: float) -> void:
     if icons_active == true:
         var count = 0
         for icon in ship_icons:
-            icon.global_position = ship_tracking[count].global_position
-            icon.scale = player.get_node("ChaseCamera").zoom/5
-            count += 1
+            if is_instance_valid(ship_tracking[count]):
+                icon.global_position = ship_tracking[count].global_position
+                icon.scale = player.get_node("ChaseCamera").zoom/5
+                count += 1
+            else:
+                icon.queue_free()
         for icon in $Planets.get_children():
             icon.scale = player.get_node("ChaseCamera").zoom/5
     
@@ -80,6 +84,10 @@ func fuelWarning():
     $ConsoleFuel/FuelGauge.set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
     $ConsoleFuel/FuelGauge.get_node("Label").set_self_modulate(Color8(253,50,40,red_alpha-blink_speed))
     red_alpha -= blink_speed
+
+func updateMap(faction):
+    pass
+    
         
 
 # These only change characters on the HUD - No real game impact
@@ -202,6 +210,8 @@ func deactivateIcons():
     icons_active = false
 
 func asteroidLabels():
+    for a in $Asteroids.get_children():
+        a.queue_free()
     for ast in Global.asteroidFamilies:
         #print("asteroid family: ", ast)
         var l = Label.new()
@@ -217,6 +227,8 @@ func asteroidLabels():
         field_labels.append(n)
         field_names = true
         n.set_scale(Vector2(1,1))
+        if ast.ownership != null:
+            n.modulate = ast.ownership.faction_color
 
 func planetLabels():
     planet_icons = []

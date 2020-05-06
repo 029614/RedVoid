@@ -1,9 +1,9 @@
 extends Node
 
 
-onready var faction_color = Color8(1,1,1,1)
+var faction_color
 var possible_colors = [Color8(28,99,255,255),Color8(255,216,0,255),Color8(255,14,0,255),Color8(0,255,171,255),Color8(185,0,255,255),Color8(92,255,0,255)]
-onready var faction_color_alpha = Color8(faction_color.r8,faction_color.g8,faction_color.b8,100)
+var faction_color_alpha
 export var faction_name = "No Name"
 var planets = []
 var home_planet = null

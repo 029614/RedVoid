@@ -12,6 +12,7 @@ signal main_ready
 signal capture_planet
 signal torpedo_request
 signal map_ready
+signal capture
 
 
 #Player Event Flags !!!!MOVE TO ACTOR SCRIPT!!!!
@@ -24,7 +25,7 @@ var _play = false
 
 #Player info
 var player_faction = "69 69 Fuck yeah Awesome"
-var player_color = Color8(59,183,45,125)
+var player_color = Color8(28,99,255,255)
 
 var colors = [Color8(28,99,255,255), Color8(255,216,0,255), Color8(255,14,0,255), Color8(0,255,171,255), Color8(185,0,255,255), Color8(93,255,0,255)]
 
@@ -64,8 +65,10 @@ var entities = {
             "destroyers":null,
             "battleships":null
         }, 
-        "projectiles": "stuff", 
-        "spaceStations": "stuff"
+        "asteroids": {},
+        "planets": {},
+        "projectiles": {}, 
+        "spaceStations": {}
     },
     "faction2": {
         "ships": {

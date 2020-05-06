@@ -83,6 +83,7 @@ func createMap():
             getRandom(y)
             new_planet.global_position = (new_planet.global_position - Vector2(22500,22500)) + Vector2(randX,randY)
             new_planet.grid = new_rect
+            new_planet.tile = tile_count
             new_planet.add_to_group("tile" + str(tile_count))
             new_planet.add_to_group("planets")
             
@@ -91,6 +92,7 @@ func createMap():
                 var new_field = aField.instance()
                 new_field.add_to_group("tile" + str(tile_count))
                 new_field.add_to_group("asteroid_fields_tile" + str(tile_count))
+                new_field.tile = tile_count
                 $Navigation2D/Bodies.add_child(new_field)
                 new_field.set_z_index(-1)
                 new_field.global_position = grid_point - Vector2(gUnit/2,gUnit/2)
