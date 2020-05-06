@@ -10,10 +10,10 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 376.67, 63.0528 )
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 28.7609, 66.3159 )
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 370.135, 116.826 )
 
 [node name="ScoutShip" type="KinematicBody2D" groups=[
@@ -43,7 +43,7 @@ shape = SubResource( 1 )
 position = Vector2( -414.719, 0.825684 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LandingGear"]
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="GunCoords" type="Position2D" parent="."]
 show_behind_parent = true
@@ -56,7 +56,7 @@ show_behind_parent = true
 wait_time = 0.1
 
 [node name="Engine1" parent="." instance=ExtResource( 5 )]
-frame = 1
+frame = 0
 
 [node name="Bullets" type="Area2D" parent="."]
 position = Vector2( 6.61102, 8.81466 )
@@ -67,7 +67,7 @@ polygon = PoolVector2Array( 520.871, -9.18579, 22960, -1280, 23040, 1360 )
 [node name="HitBoxT" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxT"]
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="ExplosionContainer" type="Node2D" parent="."]
 

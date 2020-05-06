@@ -134,8 +134,11 @@ func createFactions():
             f[y].home_planet = p
             p.changeOwnership(f[y])
             var newS = Global.ec_instance(Global.scoutship, f[y], "player")
+            f[y].add_child(newS)
+            newS.pilot.startUp()
             newS.get_node("Accent").modulate = f[y].faction_color
-            f[y].shipsToHome()
+            print("pilot", newS.get_node("Pilot").get_children()[0])
+            #f[y].shipsToHome()
             y+=1
             
     while x < Global.number_of_factions-1:

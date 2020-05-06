@@ -5,10 +5,10 @@ extends Node2D
 onready var bodies = Global.bodies
 onready var engine = Global.world
 onready var last_position = get_position()
-onready var ship = get_parent().get_parent()
-onready var faction = ship.get_parent().get_parent()
-onready var hud = $CanvasLayer/HUD
-onready var fuel_gauge = $CanvasLayer/HUD/ConsoleFuel/FuelGauge
+var ship
+var faction
+var hud
+var fuel_gauge
 
 #input and direction
 var velocity = Vector2()
@@ -24,7 +24,7 @@ var zoom_normal = Vector2(3,3)
 var map_center_relative
 
 #Ship
-onready var ship_size = ship.ship_size
+var ship_size
 var target = null
 
 #launcher
@@ -59,8 +59,6 @@ var camera_position = "on_player"
 func _ready():
     
     #Connecting signals and presetting flags
-    ship.pilot = self
-    ship.faction = faction
     Global.connect("player_arrival", self, "setupOrbit")
     Global.connect("player_died", self, "destruct")
     Global._process_player_movement = true
@@ -68,10 +66,21 @@ func _ready():
     $CanvasLayer/HUD.player = self
     $ChaseCamera.zoom = zoom_normal
     map_center_relative = global_position + Global.world.map_center
-    hud.startUp()
     print("ec return all: ", Global.ec_get_ship_list())
     print("ec return faction 1: ", Global.ec_get_ship_list("faction1"))
 
+
+func startUp():
+    ship = get_parent().get_parent()
+    faction = ship.get_parent().get_parent()
+    hud = $CanvasLayer/HUD
+    fuel_gauge = $CanvasLayer/HUD/ConsoleFuel/FuelGauge
+    ship.pilot_ref = self
+    ship.faction = faction
+    map_center_relative = global_position + Global.world.map_center
+    hud.startUp()
+    $ChaseCamera.make_current()
+    ship_size = ship.ship_size
 
 func get_input(delta):
     

@@ -142,6 +142,7 @@ func spawnShuttle(target):
         new_shuttle.job(target)
 
 func findResource():
+    print("finding resource")
     var count = 0
     var tgroup
     var fields
@@ -149,7 +150,9 @@ func findResource():
         if group != "planets":
             tgroup = group
     fields = get_tree().get_nodes_in_group("asteroid_fields_" + tgroup)
+    print("asteroid fields: ", fields)
     var closest = Global.getClosest(self, fields, global_position)
+    print("closest asteroid field: ", closest)
     return closest
 
 func _on_ShuttleTimer_timeout() -> void:

@@ -2,7 +2,8 @@ extends KinematicBody2D
 
 #References
 var scene = Global.world
-onready var pilot = $Pilot
+onready var pilot = $Pilot.get_children()[0]
+var pilot_ref
 onready var faction = get_parent().get_parent()
 
 #Preloads

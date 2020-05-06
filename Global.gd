@@ -202,10 +202,13 @@ func ec_register_missile(faction, ship, target):
     pass
 
 func ec_instance(ship_type, faction, pilot_type=null):
+    print("Creating instance of: ", ship_type, " for faction: ", faction, " with a pilot type: ", pilot_type)
     var newS = ship_type.instance()
     if pilot_type == "ai":
-        newS.get_node("Pilot").add_child(ai_p.instance())
+        var newp = ai_p.instance()
+        newS.get_node("Pilot").add_child(newp)
     elif pilot_type == "player":
-        newS.get_node("Pilot").add_child(player_p.instance())
+        var newp = player_p.instance()
+        newS.get_node("Pilot").add_child(newp)
     ec_register_ship(faction,newS)
     return newS
