@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Ship/Blender/ScoutShip/scoutShipAccent.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Ship/Blender/ScoutShip/ScoutShip.png" type="Texture" id=2]
@@ -11,9 +11,6 @@
 extents = Vector2( 376.67, 63.0528 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 28.7609, 66.3159 )
-
-[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 370.135, 116.826 )
 
 [node name="ScoutShip" type="KinematicBody2D" groups=[
@@ -39,12 +36,6 @@ shape = SubResource( 1 )
 
 [node name="Pilot" type="Node2D" parent="."]
 
-[node name="LandingGear" type="Area2D" parent="."]
-position = Vector2( -414.719, 0.825684 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LandingGear"]
-shape = SubResource( 2 )
-
 [node name="GunCoords" type="Position2D" parent="."]
 show_behind_parent = true
 position = Vector2( 555.384, 0 )
@@ -67,7 +58,7 @@ polygon = PoolVector2Array( 520.871, -9.18579, 22960, -1280, 23040, 1360 )
 [node name="HitBoxT" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxT"]
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="ExplosionContainer" type="Node2D" parent="."]
 

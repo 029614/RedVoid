@@ -47,11 +47,13 @@ func _process(delta: float) -> void:
             icon.scale = player.get_node("ChaseCamera").zoom/5
     
     if targetting_active == true:
-        if $Targeting.get_child_count() > 0:
+        if player.targ_weak_ref.get_ref():
             for icon in $Targeting.get_children():
                 icon.global_position = player.target.global_position
         else:
             player.target = null
+            for icon in $Targeting.get_children():
+                icon.queue_free()
         
     
     

@@ -207,8 +207,10 @@ func ec_instance(ship_type, faction, pilot_type=null):
     if pilot_type == "ai":
         var newp = ai_p.instance()
         newS.get_node("Pilot").add_child(newp)
+        newp.faction = faction
     elif pilot_type == "player":
         var newp = player_p.instance()
         newS.get_node("Pilot").add_child(newp)
+        newp.faction = faction
     ec_register_ship(faction,newS)
     return newS

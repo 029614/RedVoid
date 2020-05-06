@@ -39,10 +39,12 @@ func changeColor(color, color_a):
 func shipsToHome():
     var ships = get_faction_ships()
     for ship in ships:
+        print("ship: ", ship, " name: ", ship.name)
         ship.global_position = Vector2(home_planet.global_position.x + 1000, home_planet.global_position.y + 1000)
         
 func findScoutTarget():
-    var p = get_tree().get_nodes_in_group("planets")
+    #var p = get_tree().get_nodes_in_group("planets")
+    var p = get_tree().get_nodes_in_group("asteroids")
     var closest = null
     for planet in p:
         if planet.ownership == null:
@@ -52,9 +54,9 @@ func findScoutTarget():
                 closest = planet
     return closest
 
-func dispatcher(ship):
-    if findScoutTarget():
-        ship.pilot.goTo(findScoutTarget())
+func get_orders(pilot, type):
+    if type == "scout" and findScoutTarget():
+        pilot.capture(findScoutTarget())
             
 func get_faction_ships():
     var ships = []

@@ -134,11 +134,11 @@ func createFactions():
             f[y].home_planet = p
             p.changeOwnership(f[y])
             var newS = Global.ec_instance(Global.scoutship, f[y], "player")
-            f[y].add_child(newS)
+            f[y].scoutships.add_child(newS)
             newS.pilot.startUp()
             newS.get_node("Accent").modulate = f[y].faction_color
             print("pilot", newS.get_node("Pilot").get_children()[0])
-            #f[y].shipsToHome()
+            f[y].shipsToHome()
             y+=1
             
     while x < Global.number_of_factions-1:
@@ -155,6 +155,8 @@ func createFactions():
         newf.home_planet = p
         var newS = Global.ec_instance(Global.scoutship, newf, "ai")
         newS.get_node("Accent").modulate = newf.faction_color
+        newf.scoutships.add_child(newS)
+        newS.pilot.startUp()
         newf.shipsToHome()
         x+=1
     #print("list of factions: ", $Factions.get_children())

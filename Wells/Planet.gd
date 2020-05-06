@@ -109,16 +109,6 @@ func changeOwnership(faction):
     $Prog/CaptureProgress.set_value(100)
     planet_state = "occupied"
     beginSpaceStation()
-    
-func _on_Landing_area_shape_entered(area_id: int, area: Area2D, area_shape: int, self_shape: int) -> void:
-    if Global.player_registry.has(area.get_parent()) and _is_destructive == true:
-        Global.emit_signal("player_died")
-    elif area.name == "LandingGear" and _is_destructive == false:
-        area.get_parent().location_state = "landing"
-        area.get_parent().pilot.planet = self
-        if area.get_parent().faction != ownership:
-            planet_state = "being_captured"
-            capturing_fac = area.get_parent().pilot.faction
 
 func _on_Arrival_body_entered(body: Node) -> void:
     #print(body)

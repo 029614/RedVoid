@@ -26,6 +26,7 @@ var map_center_relative
 #Ship
 var ship_size
 var target = null
+var targ_weak_ref
 
 #launcher
 var launch_speed = 100
@@ -72,7 +73,6 @@ func _ready():
 
 func startUp():
     ship = get_parent().get_parent()
-    faction = ship.get_parent().get_parent()
     hud = $CanvasLayer/HUD
     fuel_gauge = $CanvasLayer/HUD/ConsoleFuel/FuelGauge
     ship.pilot_ref = self
@@ -182,6 +182,7 @@ func _input(event):
             print("closest target: ", closest_target, " Name: ", closest_target.name)
             target = closest_target
             hud.target(closest_target)
+            targ_weak_ref = weakref(closest_target)
         
         #Camera Zoom
         if Input.is_action_pressed("zoom_in") and camera_state == "normal":

@@ -1,15 +1,17 @@
 extends Node
 
-onready var faction = get_parent().get_parent()
+var faction
 
 #various information for landing and capturing
 var planet = null
 var orbit = null
 var frame_count = 0
 
+var type = "scout"
+
 
 #input and direction
-onready var ship = get_node("../..")
+var ship
 
 #navigation
 var desired_rotation = 0
@@ -20,6 +22,7 @@ var target = null
 var target_side = 0 #( <0 is left, >0 is right)
 var target_balance = 0 #( <0 is behind, >0 is in front)
 var station = null #where this ship is stationed, or the ship it is escorting
+var point = null #the point of interest this ship is moving to capture
 
 #personal attributes
 var aggression = 5 # an integer betwwen 1 and 10
@@ -33,7 +36,7 @@ var states = ["traveling", "landing", "launching", "combat", "docked", "decelera
         
 var state = "traveling"
 
-var objectives = ["intercept", "engage", "defend", "travel", "escort", "patrol", "explore", "despawn", "refuel", "retreat"]
+var objectives = ["intercept", "engage", "defend", "travel", "escort", "patrol", "explore", "despawn", "refuel", "retreat", "capture"]
 var objective = "intercept"
 
 var combat_styles = ["kamikaze", "circle", "tail"]
@@ -50,7 +53,7 @@ var maxI = 1
 var P = 1
 var D = 3
 var do_pid=1
-onready var intercept_point = ship.global_position
+var intercept_point
 #var last_pid_time = 0
 
 #system status
@@ -68,9 +71,17 @@ var acceleration_window = deg2rad(10)
 
 
 func _ready() -> void:
-    ship.pilot = self
-    intercept(get_node("/root/NewMain/Factions/Faction1/Scouts/ScoutShip"))
+    set_physics_process(false)
+    #intercept(get_node("/root/NewMain/Factions/Faction1/Scouts/ScoutShip"))
     #goTo(get_node("/root/NewMain/Navigation2D/Bodies/Planet2"))
+
+func startUp():
+    
+    ship = get_node("../..")
+    ship.pilot = self
+    intercept_point = ship.global_position
+    faction.get_orders(self, type)
+    set_physics_process(true)
     
     add_child(pid_timer)
     pid_timer.connect("timeout",self,"_pid_timer_timeout")
@@ -132,6 +143,12 @@ func retreat():
     state = "combat"
     objective = "retreat"
     destination = locateNearestBase()
+
+func capture(p):
+    point = p
+    target = p
+    state = "traveling"
+    objective = "capture"
 
 func refuel():
     objective = "refuel"
@@ -222,6 +239,12 @@ func rotation_pid():
         #kD = 0\
     elif objective == "intercept":
         lookat = intercept_point
+    elif objective == "explore":
+        pass
+    elif objective == "capture":
+        lookat = point.get_global_position()
+        if point.ownership == faction:
+            faction.get_orders(self, type)
     else:
         lookat = ship.global_position + ((r * td))
         

@@ -74,23 +74,6 @@ func _ready() -> void:
     #$Accent.modulate = faction.faction_color
     
     connect("base_destroyed", self, "_baseDestroyed")
-    
-    add_child(gravity_timer)
-    gravity_timer.connect("timeout",self,"_gravity_timer_timeout")
-    gravity_timer.set_timer_process_mode(0)
-    gravity_timer.set_one_shot(false)
-    gravity_timer.start(gravity_interval)
-
-func _gravity_timer_timeout():
-    do_gravity=1         
-        
-func getGravity():
-    var g = Vector2(0,0)
-    for body in get_node("/root/NewMain/Navigation2D/Bodies").get_children():
-        #print("body: ",body)
-        g += ( body.mass / (body.global_position.distance_to(self.global_position)) * self.global_position.direction_to(body.global_position) )
-    #return g
-    return Vector2(0,0)
 
 func glide():
     animate_engines = false
@@ -111,11 +94,6 @@ func accelerate(delta):
 func _physics_process(delta: float) -> void:
     #rotation = pilot.rotation
     if location_state == "free":
-        if do_gravity:
-            do_gravity = 0
-            velocity += getGravity() * gravity_interval
-            velocity = velocity.clamped(max_speed)
-            
         velocity = move_and_slide(velocity)
     
     if animate_engines and engine_state == "off":
