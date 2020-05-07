@@ -14,6 +14,8 @@ var mass = 0
 var ownership = null
 var tile
 
+var materials = 0.0
+
 var planet_state = "empty"
 var capture_perc = 0
 var capturing_fac = null
@@ -30,6 +32,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+    materials += 0.1
     
     #Capturing
     if planet_state == "being_captured" :
@@ -75,13 +78,39 @@ func randBool():
 func capture(faction, planet):
     if ownership != faction and planet == self:
         ownership = faction
-        faction.planets.append(self)
+        faction.asteroids.append(self)
         var message = str(name) + " has been captured by " + str(faction.name) + "."
         Global.messageAll(message)
         $Sprite.self_modulate = ownership.faction_color
         planet_state = "occupied"
         Global.emit_signal("capture", faction)
 
+func build(construction):
+    var new = construction.instance()
+    new.planet = self
+    new.station = self
+    get_node("Constructions").add_child(new)
+    new.global_position = survey()
+
+func survey():
+    var spot = "nogomrricter"
+    var obstructions = [self]
+    for child in get_node("Constructions").get_children():
+        obstructions.append(child)
+    var begin = global_position - Vector2(2000,2000)
+    var end = global_position + Vector2(2000,2000)
+    var location = Vector2(rand_range(begin.x, end.x), rand_range(begin.y,end.y))
+    while spot != "ok":
+        var flag = false
+        for o in obstructions:
+            if location.distance_to(o.global_position) < 500:
+                location = Vector2(rand_range(begin.x, end.x), rand_range(begin.y,end.y))
+                flag = true
+            else:
+                continue
+        if flag == false:
+            spot = "ok"
+    return location
 
 func _on_Area2D_body_entered(body: Node) -> void:
     if body.name == "ScoutShip" and body.faction != ownership:

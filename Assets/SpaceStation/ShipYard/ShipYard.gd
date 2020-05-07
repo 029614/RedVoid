@@ -13,6 +13,8 @@ var materials = 0
 var completion = 0
 var stage_completion = 200
 
+var build_order = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     nextWeld(3)

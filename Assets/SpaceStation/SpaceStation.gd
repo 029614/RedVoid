@@ -6,6 +6,8 @@ var sYard = preload("res://Assets/SpaceStation/ShipYard/ShipYard.tscn")
 onready var positions = $Stages/s1/positions
 onready var Stimer = $ShuttleTimer
 var planet
+var faction
+var tile
 
 var stage = 1
 var stages = 6
@@ -18,6 +20,7 @@ var stage_completion = 250
 var enough_time = false
 
 var health = 100
+var max_guns = 4
 
 
 var shuttle_capacity = 1
@@ -146,18 +149,29 @@ func findResource():
     print("finding resource")
     var count = 0
     var tgroup
-    var fields
-    for group in planet.get_groups():
-        if group != "planets":
-            tgroup = group
-    fields = get_tree().get_nodes_in_group("asteroid_fields_" + tgroup)
-    print("asteroid fields: ", fields)
-    var closest = Global.getClosest(self, fields, global_position)
-    print("closest asteroid field: ", closest)
-    return closest
+    var fields = []
+    if faction.asteroids.size()>0:
+        for asteroid in faction.asteroids:
+            if asteroid.tile == tile:
+                fields.append(asteroid)
+        #for group in planet.get_groups():
+        #    if group != "planets":
+        #        tgroup = group
+        #fields = get_tree().get_nodes_in_group("asteroid_fields_" + tgroup)
+        #print("asteroid fields: ", fields)
+        var closest = Global.getClosest(self, fields, global_position)
+        print("closest asteroid field: ", closest)
+        return closest
+    else:
+        return null
 
 func _on_ShuttleTimer_timeout() -> void:
-    spawnShuttle(findResource())
+    var result = findResource()
+    if materials < 250:
+        if result == null:
+            pass
+        else:
+            spawnShuttle(result)
     $ShuttleTimer.set_wait_time(rand_range(15,45))
 
 
@@ -173,11 +187,23 @@ func build(construction):
     new.global_position = survey()
 
 func survey():
-    var begin = planet.global_position - Vector2(5000,5000)
-    var end = planet.global_position + Vector2(5000,5000)
+    var spot = "nogomrricter"
+    var obstructions = [planet]
+    for child in planet.get_node("Constructions").get_children():
+        obstructions.append(child)
+    var begin = global_position - Vector2(2000,2000)
+    var end = global_position + Vector2(2000,2000)
     var location = Vector2(rand_range(begin.x, end.x), rand_range(begin.y,end.y))
-    while location.distance_to(planet.global_position) < 2500:
-        location = Vector2(rand_range(begin.x, end.x), rand_range(begin.y,end.y))
+    while spot != "ok":
+        var flag = false
+        for o in obstructions:
+            if location.distance_to(o.global_position) < 500:
+                location = Vector2(rand_range(begin.x, end.x), rand_range(begin.y,end.y))
+                flag = true
+            else:
+                continue
+        if flag == false:
+            spot = "ok"
     return location
 
 

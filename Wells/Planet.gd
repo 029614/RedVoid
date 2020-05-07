@@ -37,6 +37,8 @@ onready var resource_list = {"hydrogen":hydrogen, "iron":iron, "carbon":carbon, 
 
 var resource_store = {"hydrogen":0, "iron":0, "carbon":0, "radioisotope":0, "lithium":0, "silicon":0, "conductive_metals":0, "platinum":0, "lead":0, "tungsten":0}
 
+var emotional_states = ["normal", "aggressive", "defensive"]
+var emotional_state = "normal"
 
 # Planet states
 var planet_states = ["empty", "occupied", "being_captured", "colonized"]
@@ -171,5 +173,7 @@ func _on_Landing_area_shape_exited(area_id: int, area: Area2D, area_shape: int, 
 func beginSpaceStation():
     var new_station = station.instance()
     new_station.planet = self
+    new_station.faction = ownership
+    new_station.tile = tile
     $SpaceStation.add_child(new_station)
     new_station.Stimer.start()
